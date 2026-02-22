@@ -1,0 +1,5 @@
+{
+  "welcome": "Welcome to Devakosha!",
+  "goDetails": "Go to Details",
+  "detailsScreen": "Details for item {{itemId}}"
+}

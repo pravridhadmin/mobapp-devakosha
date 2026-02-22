@@ -1,6 +1,14 @@
 {
   "extends": "expo/tsconfig.base",
+  "compileOnSave": true,
   "compilerOptions": {
-    "strict": true
-  }
+    "target": "es6",
+    "sourceMap": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src",
+    "App.tsx",
+    "nativewind-env.d.ts"
+  ]
 }
