@@ -111,6 +111,16 @@ export default function HomeScreen({ navigation }: Props) {
           </Text>
         )}
 
+        <Pressable
+          className="bg-blue-500 px-6 py-3 rounded-xl"
+          onPress={() =>
+            navigation.navigate('Details', { itemId: 42 })
+          }
+        >
+          <Text className="text-white font-semibold">
+            Go to Details
+          </Text>
+        </Pressable>
       </View>
     </View>
   );

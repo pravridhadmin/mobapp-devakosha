@@ -28,7 +28,7 @@ export interface District {
 
 export interface DistrictResponse {
   meta: ApiMeta;
-  items: State[];
+  items: District[];
 }
 
 export interface TemplePage {
