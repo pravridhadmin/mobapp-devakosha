@@ -7,6 +7,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { useColorScheme } from "nativewind";
 import { State } from "../types/models";
 import { getStates } from '../api/cms';
+import { Skeleton } from "../components/Skeleton";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -121,6 +122,11 @@ export default function HomeScreen({ navigation }: Props) {
             Go to Details
           </Text>
         </Pressable>
+
+        <Skeleton className="h-6 w-3/4 rounded-md" />
+        <Skeleton className="h-4 w-full rounded-md" />
+        <Skeleton className="h-4 w-5/6 rounded-md" />
+        <Skeleton className="h-40 w-full rounded-xl" />
       </View>
     </View>
   );
