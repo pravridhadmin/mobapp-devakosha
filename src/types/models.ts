@@ -56,7 +56,7 @@ export interface TemplePage {
   contact_number: string | null;
   contact_email: string | null;
 
-  featured_image: Image[];
+  featured_image: ImageItem[];
   images: Image[];
 
   is_featured: boolean;
@@ -83,5 +83,21 @@ export interface PageMeta {
 }
 
 export interface Image {
-  url: string;
+  value: ImageItem[];
+  type: string;
+  id: string | number;
+}
+export interface ImageItem{
+  id: string | number;
+  value: string;
+  type: string;
+}
+
+export interface TemplesUrlParams {
+    state?: { id: string | number };
+    district?: { id: string | number };
+    search?: string;
+    featured?: boolean;
+    limit?: number;
+    offset?: number;
 }

@@ -1,36 +1,163 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, Pressable, TouchableOpacity, StatusBar, ActivityIndicator, FlatList } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { Dropdown } from "react-native-element-dropdown";
+import { useColorScheme } from 'nativewind';
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, FlatList, RefreshControl, StatusBar, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ScreenHeader from '../components/ScreenHeader';
+import SearchSection from '../components/SearchSection';
+import FilterModal from '../components/FilterModal';
+import { fetchTemples, getDistrictsUrl, getStatesUrl } from '../api/cms';
+import TempleCard from '../components/Card';
+import { TemplePage } from '../types/models';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { useColorScheme } from "nativewind";
-import { State } from "../types/models";
-import { getStates } from '../api/cms';
-import { Skeleton } from "../components/Skeleton";
+import EmptyState from '../components/EmptyState';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function HomeScreen({ navigation }: Props) {
-  const { t } = useTranslation();
+const HomeScreen = ({ navigation }: Props) => {
   const { colorScheme, toggleColorScheme, setColorScheme } = useColorScheme();
-  const [states, setStates] = useState<State[]>([]);
-  const [selectedState, setSelectedState] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [selectedState, setSelectedState] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [states, setStates] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingDistricts, setLoadingDistricts] = useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState({
+    state: null,
+    district: null,
+    search: ""
+  });
+  const [temples, setTemples] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [recentTemples, setRecentTemples] = useState([]);
+  // Pagination state
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const PAGE_SIZE = 10;
+
 
   useEffect(() => {
-    loadData();
+    fetchStates();
   }, []);
 
-  const loadData = async () => {
+
+  useEffect(() => {
+    if (selectedState) {
+      console.log('Selected state changed:', selectedState);
+      fetchDistricts(selectedState.id);
+    } else {
+      setDistricts([]);
+      setSelectedDistrict(null);
+    }
+  }, [selectedState]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    loadTemples(true);
+  };
+
+  const fetchStates = async () => {
+    setLoadingStates(true);
+    setError(null);
     try {
-      const data = await getStates();
-      setStates(data);
-    } catch (err: any) {
-      setError("Failed to load data");
+      // Limit 40 covers all Indian states/UTs (36 total)
+      const url = getStatesUrl();
+      const response = await fetch(url);
+      const data = await response.json();
+      setStates(data.items || []);
+    } catch (error) {
+      console.error('Error fetching states:', error);
+      setError('Failed to load states. Please try again.');
+    } finally {
+      setLoadingStates(false);
+    }
+  };
+
+  const loadTemples = async (reset = false) => {
+    if (reset) {
+      setLoading(true);
+      setError(null);
+    } else {
+      setLoadingMore(true);
+    }
+
+    try {
+      const currentOffset = reset ? 0 : offset;
+      console.log('Loading temples with filters:', filters, 'offset:', currentOffset);
+      const newItems = await fetchTemples({ featured: true, limit: 1, offset: currentOffset });
+      const recentlyAdded = await fetchTemples({ state: null, district: null, search: null, limit: 5, offset: currentOffset });
+      if (newItems.length < PAGE_SIZE) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+
+      if (reset) {
+        setTemples(newItems);
+        setRecentTemples(recentlyAdded);
+        setOffset(PAGE_SIZE);
+      } else {
+        setTemples(prev => [...prev, ...newItems]);
+        setRecentTemples(prev => [...prev, ...recentlyAdded]);
+        setOffset(prev => prev + PAGE_SIZE);
+      }
+    } catch (error) {
+      if (reset) {
+        setError('Failed to load temples.');
+      }
     } finally {
       setLoading(false);
+      setRefreshing(false);
+      setLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
+    loadTemples(true);
+  }, [filters]);
+  const fetchDistricts = async (stateId) => {
+    setLoadingDistricts(true);
+    try {
+      // Limit 50 is the max allowed by API.
+      const url = getDistrictsUrl(stateId);
+      console.log('Districts API URL:', url);
+      const response = await fetch(url);
+      const data = await response.json();
+      setDistricts(data.items || []);
+    } catch (error) {
+      console.error('Error fetching districts:', error);
+    } finally {
+      setLoadingDistricts(false);
+    }
+  };
+
+
+  const handleClearFilters = () => {
+    setSearch("");
+    setSelectedState(null);
+    setSelectedDistrict(null);
+    setIsFilterOpen(false);
+  }
+
+  const handleApplyFilters = () => {
+    console.log('Applying filters:', { state: selectedState, district: selectedDistrict, search });
+    setFilters({
+      state: selectedState,
+      district: selectedDistrict,
+      search: search.trim()
+    });
+    navigation.navigate('Listing', { searchFilters: { state: selectedState, district: selectedDistrict, search: search.trim() } });
+    setIsFilterOpen(false);
+  };
+
+  const handleLoadMore = () => {
+    if (!loadingMore && !loading && hasMore) {
+      loadTemples(false);
     }
   };
 
@@ -39,7 +166,7 @@ export default function HomeScreen({ navigation }: Props) {
       <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
         <ActivityIndicator size="large" />
         <Text className="mt-4 text-text dark:text-text-dark">
-          Loading states...
+          Loading...
         </Text>
       </View>
     );
@@ -53,81 +180,140 @@ export default function HomeScreen({ navigation }: Props) {
     );
   }
 
+  const renderItem = ({ item }: { item: TemplePage }) => (
+    <TempleCard
+      image={item.featured_image && item.featured_image.length > 0 ? item.featured_image[0].value : null}
+      name={item.title}
+      district={item.district?.title}
+      state={item.state?.title}
+      address={item?.address_line1}
+      onPress={() => navigation.navigate('Details', { itemId: item.id })}
+    />
+  );
+  const renderRecentItem = ({ item }: { item: TemplePage }) => (
+    <TempleCard
+      image={item.featured_image && item.featured_image.length > 0 ? item.featured_image[0].value : null}
+      name={item.title}
+      district={item.district?.title}
+      state={item.state?.title}
+      cardHeight="h-44"
+      cardWidth="w-72"
+      onPress={() => navigation.navigate('Details', { itemId: item.id })}
+    />
+  );
   return (
-    <View className="flex-1 bg-background dark:bg-background-dark">
+    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
       <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
+      <ScreenHeader
+        title="Devakosha"
+        onProfilePress={() => console.log("Profile")}
+        onFilterPress={() => setIsFilterOpen(true)}
+      />
 
-      {/* Header */}
-      <View className="px-6 pt-16 pb-6">
-        <Text className="text-3xl font-bold text-primary dark:text-primary-dark">
-          Devakosha
-        </Text>
-        <Text className="mt-2 text-text dark:text-text-dark">
-          System theme: {colorScheme}
-        </Text>
-      </View>
+      {/* Search bar and rest of screen */}
+      <SearchSection
+        search={search}
+        onSearchChange={(text) => setSearch(text)}
+        selectedState={selectedState}
+        selectedDistrict={selectedDistrict}
+        setIsFilterOpen={setIsFilterOpen}
+      />
 
       {/* Content */}
       <View className="flex-1 px-6">
-
+        <Text className='text-black dark:text-gray-300 text-lg mb-3'>Featured Temples</Text>
         {/* Card */}
-        <View className="bg-surface dark:bg-surface-dark rounded-2xl p-6 shadow-md mb-6">
-          <Text className="text-lg font-semibold text-text dark:text-text-dark mb-2">
-            {t('welcome')} 👋
-          </Text>
-          <Text className="text-text dark:text-text-dark opacity-80">
-            This screen uses semantic Tailwind colors and automatically adapts
-            to light and dark mode.
-          </Text>
-        </View>
-
-        <Text className="text-2xl font-bold text-primary dark:text-primary-dark mb-4">
-          Select State
-        </Text>
-
-        <Dropdown
-          style={{
-            backgroundColor: "#fff",
-            borderRadius: 12,
-            padding: 16,
-          }}
-          containerStyle={{
-            borderRadius: 12,
-          }}
-          placeholderStyle={{ color: "#6B7280" }}
-          selectedTextStyle={{ color: "#111827" }}
-          data={states}
-          labelField="title"
-          valueField="id"
-          placeholder="Select a state"
-          value={selectedState}
-          onChange={(item) => {
-            setSelectedState(item.id);
-          }}
-        />
-
-        {selectedState && (
-          <Text className="mt-6 text-text dark:text-text-dark">
-            Selected State ID: {selectedState}
-          </Text>
+        {!error && temples.length != 0 && (
+          <FlatList
+            data={temples}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            scrollEnabled={false}
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={
+              loadingMore ? (
+                <View style={{ paddingVertical: 20 }}>
+                  <ActivityIndicator size="small" />
+                </View>
+              ) : null
+            }
+            ListEmptyComponent={
+              !loading && (
+                <EmptyState
+                  message="No Featured temples found"
+                  subMessage={filters.state ? "Try clearing filters to see more results." : "We couldn't find any temples at the moment."}
+                  actionLabel={filters.state ? "Clear Filters" : "Try Again"}
+                  onAction={filters.state ? handleClearFilters : () => loadTemples(true)}
+                  icon="🏙️"
+                />
+              )
+            }
+          />
         )}
 
-        <Pressable
-          className="bg-blue-500 px-6 py-3 rounded-xl"
-          onPress={() =>
-            navigation.navigate('Details', { itemId: 42 })
-          }
-        >
-          <Text className="text-white font-semibold">
-            Go to Details
-          </Text>
-        </Pressable>
+        <Text className='text-black dark:text-gray-300 text-lg mb-3 mt-6'>Recently Added</Text>
+        {!error && recentTemples.length != 0 && (
+          <FlatList
+            data={recentTemples}
+            renderItem={renderRecentItem}
+            keyExtractor={(item) => item.id.toString()}
+            ItemSeparatorComponent={() => <View className="w-4" />}
+            onEndReachedThreshold={0.5}
+            horizontal
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={
+              loadingMore ? (
+                <View style={{ paddingVertical: 20 }}>
+                  <ActivityIndicator size="small" />
+                </View>
+              ) : null
+            }
+            ListEmptyComponent={
+              !loading && (
+                <EmptyState
+                  message="No Featured temples found"
+                  subMessage={filters.state ? "Try clearing filters to see more results." : "We couldn't find any temples at the moment."}
+                  actionLabel={filters.state ? "Clear Filters" : "Try Again"}
+                  onAction={filters.state ? handleClearFilters : () => loadTemples(true)}
+                  icon="🏙️"
+                />
+              )
+            }
+          />
+        )}
 
-        <Skeleton className="h-6 w-3/4 rounded-md" />
-        <Skeleton className="h-4 w-full rounded-md" />
-        <Skeleton className="h-4 w-5/6 rounded-md" />
-        <Skeleton className="h-40 w-full rounded-xl" />
+
+
+
+        {/* <Skeleton className="h-6 w-3/4 rounded-md" /> */}
+        {/* <Skeleton className="h-4 w-full rounded-md" /> */}
+        {/* <Skeleton className="h-4 w-5/6 rounded-md" /> */}
+        {/* <Skeleton className="h-40 w-full rounded-xl" /> */}
       </View>
-    </View>
-  );
+
+
+
+      <FilterModal
+        visible={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        search={search}
+        onSearchChange={(text) => setSearch(text)}
+        selectedState={selectedState}
+        onStateChange={(state) => setSelectedState(state)}
+        selectedDistrict={selectedDistrict}
+        onDistrictChange={(district) => setSelectedDistrict(district)}
+        stateOptions={states}
+        districtOptions={districts}
+        onApply={handleApplyFilters}
+        onClear={handleClearFilters}
+      />
+    </SafeAreaView>
+  )
 }
+
+export default HomeScreen
