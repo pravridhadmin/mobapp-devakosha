@@ -4,10 +4,12 @@ import * as Localization from 'expo-localization';
 
 import en from './locales/en.json';
 import fr from './locales/fr.json';
+import kn from './locales/kn.json';
 
 const resources = {
   en: { translation: en },
   fr: { translation: fr },
+  kn: { translation: kn },
 };
 
 const locales = Localization.getLocales();
@@ -18,7 +20,7 @@ i18n
   .init({
     resources,
     lng: deviceLanguage,
-    fallbackLng: 'fr',
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
     },

@@ -6,9 +6,12 @@ import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../tailwind.config.js"; // adjust path
 import ListingScreen from '../screens/ListingScreen';
 import { District, State } from '../types/models';
+import TabNavigator from './TabNavigator';
+import ProfileScreen from '../screens/ProfileScreen';
 
 export type RootStackParamList = {
-  Home: undefined;
+  MainTabs: undefined;
+  Profile: undefined;
   Details: { itemId: number };
   Listing: { searchFilters: { state: State; district: District; search: string } };
 };
@@ -24,7 +27,7 @@ export default function AppNavigator() {
 
   return (
     <Stack.Navigator id="main"
-      initialRouteName="Home"
+      initialRouteName="MainTabs"
       
       screenOptions={{
          headerShown: false,
@@ -37,9 +40,9 @@ export default function AppNavigator() {
         headerTintColor: isDark ? colors["text-dark"] : colors.text,
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Devakosha" }} />
-      <Stack.Screen name="Listing" component={ListingScreen} options={{ title: "Devakosha" }} />
+       <Stack.Screen name="MainTabs" component={TabNavigator} />
       <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 }

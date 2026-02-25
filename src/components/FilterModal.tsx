@@ -13,6 +13,7 @@ import SearchBar from "./SearchBar";
 import FilterDropdown from "./FilterDropdown";
 import Button from "./Button";
 import { District, State } from "../types/models";
+import { useTranslation } from "react-i18next";
 
 interface FilterModalProps {
   visible: boolean;
@@ -21,11 +22,11 @@ interface FilterModalProps {
   search: string;
   onSearchChange: (text: string) => void;
 
-  selectedState: string | null;
-  onStateChange: (state: string) => void;
+  selectedState: State | null;
+  onStateChange: (state: State | null) => void;
 
-  selectedDistrict: string | null;
-  onDistrictChange: (district: string) => void;
+  selectedDistrict: District | null;
+  onDistrictChange: (district: District | null) => void;
 
   stateOptions: State[];
   districtOptions: District[];
@@ -48,7 +49,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   onApply,
   onClear,
 }) => {
-
+  const {t} = useTranslation();
   return (
     <Modal
       visible={visible}
@@ -72,7 +73,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               {/* Header */}
               <View className="flex-row items-center justify-between mb-6">
                 <Text className="text-white text-2xl font-semibold">
-                  Filter Temples
+                  {t("filter_temples")}
                 </Text>
 
                 <Pressable onPress={onClose}>
@@ -82,7 +83,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
               {/* SEARCH */}
               <Text className="text-zinc-400 mb-2 tracking-widest">
-                SEARCH
+                {t("search")}
               </Text>
 
               <SearchBar
@@ -92,33 +93,33 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
               {/* STATE */}
               <Text className="text-zinc-400 mt-6 mb-2 tracking-widest">
-                STATE
+                {t("state")}
               </Text>
 
               <FilterDropdown
                 selectedValue={selectedState}
                 onValueChange={onStateChange}
                 items={stateOptions}
-                placeholder="Select State"
+                placeholder={t("select_state")}
               />
 
               {/* DISTRICT */}
               <Text className="text-zinc-400 mt-6 mb-2 tracking-widest">
-                DISTRICT
+                {t("district")}
               </Text>
 
               <FilterDropdown
                 selectedValue={selectedDistrict}
                 onValueChange={onDistrictChange}
                 items={districtOptions}
-                placeholder="Select District"
+                placeholder={t("select_district")}
               />
 
               {/* Bottom Buttons */}
               <View className="flex-row items-center justify-around mt-10">
-                <Button title="Clear" variant="ghost" onPress={onClear} />
+                <Button title={t("clear_filters")} variant="ghost" onPress={onClear} />
 
-                <Button title="Apply Filters" onPress={onApply} variant="primary" />
+                <Button title={t("apply_filters")} onPress={onApply} variant="primary" />
 
               </View>
             </View>

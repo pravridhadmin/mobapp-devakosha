@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import FilterDropdown from "./FilterDropdown";
 import { District, State } from "../types/models";
 import Button from "./Button";
+import { useTranslation } from "react-i18next";
 
 interface SearchSectionProps {
   search: string;
@@ -22,22 +23,23 @@ const SearchSection: React.FC<SearchSectionProps> = ({
   selectedDistrict,
   setIsFilterOpen,
 }) => {
+  const {t} = useTranslation();
   return (
-    <View className="px-4 mt-4">
+    <View className="px-4">
       {/* Search Bar */}
-      <SearchBar value={search} onChange={onSearchChange} />
+      <SearchBar value={search} onChange={onSearchChange} placeholder={t("search_temple")} />
 
       {/* Dropdowns Centered */}
-      <View className="flex-row justify-center mt-4 space-x-4">
+      <View className="flex-row justify-center space-x-4">
         
         <Button
-          title={selectedState ? selectedState.title : "Select State"}
+          title={selectedState ? selectedState.title : t("select_state")}
           variant="ghost"
           leftIcon="location-outline"
           onPress={() => setIsFilterOpen(true)}
         />
         <Button
-          title={selectedDistrict ? selectedDistrict.title : "Select District"}
+          title={selectedDistrict ? selectedDistrict.title : t("select_district")}
           variant="ghost"
           leftIcon="map-outline"
           onPress={() => setIsFilterOpen(true)}

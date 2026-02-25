@@ -5,8 +5,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { District, State } from "../types/models";
 
 interface FilterDropdownProps {
-  selectedValue: string;
-  onValueChange: (value: string) => void;
+  selectedValue: State | District | null;
+  onValueChange: (value: State | District | null) => void;
   items: State[] | District[];
   placeholder?: string;
 }

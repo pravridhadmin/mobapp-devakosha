@@ -52,7 +52,7 @@ const TempleCard: React.FC<TempleCardProps> = ({
       {/* Content */}
       <View className="p-4">
         {/* Temple Name */}
-        <Text className="text-black text-xl font-semibold mb-2 dark:text-white">
+        <Text className="text-black text-xl font-semibold mb-2 line-clamp-1 dark:text-white">
           {name}
         </Text>
 

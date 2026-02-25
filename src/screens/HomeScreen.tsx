@@ -1,142 +1,61 @@
 import { useColorScheme } from 'nativewind';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, RefreshControl, StatusBar, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenHeader from '../components/ScreenHeader';
 import SearchSection from '../components/SearchSection';
 import FilterModal from '../components/FilterModal';
+import { useTranslation } from "react-i18next";
 import { fetchTemples, getDistrictsUrl, getStatesUrl } from '../api/cms';
 import TempleCard from '../components/Card';
 import { TemplePage } from '../types/models';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import EmptyState from '../components/EmptyState';
+import { useLocationFilters } from '../hooks/useLocationFilters';
+import { useHomeTemples } from '../hooks/useHomeTemples';
+import { useFilters } from '../context/FiltersContext';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'MainTabs'>;
 
 const HomeScreen = ({ navigation }: Props) => {
-  const { colorScheme, toggleColorScheme, setColorScheme } = useColorScheme();
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { colorScheme } = useColorScheme();
+      const { t, i18n } = useTranslation();
   const [search, setSearch] = useState("");
-  const [selectedState, setSelectedState] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [states, setStates] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [loadingStates, setLoadingStates] = useState(false);
-  const [loadingDistricts, setLoadingDistricts] = useState(false);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({
-    state: null,
-    district: null,
-    search: ""
-  });
-  const [temples, setTemples] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [recentTemples, setRecentTemples] = useState([]);
-  // Pagination state
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const PAGE_SIZE = 10;
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const {
+    states,
+    districts,
+    selectedState,
+    selectedDistrict,
+    setSelectedState,
+    setSelectedDistrict,
+  } = useLocationFilters(getStatesUrl, getDistrictsUrl);
 
-  useEffect(() => {
-    fetchStates();
-  }, []);
+const { filters, setFilters } = useFilters();
 
+  const {
+    featuredTemple,
+    recentTemples,
+    loading,
+    error,
+    reload,
+  } = useHomeTemples(fetchTemples, filters);
 
-  useEffect(() => {
-    if (selectedState) {
-      console.log('Selected state changed:', selectedState);
-      fetchDistricts(selectedState.id);
-    } else {
-      setDistricts([]);
-      setSelectedDistrict(null);
-    }
-  }, [selectedState]);
+  const handleApplyFilters = () => {
+    const applied = {
+      state: selectedState,
+      district: selectedDistrict,
+      search: search.trim(),
+    };
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    loadTemples(true);
+    setFilters(applied);
+
+    navigation.navigate("Listing");
+
+    setIsFilterOpen(false);
   };
-
-  const fetchStates = async () => {
-    setLoadingStates(true);
-    setError(null);
-    try {
-      // Limit 40 covers all Indian states/UTs (36 total)
-      const url = getStatesUrl();
-      const response = await fetch(url);
-      const data = await response.json();
-      setStates(data.items || []);
-    } catch (error) {
-      console.error('Error fetching states:', error);
-      setError('Failed to load states. Please try again.');
-    } finally {
-      setLoadingStates(false);
-    }
-  };
-
-  const loadTemples = async (reset = false) => {
-    if (reset) {
-      setLoading(true);
-      setError(null);
-    } else {
-      setLoadingMore(true);
-    }
-
-    try {
-      const currentOffset = reset ? 0 : offset;
-      console.log('Loading temples with filters:', filters, 'offset:', currentOffset);
-      const newItems = await fetchTemples({ featured: true, limit: 1, offset: currentOffset });
-      const recentlyAdded = await fetchTemples({ state: null, district: null, search: null, limit: 5, offset: currentOffset });
-      if (newItems.length < PAGE_SIZE) {
-        setHasMore(false);
-      } else {
-        setHasMore(true);
-      }
-
-      if (reset) {
-        setTemples(newItems);
-        setRecentTemples(recentlyAdded);
-        setOffset(PAGE_SIZE);
-      } else {
-        setTemples(prev => [...prev, ...newItems]);
-        setRecentTemples(prev => [...prev, ...recentlyAdded]);
-        setOffset(prev => prev + PAGE_SIZE);
-      }
-    } catch (error) {
-      if (reset) {
-        setError('Failed to load temples.');
-      }
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-      setLoadingMore(false);
-    }
-  };
-
-  useEffect(() => {
-    loadTemples(true);
-  }, [filters]);
-  const fetchDistricts = async (stateId) => {
-    setLoadingDistricts(true);
-    try {
-      // Limit 50 is the max allowed by API.
-      const url = getDistrictsUrl(stateId);
-      console.log('Districts API URL:', url);
-      const response = await fetch(url);
-      const data = await response.json();
-      setDistricts(data.items || []);
-    } catch (error) {
-      console.error('Error fetching districts:', error);
-    } finally {
-      setLoadingDistricts(false);
-    }
-  };
-
-
   const handleClearFilters = () => {
     setSearch("");
     setSelectedState(null);
@@ -144,29 +63,14 @@ const HomeScreen = ({ navigation }: Props) => {
     setIsFilterOpen(false);
   }
 
-  const handleApplyFilters = () => {
-    console.log('Applying filters:', { state: selectedState, district: selectedDistrict, search });
-    setFilters({
-      state: selectedState,
-      district: selectedDistrict,
-      search: search.trim()
-    });
-    navigation.navigate('Listing', { searchFilters: { state: selectedState, district: selectedDistrict, search: search.trim() } });
-    setIsFilterOpen(false);
-  };
 
-  const handleLoadMore = () => {
-    if (!loadingMore && !loading && hasMore) {
-      loadTemples(false);
-    }
-  };
 
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
         <ActivityIndicator size="large" />
         <Text className="mt-4 text-text dark:text-text-dark">
-          Loading...
+          {t("loading")}...
         </Text>
       </View>
     );
@@ -205,50 +109,46 @@ const HomeScreen = ({ navigation }: Props) => {
     <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
       <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <ScreenHeader
-        title="Devakosha"
-        onProfilePress={() => console.log("Profile")}
+        title={t("devakosha")}
+        onProfilePress={() => navigation.navigate('Profile')}
         onFilterPress={() => setIsFilterOpen(true)}
       />
 
       {/* Search bar and rest of screen */}
       <SearchSection
-        search={search}
-        onSearchChange={(text) => setSearch(text)}
-        selectedState={selectedState}
-        selectedDistrict={selectedDistrict}
+        search={search || filters.search}
+        onSearchChange={(text) => { 
+          setSearch(text)
+          setFilters((prev) => ({ ...prev, search: text }))
+          navigation.navigate("Listing")
+        }}
+        selectedState={filters.state}
+        selectedDistrict={filters.district}
         setIsFilterOpen={setIsFilterOpen}
       />
 
       {/* Content */}
       <View className="flex-1 px-6">
-        <Text className='text-black dark:text-gray-300 text-lg mb-3'>Featured Temples</Text>
+        <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("featured_temples")}</Text>
         {/* Card */}
-        {!error && temples.length != 0 && (
+        {!error && featuredTemple && (
           <FlatList
-            data={temples}
+            data={[featuredTemple]}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl refreshing={loading} onRefresh={reload} />
             }
-            onEndReached={handleLoadMore}
             onEndReachedThreshold={0.5}
             scrollEnabled={false}
             showsVerticalScrollIndicator={false}
-            ListFooterComponent={
-              loadingMore ? (
-                <View style={{ paddingVertical: 20 }}>
-                  <ActivityIndicator size="small" />
-                </View>
-              ) : null
-            }
             ListEmptyComponent={
               !loading && (
                 <EmptyState
-                  message="No Featured temples found"
-                  subMessage={filters.state ? "Try clearing filters to see more results." : "We couldn't find any temples at the moment."}
-                  actionLabel={filters.state ? "Clear Filters" : "Try Again"}
-                  onAction={filters.state ? handleClearFilters : () => loadTemples(true)}
+                  message={t("no_temples_found")}
+                  subMessage={t("we_couldnt_find_any_temples_at_the_moment")}
+                  actionLabel={t("try_again")}
+                  onAction={reload}
                   icon="🏙️"
                 />
               )
@@ -256,7 +156,7 @@ const HomeScreen = ({ navigation }: Props) => {
           />
         )}
 
-        <Text className='text-black dark:text-gray-300 text-lg mb-3 mt-6'>Recently Added</Text>
+        <Text className='text-black dark:text-gray-300 text-lg mb-3 mt-6'>{t("recently_added")}</Text>
         {!error && recentTemples.length != 0 && (
           <FlatList
             data={recentTemples}
@@ -266,20 +166,13 @@ const HomeScreen = ({ navigation }: Props) => {
             onEndReachedThreshold={0.5}
             horizontal
             showsVerticalScrollIndicator={false}
-            ListFooterComponent={
-              loadingMore ? (
-                <View style={{ paddingVertical: 20 }}>
-                  <ActivityIndicator size="small" />
-                </View>
-              ) : null
-            }
             ListEmptyComponent={
               !loading && (
                 <EmptyState
-                  message="No Featured temples found"
-                  subMessage={filters.state ? "Try clearing filters to see more results." : "We couldn't find any temples at the moment."}
-                  actionLabel={filters.state ? "Clear Filters" : "Try Again"}
-                  onAction={filters.state ? handleClearFilters : () => loadTemples(true)}
+                  message={t("no_recent_temples_found")}
+                  subMessage={t("we_couldnt_find_any_temples_at_the_moment")}
+                  actionLabel={t("try_again")}
+                  onAction={reload}
                   icon="🏙️"
                 />
               )
