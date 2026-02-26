@@ -1,20 +1,39 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
+  Alert,
   View,
   Text,
-  SafeAreaView,
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { AuthContext } from "../context/AuthContext";
+import Avatar from "../components/Avatar";
 
 export default function ProfileScreen({
-  navigation,
-  user,
+  navigation
 }) {
     const { t, i18n } = useTranslation();
+    const {user, logout} = useContext(AuthContext);
+
+       const handleLogout = () => {
+        Alert.alert(
+            t('logout_confirm_title'),
+            t('logout_confirm_message'),
+            [
+                { text: t('cancel'), style: "cancel" },
+                {
+                    text: t('logout'),
+                    style: "destructive",
+                    onPress: () => logout()
+                }
+            ]
+        );
+    };
+
   return (
-   <View className="flex-1 bg-white dark:bg-black">
+   <SafeAreaView className="flex-1 bg-white dark:bg-black">
       
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-3">
@@ -33,9 +52,7 @@ export default function ProfileScreen({
 
         {/* Profile Card */}
         <View className="items-center p-8 rounded-2xl mb-8 bg-gray-100 dark:bg-zinc-900 shadow-sm">
-          <View className="w-20 h-20 rounded-full justify-center items-center mb-4 bg-blue-100 dark:bg-blue-900">
-            <Ionicons name="person" size={40} color="#2563EB" />
-          </View>
+         <Avatar/>
 
           <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
             +91 {user?.mobile || "----------"}
@@ -47,43 +64,11 @@ export default function ProfileScreen({
         </View>
 
       
-        {/* Language Switcher */}
-        <View className="p-4 rounded-2xl mb-3 bg-gray-100 dark:bg-zinc-900">
-          <Text className="text-sm mb-3 text-gray-500 dark:text-gray-400">
-            {t("language")}
-          </Text>
 
-          <View className="flex-row gap-3">
-            {[
-              { code: "en", label: "English" },
-              { code: "kn", label: "ಕನ್ನಡ" },
-            ].map((lang) => (
-              <TouchableOpacity
-                key={lang.code}
-                // onPress={() => changeLanguage(lang.code)}
-                className={`flex-1 py-3 rounded-lg items-center border ${
-                  i18n.language === lang.code
-                    ? "bg-blue-600 border-blue-600"
-                    : "border-gray-300 dark:border-zinc-700"
-                }`}
-              >
-                <Text
-                  className={`font-medium ${
-                    i18n.language === lang.code
-                      ? "text-white"
-                      : "text-gray-900 dark:text-white"
-                  }`}
-                >
-                  {lang.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
 
         {/* Logout */}
         <TouchableOpacity
-        //   onPress={handleLogout}
+          onPress={handleLogout}
           className="flex-row items-center p-4 rounded-2xl mb-3 bg-gray-100 dark:bg-zinc-900"
         >
           <View className="w-10 h-10 rounded-full bg-red-100 justify-center items-center mr-4">
@@ -105,6 +90,6 @@ export default function ProfileScreen({
         </View>
 
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

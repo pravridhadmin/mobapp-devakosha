@@ -6,13 +6,15 @@ import { FiltersProvider } from "./src/context/FiltersContext";
 
 import './src/i18n/i18n';
 import "./global.css";
+import { AuthProvider } from './src/context/AuthContext';
+import RootNavigator from './src/navigation/RootNavigator';
 
 export default function App() {
   return (
+    <AuthProvider>
      <FiltersProvider>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
+        <RootNavigator />
     </FiltersProvider>
+    </AuthProvider>
   );
 }

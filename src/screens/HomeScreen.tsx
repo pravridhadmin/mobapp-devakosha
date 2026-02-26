@@ -1,6 +1,6 @@
 import { useColorScheme } from 'nativewind';
 import { useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, RefreshControl, StatusBar, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, RefreshControl, ScrollView, StatusBar, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenHeader from '../components/ScreenHeader';
 import SearchSection from '../components/SearchSection';
@@ -20,7 +20,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MainTabs'>;
 
 const HomeScreen = ({ navigation }: Props) => {
   const { colorScheme } = useColorScheme();
-      const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [search, setSearch] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation }: Props) => {
     setSelectedDistrict,
   } = useLocationFilters(getStatesUrl, getDistrictsUrl);
 
-const { filters, setFilters } = useFilters();
+  const { filters, setFilters } = useFilters();
 
   const {
     featuredTemple,
@@ -58,6 +58,7 @@ const { filters, setFilters } = useFilters();
   };
   const handleClearFilters = () => {
     setSearch("");
+    setFilters((prev) => ({ ...prev, search: "", state: null, district: null }));
     setSelectedState(null);
     setSelectedDistrict(null);
     setIsFilterOpen(false);
@@ -106,18 +107,18 @@ const { filters, setFilters } = useFilters();
     />
   );
   return (
-    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
+    <SafeAreaView edges={["top", "left", 'right']} className="flex-1 bg-background dark:bg-background-dark">
       <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <ScreenHeader
         title={t("devakosha")}
         onProfilePress={() => navigation.navigate('Profile')}
-        onFilterPress={() => setIsFilterOpen(true)}
+      // onFilterPress={() => setIsFilterOpen(true)}
       />
 
       {/* Search bar and rest of screen */}
       <SearchSection
-        search={search || filters.search}
-        onSearchChange={(text) => { 
+        search={filters.search}
+        onSearchChange={(text) => {
           setSearch(text)
           setFilters((prev) => ({ ...prev, search: text }))
           navigation.navigate("Listing")
@@ -128,74 +129,66 @@ const { filters, setFilters } = useFilters();
       />
 
       {/* Content */}
-      <View className="flex-1 px-6">
-        <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("featured_temples")}</Text>
-        {/* Card */}
-        {!error && featuredTemple && (
-          <FlatList
-            data={[featuredTemple]}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            refreshControl={
-              <RefreshControl refreshing={loading} onRefresh={reload} />
-            }
-            onEndReachedThreshold={0.5}
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              !loading && (
-                <EmptyState
-                  message={t("no_temples_found")}
-                  subMessage={t("we_couldnt_find_any_temples_at_the_moment")}
-                  actionLabel={t("try_again")}
-                  onAction={reload}
-                  icon="🏙️"
-                />
-              )
-            }
-          />
-        )}
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}>
+        <View className="flex-1 px-6">
+          <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("featured_temples")}</Text>
+          {/* Card */}
+          {!error && featuredTemple && (
+            <TempleCard
+              image={featuredTemple.featured_image && featuredTemple.featured_image.length > 0 ? featuredTemple.featured_image[0].value : null}
+              name={featuredTemple.title}
+              district={featuredTemple.district?.title}
+              state={featuredTemple.state?.title}
+              address={featuredTemple?.address_line1}
+              onPress={() => navigation.navigate('Details', { itemId: featuredTemple.id })}
+            />
+          )}
 
-        <Text className='text-black dark:text-gray-300 text-lg mb-3 mt-6'>{t("recently_added")}</Text>
-        {!error && recentTemples.length != 0 && (
-          <FlatList
-            data={recentTemples}
-            renderItem={renderRecentItem}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={() => <View className="w-4" />}
-            onEndReachedThreshold={0.5}
-            horizontal
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              !loading && (
-                <EmptyState
-                  message={t("no_recent_temples_found")}
-                  subMessage={t("we_couldnt_find_any_temples_at_the_moment")}
-                  actionLabel={t("try_again")}
-                  onAction={reload}
-                  icon="🏙️"
-                />
-              )
-            }
-          />
-        )}
+          <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("recently_added")}</Text>
+          {!error && recentTemples.length != 0 && (
+            <FlatList
+              data={recentTemples}
+              renderItem={renderRecentItem}
+              keyExtractor={(item) => item.id.toString()}
+              ItemSeparatorComponent={() => <View className="w-4" />}
+              onEndReachedThreshold={0.5}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={
+                !loading && (
+                  <EmptyState
+                    message={t("no_recent_temples_found")}
+                    subMessage={t("we_couldnt_find_any_temples_at_the_moment")}
+                    actionLabel={t("try_again")}
+                    onAction={reload}
+                    icon="🏙️"
+                  />
+                )
+              }
+            />
+          )}
 
 
 
 
-        {/* <Skeleton className="h-6 w-3/4 rounded-md" /> */}
-        {/* <Skeleton className="h-4 w-full rounded-md" /> */}
-        {/* <Skeleton className="h-4 w-5/6 rounded-md" /> */}
-        {/* <Skeleton className="h-40 w-full rounded-xl" /> */}
-      </View>
-
+          {/* <Skeleton className="h-6 w-3/4 rounded-md" /> */}
+          {/* <Skeleton className="h-4 w-full rounded-md" /> */}
+          {/* <Skeleton className="h-4 w-5/6 rounded-md" /> */}
+          {/* <Skeleton className="h-40 w-full rounded-xl" /> */}
+        </View>
+      </ScrollView>
 
 
       <FilterModal
         visible={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
         search={search}
-        onSearchChange={(text) => setSearch(text)}
+        onSearchChange={(text) => {
+          setFilters((prev) => ({ ...prev, search: text }))
+          setSearch(text)
+        }}
         selectedState={selectedState}
         onStateChange={(state) => setSelectedState(state)}
         selectedDistrict={selectedDistrict}

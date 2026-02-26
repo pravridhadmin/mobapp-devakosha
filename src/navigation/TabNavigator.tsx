@@ -13,7 +13,7 @@ export type TabParamList = {
 const Tab = createBottomTabNavigator<TabParamList>();
 
 export default function TabNavigator() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -25,7 +25,21 @@ export default function TabNavigator() {
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
           backgroundColor: isDark ? "#111" : "#fff",
+          height: 65,
+          paddingTop: 8,
+          paddingBottom: 10,
+          borderTopWidth: 0,
+          elevation: 8, // Android shadow
         },
+              tabBarLabelStyle: {
+        fontSize: 12,
+        fontWeight: "600",
+      },
+
+      tabBarItemStyle: {
+        justifyContent: "center",
+        alignItems: "center",
+      },
         tabBarIcon: ({ color, size }) => {
           if (route.name === "Home") {
             return <Ionicons name="home-outline" size={size} color={color} />;

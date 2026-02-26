@@ -13,6 +13,7 @@ import { TemplePage } from '../types/models';
 import { isTempleOpen } from '../utils/timeHelper';
 import ImageGallery from '../components/ImageGallery';
 import InfoRow from '../components/InfoRow';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Details'>;
 
@@ -92,7 +93,7 @@ export default function DetailsScreen({ route, navigation }: Props) {
   ];
 
   return (
-    <View className="flex-1 bg-background dark:bg-background-dark">
+    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
       {loading && (
         <View className="absolute inset-0 justify-center items-center bg-black bg-opacity-50 z-10">
           <ActivityIndicator size="large" color="#F97316" />
@@ -144,6 +145,6 @@ export default function DetailsScreen({ route, navigation }: Props) {
           <DetailsTabs tabs={tabs} />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

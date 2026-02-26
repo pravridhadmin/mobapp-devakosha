@@ -24,24 +24,17 @@ import { useFocusEffect } from '@react-navigation/native';
 type Props = NativeStackScreenProps<RootStackParamList, 'Listing'>;
 
 export default function ListingScreen({ navigation }: Props) {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const { colorScheme } = useColorScheme();
     const [search, setSearch] = useState("");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const {filters, setFilters } = useFilters();
+    const { filters, setFilters } = useFilters();
 
-useFocusEffect(
-  useCallback(() => {
-    const isEmpty =
-      !filters.state &&
-      !filters.district &&
-      filters.search === "";
-
-    if (isEmpty) {
-      setIsFilterOpen(true);
-    }
-  }, [filters])
-);
+    useFocusEffect(
+        useCallback(() => {
+            setIsFilterOpen(true);
+        }, [])
+    );
     const {
         states,
         districts,
@@ -67,7 +60,7 @@ useFocusEffect(
         const applied = {
             state: selectedState,
             district: selectedDistrict,
-            search: search.trim(),
+            search: filters.search,
         };
 
         setFilters(applied);
@@ -95,7 +88,7 @@ useFocusEffect(
             <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
                 <ActivityIndicator size="large" />
                 <Text className="mt-4 text-text dark:text-text-dark">
-            {t("loading")}...
+                    {t("loading")}...
                 </Text>
             </View>
         );
@@ -120,7 +113,7 @@ useFocusEffect(
         />
     );
     return (
-        <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
+        <SafeAreaView edges={["top"]} className="flex-1 bg-background dark:bg-background-dark">
             <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
 
             {/* Header */}
@@ -128,7 +121,7 @@ useFocusEffect(
             <ScreenHeader
                 title="Devakosha"
                 onProfilePress={() => navigation.navigate('Profile')}
-                onFilterPress={() => setIsFilterOpen(true)}
+            // onFilterPress={() => setIsFilterOpen(true)}
             />
 
             {/* Search bar and rest of screen */}
@@ -136,7 +129,8 @@ useFocusEffect(
                 search={filters.search}
                 onSearchChange={(text) => {
                     setFilters((prev) => ({ ...prev, search: text }))
-                setSearch(text)}}
+                    setSearch(text)
+                }}
                 selectedState={filters.state}
                 selectedDistrict={filters.district}
                 setIsFilterOpen={setIsFilterOpen}
@@ -188,8 +182,11 @@ useFocusEffect(
             <FilterModal
                 visible={isFilterOpen}
                 onClose={() => setIsFilterOpen(false)}
-                search={search}
-                onSearchChange={(text) => setSearch(text)}
+                search={filters.search}
+                onSearchChange={(text) => {
+                    setFilters((prev) => ({ ...prev, search: text }))
+                    setSearch(text)
+                }}
                 selectedState={filters.state}
                 onStateChange={(state) => setSelectedState(state)}
                 selectedDistrict={filters.district}

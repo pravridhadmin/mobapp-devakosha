@@ -22,7 +22,7 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
       {/* Right - Icons */}
       <View className="flex-row items-center space-x-3">
         <IconButton iconName="person-circle-outline" onPress={onProfilePress} />
-        <IconButton iconName="options-outline" onPress={onFilterPress} />
+        {/* <IconButton iconName="options-outline" onPress={onFilterPress} /> */}
       </View>
     </View>
   );
