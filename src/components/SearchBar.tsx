@@ -1,4 +1,4 @@
-import React from "react";
+import  { useState } from "react";
 import { View, TextInput, Keyboard } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -13,7 +13,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
   placeholder = "Search temples...",
 }) => {
-  const [text, setText] = React.useState(value);
+  const [text, setText] = useState(value);
   return (
     <View className="flex-row items-center bg-slate-100 dark:bg-zinc-900 rounded-2xl px-4 py-3 border border-zinc-700">
       <Ionicons name="search-outline" size={20} color="#9CA3AF" />

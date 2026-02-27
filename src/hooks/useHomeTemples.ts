@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FEATURED_PAGE_LIMIT, RECENT_PAGE_LIMIT } from "../utils/constants";
 
 type Filters = {
   state?: any;
