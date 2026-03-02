@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 type ButtonVariant = "primary" | "outline" | "ghost" | "danger";
 
 interface ButtonProps {
-  title: string;
+  title: String;
   onPress?: (event: GestureResponderEvent) => void;
   variant?: ButtonVariant;
   loading?: boolean;

@@ -5,6 +5,7 @@ import FilterDropdown from "./FilterDropdown";
 import { District, State } from "../types/models";
 import Button from "./Button";
 import { useTranslation } from "react-i18next";
+import FilterButtons from "./FilterButtons";
 
 interface SearchSectionProps {
   search: string;
@@ -30,22 +31,14 @@ const SearchSection: React.FC<SearchSectionProps> = ({
       <SearchBar value={search} onChange={onSearchChange} placeholder={t("search_temple")} />
 
       {/* Dropdowns Centered */}
-      <View className="flex-row justify-center space-x-4">
-        
-        <Button
-          title={selectedState ? selectedState.title : t("select_state")}
-          variant="ghost"
-          leftIcon="location-outline"
-          onPress={() => setIsFilterOpen(true)}
-        />
-        <Button
-          title={selectedDistrict ? selectedDistrict.title : t("select_district")}
-          variant="ghost"
-          leftIcon="map-outline"
-          onPress={() => setIsFilterOpen(true)}
-        />
+      <FilterButtons 
+      selectedDistrict={selectedDistrict}
+      selectedState={selectedState}
+      stateLabel={t('select_state')}
+      districtLabel={t('select_district')}
+      setIsFilterOpen={setIsFilterOpen}
+      />
 
-      </View>
     </View>
   );
 };
