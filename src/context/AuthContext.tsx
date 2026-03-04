@@ -5,6 +5,7 @@ import React, {
   ReactNode,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import auth from '@react-native-firebase/auth';
 
 
 // =======================
@@ -84,6 +85,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
 
     try {
+      await auth().signOut();
       await AsyncStorage.removeItem("user");
     } catch (e) {
       console.error("Failed to remove user", e);

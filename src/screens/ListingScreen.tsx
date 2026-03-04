@@ -81,7 +81,35 @@ export default function ListingScreen({ navigation }: Props) {
         });
     };
 
+const keyExtractor = useCallback((item: TemplePage) => {
+  return item.id.toString();
+}, []);
 
+
+
+const handleNavigate = useCallback(
+  (id: number) => {
+    navigation.navigate('Details', { itemId: id });
+  },
+  []
+);
+
+const renderItem = useCallback(
+  ({ item }: { item: TemplePage }) => (
+    <TempleCard
+      image={
+        item.featured_image && item.featured_image.length > 0
+          ? item.featured_image[0].value
+          : null
+      }
+      name={item.title}
+      district={item.district?.title}
+      state={item.state?.title}
+      onPress={() => handleNavigate(item.id)}
+    />
+  ),
+  []
+);
 
     if (loading) {
         return (
@@ -102,16 +130,16 @@ export default function ListingScreen({ navigation }: Props) {
             </View>
         );
     }
-    const renderItem = ({ item }: { item: TemplePage }) => (
-        <TempleCard
-            image={item.featured_image && item.featured_image.length > 0 ? item.featured_image[0].value : null}
-            name={item.title}
-            district={item.district?.title}
-            state={item.state?.title}
-            address={item?.address_line1}
-            onPress={() => navigation.navigate('Details', { itemId: item.id })}
-        />
-    );
+    // const renderItem = ({ item }: { item: TemplePage }) => (
+    //     <TempleCard
+    //         image={item.featured_image && item.featured_image.length > 0 ? item.featured_image[0].value : null}
+    //         name={item.title}
+    //         district={item.district?.title}
+    //         state={item.state?.title}
+    //         address={item?.address_line1}
+    //         onPress={() => navigation.navigate('Details', { itemId: item.id })}
+    //     />
+    // );
     return (
         <SafeAreaView edges={["top"]} className="flex-1 bg-background dark:bg-background-dark">
             <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
@@ -144,7 +172,7 @@ export default function ListingScreen({ navigation }: Props) {
                     <FlatList
                         data={temples}
                         renderItem={renderItem}
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={keyExtractor}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                         }

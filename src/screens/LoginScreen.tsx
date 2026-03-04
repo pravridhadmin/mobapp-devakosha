@@ -1,15 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
     View,
     Text,
-    TextInput,
-    TouchableOpacity,
-    ActivityIndicator,
     KeyboardAvoidingView,
     Platform,
     Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import auth from "@react-native-firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import Button from "../components/Button";
@@ -23,27 +21,55 @@ const LoginScreen: React.FC = () => {
     const [mobile, setMobile] = useState<string>("");
     const [otp, setOtp] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+    const [confirm, setConfirm] = useState<any>(null);
 
-    const handleSendOtp = () => {
-        if (mobile.length < 10) {
-            Alert.alert(t('invalid_mobile_number'), t('please_enter_valid_mobile_number'));
+    // Auto login if OTP auto verified (Android)
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(user => {
+            if (user) {
+                login(user.phoneNumber || "");
+            }
+        });
+        return subscriber;
+    }, []);
+
+    // 🔥 Send OTP
+    const handleSendOtp = async () => {
+        if (mobile.length !== 10) {
+            Alert.alert(t("invalid_mobile_number"), t("please_enter_valid_mobile_number"));
             return;
         }
 
-        setLoading(true);
+        try {
+            setLoading(true);
 
-        setTimeout(() => {
-            setLoading(false);
+            const formattedNumber = `+91${mobile}`;
+
+            const confirmation = await auth().signInWithPhoneNumber(formattedNumber);
+
+            setConfirm(confirmation);
             setStep(2);
-            Alert.alert(t("otp_sent", { mobile }), "use 000000 as OTP for testing");
-        }, 1500);
+
+            Alert.alert(t("otp_sent"), `OTP sent to ${formattedNumber}`);
+        } catch (error: any) {
+            Alert.alert("Error", error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleVerifyOtp = () => {
-        if (otp === "000000") {
-            login(mobile);
-        } else {
+    // 🔥 Verify OTP
+    const handleVerifyOtp = async () => {
+        if (!confirm) return;
+
+        try {
+            setLoading(true);
+            await confirm.confirm(otp);
+            // login() will be triggered automatically by onAuthStateChanged
+        } catch (error) {
             Alert.alert(t("invalid_otp"), t("please_enter_correct_otp"));
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -53,7 +79,6 @@ const LoginScreen: React.FC = () => {
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 className="flex-1 justify-center px-6"
             >
-                {/* Header */}
                 <View className="mb-10">
                     <Text className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
                         {step === 1 ? t("welcome_back") : t("verify_otp")}
@@ -66,8 +91,6 @@ const LoginScreen: React.FC = () => {
                     </Text>
                 </View>
 
-                {/* Form */}
-
                 <View className="space-y-4">
                     {step === 1 ? (
                         <CustomTextInput
@@ -79,28 +102,24 @@ const LoginScreen: React.FC = () => {
                         />
                     ) : (
                         <CustomTextInput
-                            placeholder='000000'
+                            placeholder="000000"
                             keyboardType="number-pad"
                             maxLength={6}
-                            style={{ letterSpacing: 8 }}
                             className="text-center"
                             value={otp}
                             onChangeText={setOtp}
                         />
-
                     )}
 
-                    {/* Button */}
                     <View className="mt-4">
                         <Button
                             title={step === 1 ? t("get_otp") : t("verify_login")}
                             variant="primary"
                             onPress={step === 1 ? handleSendOtp : handleVerifyOtp}
                             disabled={loading}
-                            fullWidth />
+                            fullWidth
+                        />
                     </View>
-
-                    {/* Change Number */}
 
                     {step === 2 && (
                         <Button
@@ -109,6 +128,7 @@ const LoginScreen: React.FC = () => {
                             onPress={() => {
                                 setStep(1);
                                 setOtp("");
+                                setConfirm(null);
                             }}
                         />
                     )}

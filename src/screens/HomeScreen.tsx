@@ -1,5 +1,5 @@
 import { useColorScheme } from 'nativewind';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { ActivityIndicator, FlatList, RefreshControl, ScrollView, StatusBar, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenHeader from '../components/ScreenHeader';
@@ -64,6 +64,40 @@ const HomeScreen = ({ navigation }: Props) => {
     setIsFilterOpen(false);
   }
 
+  const keyExtractor = useCallback((item: TemplePage) => {
+  return item.id.toString();
+}, []);
+
+const renderSeparator = useCallback(() => {
+  return <View className="w-4" />;
+}, []);
+
+const handleNavigate = useCallback(
+  (id: number) => {
+    navigation.navigate('Details', { itemId: id });
+  },
+  []
+);
+
+const renderRecentItem = useCallback(
+  ({ item }: { item: TemplePage }) => (
+    <TempleCard
+      image={
+        item.featured_image && item.featured_image.length > 0
+          ? item.featured_image[0].value
+          : null
+      }
+      name={item.title}
+      district={item.district?.title}
+      state={item.state?.title}
+      cardHeight="h-44"
+      cardWidth="w-72"
+      onPress={() => handleNavigate(item.id)}
+    />
+  ),
+  []
+);
+
 
 
   if (loading) {
@@ -95,24 +129,13 @@ const HomeScreen = ({ navigation }: Props) => {
       onPress={() => navigation.navigate('Details', { itemId: item.id })}
     />
   );
-  const renderRecentItem = ({ item }: { item: TemplePage }) => (
-    <TempleCard
-      image={item.featured_image && item.featured_image.length > 0 ? item.featured_image[0].value : null}
-      name={item.title}
-      district={item.district?.title}
-      state={item.state?.title}
-      cardHeight="h-44"
-      cardWidth="w-72"
-      onPress={() => navigation.navigate('Details', { itemId: item.id })}
-    />
-  );
+
   return (
     <SafeAreaView edges={["top", "left", 'right']} className="flex-1 bg-background dark:bg-background-dark">
       <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <ScreenHeader
         title={t("devakosha")}
         onProfilePress={() => navigation.navigate('Profile')}
-      // onFilterPress={() => setIsFilterOpen(true)}
       />
 
       {/* Search bar and rest of screen */}

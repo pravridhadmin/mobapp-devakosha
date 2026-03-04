@@ -78,4 +78,4 @@ const TempleCard: React.FC<TempleCardProps> = ({
   );
 };
 
-export default TempleCard;
+export default React.memo(TempleCard);

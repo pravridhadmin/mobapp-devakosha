@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FEATURED_PAGE_LIMIT, RECENT_PAGE_LIMIT } from "../utils/constants";
+import { useHomeContext } from "../context/HomeContext";
 
 type Filters = {
   state?: any;
@@ -12,6 +13,7 @@ export const useHomeTemples = (
   filters: Filters,
   offset: number = 0
 ) => {
+  const { homeData, setHomeData } = useHomeContext();
   const [featuredTemple, setFeaturedTemple] = useState<any | null>(null);
   const [recentTemples, setRecentTemples] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +21,7 @@ export const useHomeTemples = (
 
 
 const fetchFeaturedTemple = async () => {
+  
   try {
     const featured = await fetchTemples({
       ...filters,
@@ -26,7 +29,7 @@ const fetchFeaturedTemple = async () => {
       limit: FEATURED_PAGE_LIMIT,
       offset: offset,
     });
-    setFeaturedTemple(featured?.[0] || null);
+    // setFeaturedTemple(featured?.[0] || null);
     return featured;
   } catch (err) {
     setError("Failed to load featured temple");
@@ -42,23 +45,33 @@ const fetchRecentTemples = async () => {
       limit: RECENT_PAGE_LIMIT,
       offset: offset,
     });
-    setRecentTemples(recent || []);
+    // setRecentTemples(recent || []);
     return recent;
   } catch (err) {
     setError("Failed to load recent temples");
   }
 }
 
-  const loadHomeData = async () => {
+  const loadHomeData = async (forceReload = false) => {
+    // Prevent API call if data already exists
+    if (!forceReload && homeData.featuredTemple && homeData.recentTemples.length) {
+      return;
+    }
     setLoading(true);
     setError(null);
 
     try {
       // 1️⃣ Featured (only 1) without any filters
-      await fetchFeaturedTemple();
+     let featuredTemple = await fetchFeaturedTemple();
 
       // 2️⃣ Recent (5) without any filters - to show recent additions irrespective of location/search
-      await fetchRecentTemples();
+     let recentTemples = await fetchRecentTemples();
+
+       setHomeData({
+        featuredTemple: featuredTemple?.[0] || null,
+        recentTemples: recentTemples || [],
+        lastFetched: Date.now(),
+      });
     } catch (err) {
       setError("Failed to load home data");
     } finally {
@@ -71,10 +84,10 @@ const fetchRecentTemples = async () => {
   }, [filters]);
 
   return {
-    featuredTemple,
-    recentTemples,
+    featuredTemple: homeData.featuredTemple,
+    recentTemples: homeData.recentTemples,
     loading,
     error,
-    reload: loadHomeData,
+    reload:() => loadHomeData(true),
   };
 };
