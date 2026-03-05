@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from '../screens/HomeScreen';
 import ListingScreen from '../screens/ListingScreen';
 import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type TabParamList = {
   Home: undefined;
@@ -16,6 +17,7 @@ export default function TabNavigator() {
   const { t } = useTranslation();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator id="MainTab"
@@ -25,13 +27,13 @@ export default function TabNavigator() {
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
           backgroundColor: isDark ? "#111" : "#fff",
-          height: 65,
+          height: 60 + insets.bottom,
           paddingTop: 8,
           paddingBottom: 10,
           borderTopWidth: 0,
           elevation: 8, // Android shadow
         },
-              tabBarLabelStyle: {
+        tabBarLabelStyle: {
         fontSize: 12,
         fontWeight: "600",
       },
