@@ -9,11 +9,10 @@
   "light": "Light",
   "dark": "Dark",
   "system": "System Default",
-  "contact": "Contact Us",
-  "about": "About Devakosha",
+  "contact": "Contact",
+  "about": "About",
   "app_version": "Version {{version}}",
   "logout": "Logout",
-
   "loading": "Loading...",
   "no_temples_found": "No temples found",
   "devakosha": "Devakosha",
@@ -54,6 +53,13 @@
   "verify_login": "Verify Login",
   "enter_your_mobile_number_to_continue": "Enter your mobile number to continue",
   "enter the code sent to +91 {{mobile}}": "Enter the code sent to +91 {{mobile}}",
-  "try_clearing_filters_to_see_more_results": "Try clearing filters to see more results"
-
+  "try_clearing_filters_to_see_more_results": "Try clearing filters to see more results",
+  "no_featured_temples": "No featured temples",
+  "error_fetching_featured_temples":"Error fetching featured temples",
+  "address": "Address",
+  "email":"Email",
+  "call": "Call",
+  "gallery": "Gallery",
+  "closed":"Closed",
+  "open_now":"Open Now"
 }

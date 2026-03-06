@@ -3,7 +3,8 @@ import {
     View,
     Text,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
@@ -18,8 +19,7 @@ import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 
 type Props = NativeStackScreenProps<AuthNavigatorParamList, 'Login'>;
 const LoginScreen = ({ navigation }: Props) => {
-    const { sendOtp } = useFirebaseAuth();
-    const { loading, startLoading, stopLoading } = useLoading();
+    const { sendOtp, loading } = useFirebaseAuth();
     const { t } = useTranslation();
     const [mobile, setMobile] = useState<string>("");
 
@@ -33,14 +33,13 @@ const LoginScreen = ({ navigation }: Props) => {
             return;
         }
         try {
-            startLoading(); 
+            // otp-> login 
             const confirmation = await sendOtp(formattedPhoneNumber(mobile));
             navigation.navigate('OtpScreen', { mobile, confirmation });
             CustomAlert(t("otp_sent"), `OTP sent to ${formattedPhoneNumber(mobile)}`);
         } catch (error: any) {
             console.error("Error", error.message);
         } finally {
-            stopLoading();
         }
     };
 
@@ -50,7 +49,7 @@ const LoginScreen = ({ navigation }: Props) => {
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 className="flex-1 justify-center px-6"
-            >
+                >
                 <View className="mb-10">
                     <Text className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
                         {t("welcome_back")}
@@ -81,7 +80,9 @@ const LoginScreen = ({ navigation }: Props) => {
                     </View>
 
                 </View>
+                <ActivityIndicator size="large" color="#0000ff" animating={loading} />
             </KeyboardAvoidingView>
+
         </SafeAreaView>
     );
 };

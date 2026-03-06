@@ -19,6 +19,7 @@ import { useLocationFilters } from '../hooks/useLocationFilters';
 import { useTemples } from '../hooks/useTemples';
 import { useFilters } from '../context/FiltersContext';
 import { useFocusEffect } from '@react-navigation/native';
+import { filter } from 'domutils';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Listing'>;
 
@@ -31,8 +32,10 @@ export default function ListingScreen({ navigation }: Props) {
 
     useFocusEffect(
         useCallback(() => {
-            setIsFilterOpen(true);
-        }, [])
+            if(filters.search === "" && filters.state === null && filters.district === null){
+                setIsFilterOpen(true);
+            } 
+        }, [filters])
     );
     const {
         states,
@@ -133,7 +136,7 @@ const renderItem = useCallback(
             {/* Header */}
 
             <ScreenHeader
-                title="Devakosha"
+                title={t('devakosha')}
                 onProfilePress={() => navigation.navigate('Profile')}
             // onFilterPress={() => setIsFilterOpen(true)}
             />

@@ -7,7 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export const useFirebaseAuth = () => {
     const auth = getAuth(getApp());
-
+    const [loading, setLoading] = useState(false);
     const { login } = useContext(AuthContext);
 
 
@@ -32,8 +32,16 @@ export const useFirebaseAuth = () => {
      * returns the confirmation object which will be used later to verify OTP.
      */
     const sendOtp = async (phoneNumber: string) => {
-        const confirmation = await signInWithPhoneNumber(auth, phoneNumber);
-        return confirmation;
+        try {
+            
+            setLoading(true);
+            const confirmation = await signInWithPhoneNumber(auth, phoneNumber);
+            setLoading(false);
+            return confirmation;
+        } catch (error) {
+            setLoading(false);
+            return error;
+        }
     };
 
     /**
@@ -41,15 +49,23 @@ export const useFirebaseAuth = () => {
      * Uses the confirmation object received during OTP sending.
      */
     const verifyOtp = async (otp: string, confirmation?: FirebaseAuthTypes.ConfirmationResult) => {
-        if (!confirmation) {
-            throw new Error("OTP confirmation not found");
+        try {
+            setLoading(true);
+            if (!confirmation) {
+                throw new Error("OTP confirmation not found");
+            }
+    
+            const userCredential = await confirmation.confirm(otp);
+            setLoading(false);
+            return userCredential;
+        } catch (error) {
+            return error;
         }
-
-        return await confirmation.confirm(otp);
     };
 
     return {
         sendOtp,
-        verifyOtp
+        verifyOtp,
+        loading
     };
 };

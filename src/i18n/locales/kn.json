@@ -63,5 +63,10 @@
     "closed": "ಮುಚ್ಚಲಾಗಿದೆ",
     "home": "ಮುಖ್ಯಪುಟ",
     "search": "ಹುಡುಕು",
-    "explore":"ಹುಡುಕು"
+    "explore":"ಹುಡುಕು",
+    "no_featured_temples": "ದೇವಾಲಯಗಳು ಲಭ್ಯವಿಲ್ಲ",
+    "featured_temples": "ದೇವಾಲಯಗಳು",
+    "recently_added":" ಹೊಸ ದೇವಾಲಯಗಳು",
+    "error_fetching_featured_temples":"ದೇವಾಲಯಗಳು ಲಭ್ಯವಿಲ್ಲ",
+    "devakosha":"ದೇವಕೋಶ"
 }

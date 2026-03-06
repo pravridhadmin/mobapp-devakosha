@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import DetailsScreen from '../screens/DetailsScreen';
 import { useColorScheme } from 'react-native';
 import resolveConfig from "tailwindcss/resolveConfig";

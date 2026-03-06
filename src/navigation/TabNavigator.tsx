@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useColorScheme } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ListingScreen from '../screens/ListingScreen';
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

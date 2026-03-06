@@ -15,10 +15,12 @@ import ImageGallery from '../components/ImageGallery';
 import InfoRow from '../components/InfoRow';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { handleCall, handleEmail, handleMap } from '../utils/helperFunctions';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Details'>;
 
 export default function DetailsScreen({ route, navigation }: Props) {
+  const { t } = useTranslation();
   const { itemId } = route.params;
   const [temple, setTemple] = useState<TemplePage>(null);
   const [loading, setLoading] = useState(true);
@@ -49,20 +51,20 @@ export default function DetailsScreen({ route, navigation }: Props) {
   const tabs: TabItem[] = [
     {
       key: "about",
-      label: "About",
+      label: t('about'),
       content: (<RenderHtmlContent htmlContent={temple?.description || ""} />),
     },
     {
       key: "gallery",
-      label: "Gallery",
+      label: t('gallery'),
       content: (<ImageGallery galleryImages={galleryImages} imageSize={200} />),
     },
     {
       key: "contact",
-      label: "Contact",
+      label: t('contact'),
       content: (<>
         {temple?.address_line1 ? (
-          <InfoRow label={"Address"}
+          <InfoRow label={t('address')}
             icon={'location-outline'}
             component={<>
               <Text className='text-primary flex-1  text-right' >{temple.address_line1}{'\n'}
@@ -71,8 +73,8 @@ export default function DetailsScreen({ route, navigation }: Props) {
                 {temple.district && temple.district?.title}, {temple?.state?.title || ''}</Text>
             </>} />
         ) : null}
-        <InfoRow label={'Email'} value={temple?.contact_email || ""} icon={'mail-outline'} isClickable={true} onPress={temple?.contact_email && (() => handleEmail(temple?.contact_email))} />
-        <InfoRow label={'Call'} value={temple?.contact_number || ""} icon={'call-outline'} isClickable={true} onPress={temple?.contact_number && (() => handleCall(temple?.contact_number))} />
+        <InfoRow label={t('email')} value={temple?.contact_email || ""} icon={'mail-outline'} isClickable={true} onPress={temple?.contact_email && (() => handleEmail(temple?.contact_email))} />
+        <InfoRow label={t('call')} value={temple?.contact_number || ""} icon={'call-outline'} isClickable={true} onPress={temple?.contact_number && (() => handleCall(temple?.contact_number))} />
       </>
       )
     }
@@ -109,7 +111,7 @@ export default function DetailsScreen({ route, navigation }: Props) {
           {/* status badge */}
           {temple?.morning_start && temple?.morning_end && temple?.evening_start && temple?.evening_end && (
             <View className="absolute bottom-10 right-6">
-              <Badge text={isTempleOpen(temple) ? "Open Now" : "Closed"} color={isTempleOpen(temple) ? "bg-green-500" : "bg-red-500"} />
+              <Badge text={isTempleOpen(temple) ? t('open_now') : t("closed")} color={isTempleOpen(temple) ? "bg-green-500" : "bg-red-500"} />
             </View>
           )}
         </HeroImage>

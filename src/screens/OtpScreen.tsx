@@ -15,16 +15,15 @@ type Props = NativeStackScreenProps<AuthNavigatorParamList, 'OtpScreen'>;
 const OtpScreen = ({ navigation, route }: Props) => {
     const { mobile, confirmation } = route.params;
     const { t } = useTranslation();
-    const { verifyOtp } = useFirebaseAuth();
-    const { loading, startLoading, stopLoading } = useLoading();
+    const { verifyOtp, loading } = useFirebaseAuth();
     const [otp, setOtp] = useState("");
 
 
     //  Verify OTP
     const handleVerifyOtp = async () => {
         try {
-            startLoading();
-            await verifyOtp(otp, confirmation);
+            const userCredential = await verifyOtp(otp, confirmation);
+            console.log(userCredential);
         } catch (error) {
             CustomAlert(
                 t("invalid_otp"),
@@ -32,7 +31,6 @@ const OtpScreen = ({ navigation, route }: Props) => {
             );
             console.log("Error", error);
         } finally {
-            stopLoading();
         }
     };
 
