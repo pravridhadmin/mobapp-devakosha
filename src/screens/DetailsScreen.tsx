@@ -14,6 +14,7 @@ import { isTempleOpen } from '../utils/timeHelper';
 import ImageGallery from '../components/ImageGallery';
 import InfoRow from '../components/InfoRow';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { handleCall, handleEmail, handleMap } from '../utils/helperFunctions';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Details'>;
 
@@ -21,8 +22,8 @@ export default function DetailsScreen({ route, navigation }: Props) {
   const { itemId } = route.params;
   const [temple, setTemple] = useState<TemplePage>(null);
   const [loading, setLoading] = useState(true);
-  
-  
+
+
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -36,29 +37,14 @@ export default function DetailsScreen({ route, navigation }: Props) {
         setLoading(false);
       }
     };
-    
+
     fetchDetails();
   }, [itemId]);
 
   const carouselBlock = temple?.images?.find(block => block.type === 'carousel');
   const galleryImages = carouselBlock ? carouselBlock.value : [];
 
-      const handleCall = () => {
-        if (temple?.contact_number) {
-            Linking.openURL(`tel:${temple?.contact_number}`);
-        }
-    };
 
-    const handleEmail = () => {
-        if (temple?.contact_email) {
-            Linking.openURL(`mailto:${temple?.contact_email}`);
-        }
-    };
-    const handleMap = () => {
-        if (temple?.latitude && temple?.longitude) {
-            Linking.openURL(`https://maps.google.com/?q=${temple.latitude},${temple.longitude}`);
-        }
-    };
 
   const tabs: TabItem[] = [
     {
@@ -85,9 +71,9 @@ export default function DetailsScreen({ route, navigation }: Props) {
                 {temple.district && temple.district?.title}, {temple?.state?.title || ''}</Text>
             </>} />
         ) : null}
-        <InfoRow label={'Email'} value={temple?.contact_email || ""} icon={'mail-outline'} isClickable={true} onPress={handleEmail} />
-                        <InfoRow label={'Call'} value={temple?.contact_number || ""} icon={'call-outline'} isClickable={true} onPress={handleCall} />
-        </>
+        <InfoRow label={'Email'} value={temple?.contact_email || ""} icon={'mail-outline'} isClickable={true} onPress={temple?.contact_email && (() => handleEmail(temple?.contact_email))} />
+        <InfoRow label={'Call'} value={temple?.contact_number || ""} icon={'call-outline'} isClickable={true} onPress={temple?.contact_number && (() => handleCall(temple?.contact_number))} />
+      </>
       )
     }
   ];
@@ -138,7 +124,7 @@ export default function DetailsScreen({ route, navigation }: Props) {
           <AddressRow
             city={temple?.city || temple?.district?.title}
             state={temple?.state?.title}
-            onPress={handleMap}
+            onPress={temple?.latitude && temple?.longitude && (() => handleMap(temple?.latitude, temple?.longitude))}
           />
 
           {/* Tabs */}

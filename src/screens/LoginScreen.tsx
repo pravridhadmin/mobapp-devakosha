@@ -1,77 +1,49 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
     View,
     Text,
     KeyboardAvoidingView,
-    Platform,
-    Alert,
+    Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import auth from "@react-native-firebase/auth";
-import { AuthContext } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import Button from "../components/Button";
 import CustomTextInput from "../components/CustomTextInput";
+import { useLoading } from "../hooks/useLoading";
+import { formattedPhoneNumber } from "../utils/helperFunctions";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AuthNavigatorParamList } from "../navigation/AuthNavigator";
+import { CustomAlert } from "../components/CustomAlert";
+import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 
-const LoginScreen: React.FC = () => {
-    const { login } = useContext(AuthContext);
+type Props = NativeStackScreenProps<AuthNavigatorParamList, 'Login'>;
+const LoginScreen = ({ navigation }: Props) => {
+    const { sendOtp } = useFirebaseAuth();
+    const { loading, startLoading, stopLoading } = useLoading();
     const { t } = useTranslation();
-
-    const [step, setStep] = useState<1 | 2>(1);
     const [mobile, setMobile] = useState<string>("");
-    const [otp, setOtp] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
-    const [confirm, setConfirm] = useState<any>(null);
 
-    // Auto login if OTP auto verified (Android)
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(user => {
-            if (user) {
-                login(user.phoneNumber || "");
-            }
-        });
-        return subscriber;
-    }, []);
-
-    // 🔥 Send OTP
+    // Send OTP
     const handleSendOtp = async () => {
         if (mobile.length !== 10) {
-            Alert.alert(t("invalid_mobile_number"), t("please_enter_valid_mobile_number"));
+            CustomAlert(
+                t("invalid_mobile_number"), 
+                t("please_enter_valid_mobile_number")
+            );
             return;
         }
-
         try {
-            setLoading(true);
-
-            const formattedNumber = `+91${mobile}`;
-
-            const confirmation = await auth().signInWithPhoneNumber(formattedNumber);
-
-            setConfirm(confirmation);
-            setStep(2);
-
-            Alert.alert(t("otp_sent"), `OTP sent to ${formattedNumber}`);
+            startLoading(); 
+            const confirmation = await sendOtp(formattedPhoneNumber(mobile));
+            navigation.navigate('OtpScreen', { mobile, confirmation });
+            CustomAlert(t("otp_sent"), `OTP sent to ${formattedPhoneNumber(mobile)}`);
         } catch (error: any) {
-            Alert.alert("Error", error.message);
+            console.error("Error", error.message);
         } finally {
-            setLoading(false);
+            stopLoading();
         }
     };
 
-    // 🔥 Verify OTP
-    const handleVerifyOtp = async () => {
-        if (!confirm) return;
-
-        try {
-            setLoading(true);
-            await confirm.confirm(otp);
-            // login() will be triggered automatically by onAuthStateChanged
-        } catch (error) {
-            Alert.alert(t("invalid_otp"), t("please_enter_correct_otp"));
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <SafeAreaView className="flex-1 bg-white dark:bg-black">
@@ -81,18 +53,15 @@ const LoginScreen: React.FC = () => {
             >
                 <View className="mb-10">
                     <Text className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
-                        {step === 1 ? t("welcome_back") : t("verify_otp")}
+                        {t("welcome_back")}
                     </Text>
 
                     <Text className="text-base text-gray-600 dark:text-gray-400">
-                        {step === 1
-                            ? "Enter your mobile number to continue"
-                            : `Enter the code sent to +91 ${mobile}`}
+                        Enter your mobile number to continue
                     </Text>
                 </View>
 
                 <View className="space-y-4">
-                    {step === 1 ? (
                         <CustomTextInput
                             placeholder={t("mobile_number")}
                             keyboardType="phone-pad"
@@ -100,38 +69,17 @@ const LoginScreen: React.FC = () => {
                             value={mobile}
                             onChangeText={setMobile}
                         />
-                    ) : (
-                        <CustomTextInput
-                            placeholder="000000"
-                            keyboardType="number-pad"
-                            maxLength={6}
-                            className="text-center"
-                            value={otp}
-                            onChangeText={setOtp}
-                        />
-                    )}
 
                     <View className="mt-4">
                         <Button
-                            title={step === 1 ? t("get_otp") : t("verify_login")}
+                            title={t("get_otp") }
                             variant="primary"
-                            onPress={step === 1 ? handleSendOtp : handleVerifyOtp}
+                            onPress={handleSendOtp}
                             disabled={loading}
                             fullWidth
                         />
                     </View>
 
-                    {step === 2 && (
-                        <Button
-                            title={t("change_number")}
-                            variant="ghost"
-                            onPress={() => {
-                                setStep(1);
-                                setOtp("");
-                                setConfirm(null);
-                            }}
-                        />
-                    )}
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

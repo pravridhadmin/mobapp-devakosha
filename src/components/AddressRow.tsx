@@ -6,7 +6,7 @@ import Badge from "./Badge";
 interface Props {
   city: string;
   state: string;
-  onPress?: () => void;
+  onPress?: any;
 }
 
 const AddressRow: React.FC<Props> = ({ city, state, onPress }) => {

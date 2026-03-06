@@ -12,6 +12,7 @@ import { AuthContext } from "../context/AuthContext";
 import Avatar from "../components/Avatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../components/Button";
+import { CustomAlert } from "../components/CustomAlert";
 
 export default function ProfileScreen({
   navigation
@@ -20,7 +21,7 @@ export default function ProfileScreen({
   const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    Alert.alert(
+    CustomAlert(
       t('logout_confirm_title'),
       t('logout_confirm_message'),
       [

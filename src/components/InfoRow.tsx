@@ -8,7 +8,7 @@ type InfoRowProps = {
   component?: React.ReactNode;
   icon?: keyof typeof Ionicons.glyphMap;
   isClickable?: boolean;
-  onPress?: () => void;
+  onPress?: any;
 };
 
 const InfoRow: React.FC<InfoRowProps> = ({
