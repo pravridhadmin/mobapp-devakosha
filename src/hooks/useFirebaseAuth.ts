@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import  {getAuth, signInWithPhoneNumber, FirebaseAuthTypes, onAuthStateChanged } from "@react-native-firebase/auth";
+import { getAuth, signInWithPhoneNumber, FirebaseAuthTypes, onAuthStateChanged } from "@react-native-firebase/auth";
 import { getApp } from '@react-native-firebase/app';
 import { AuthContext } from "../context/AuthContext";
 
@@ -33,7 +33,7 @@ export const useFirebaseAuth = () => {
      */
     const sendOtp = async (phoneNumber: string) => {
         try {
-            
+
             setLoading(true);
             const confirmation = await signInWithPhoneNumber(auth, phoneNumber);
             setLoading(false);
@@ -54,18 +54,32 @@ export const useFirebaseAuth = () => {
             if (!confirmation) {
                 throw new Error("OTP confirmation not found");
             }
-    
             const userCredential = await confirmation.confirm(otp);
             setLoading(false);
             return userCredential;
         } catch (error) {
-            return error;
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const resendOtp = async (phoneNumber: string) => {
+        try {
+            setLoading(true);
+            const confirmation = await signInWithPhoneNumber(auth, phoneNumber);
+            return confirmation;
+        } catch (error) {
+            throw error;
+        } finally {
+            setLoading(false);
         }
     };
 
     return {
         sendOtp,
         verifyOtp,
+        resendOtp,
         loading
     };
 };

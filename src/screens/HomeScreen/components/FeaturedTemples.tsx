@@ -5,10 +5,13 @@ import { filter } from 'domutils';
 import { fetchTemples } from '../../../api/cms';
 import EmptyState from '../../../components/EmptyState';
 import CardSkeleton from '../../../components/skeleton/CardSkeleton';
+import { useTranslation } from 'react-i18next';
+import ErrorState from '../../../components/ErrorState';
 const TempleCard = lazy(() => import('../../../components/Card'));
 
 const FeaturedTemples = ({ props }) => {
     const { fetchFeaturedTemple, featuredLoading, featuredError } = useHomeTemples(fetchTemples, props.filters, 0);
+    const { t } = useTranslation();
     const [temple, setTemple] = useState(null);
 
 
@@ -22,14 +25,14 @@ const FeaturedTemples = ({ props }) => {
 
     if(!temple) {
         return (
-            <EmptyState message={"no_featured_temples"} />
+            <EmptyState message={t("featured.no_featured_temples")} />
         );
     }
 
     // error
     if(featuredError) {
         return (
-            <EmptyState message={"error_fetching_featured_temples"} />
+            <ErrorState title={t('error.title')} message={t("error.message")} />
         );
     }
     return (

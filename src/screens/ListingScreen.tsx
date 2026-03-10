@@ -1,13 +1,10 @@
-import React, { use, useCallback, useEffect, useState } from 'react';
-import { View, Text, Button, Pressable, TouchableOpacity, StatusBar, ActivityIndicator, FlatList } from 'react-native';
+import { useCallback, useState } from 'react';
+import { View, Text, Pressable, TouchableOpacity, StatusBar, ActivityIndicator, FlatList } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Dropdown } from "react-native-element-dropdown";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { useColorScheme } from "nativewind";
-import { District, State, TemplePage } from "../types/models";
-import { fetchTemples, getDistrictsUrl, getStates, getStatesUrl } from '../api/cms';
-import { Skeleton } from "../components/Skeleton";
+import { TemplePage } from "../types/models";
+import { getDistrictsUrl, getStatesUrl } from '../api/cms';
 import ScreenHeader from '../components/ScreenHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TempleCard from '../components/Card';
@@ -19,22 +16,22 @@ import { useLocationFilters } from '../hooks/useLocationFilters';
 import { useTemples } from '../hooks/useTemples';
 import { useFilters } from '../context/FiltersContext';
 import { useFocusEffect } from '@react-navigation/native';
-import { filter } from 'domutils';
+import ErrorState from '../components/ErrorState';
+import CardSkeleton from '../components/skeleton/CardSkeleton';
+import Skeleton from '../components/skeleton/Skeleton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Listing'>;
 
 export default function ListingScreen({ navigation }: Props) {
     const { t } = useTranslation();
-    const { colorScheme } = useColorScheme();
-    const [search, setSearch] = useState("");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const { filters, setFilters } = useFilters();
 
     useFocusEffect(
         useCallback(() => {
-            if(filters.search === "" && filters.state === null && filters.district === null){
+            if (filters.search === "" && filters.state === null && filters.district === null) {
                 setIsFilterOpen(true);
-            } 
+            }
         }, [filters])
     );
     const {
@@ -44,7 +41,7 @@ export default function ListingScreen({ navigation }: Props) {
         selectedDistrict,
         setSelectedState,
         setSelectedDistrict,
-    } = useLocationFilters(getStatesUrl, getDistrictsUrl);
+    } = useLocationFilters();
 
 
 
@@ -56,9 +53,17 @@ export default function ListingScreen({ navigation }: Props) {
         loadingMore,
         onRefresh,
         handleLoadMore,
-    } = useTemples(fetchTemples, filters);
+    } = useTemples(filters);
 
-    const handleApplyFilters = () => {
+    const handleStateChange = useCallback((state) => {
+        setSelectedState(state);
+    }, []);
+
+    const handleDistrictChange = useCallback((district) => {
+        setSelectedDistrict(district);
+    }, []);
+
+    const handleApplyFilters = useCallback(() => {
         const applied = {
             state: selectedState,
             district: selectedDistrict,
@@ -67,134 +72,135 @@ export default function ListingScreen({ navigation }: Props) {
 
         setFilters(applied);
         setIsFilterOpen(false);
-    };
+    }, [selectedState, selectedDistrict, filters.search]);
 
-    const handleClearFilters = () => {
+    const handleClearFilters = useCallback(() => {
         setSelectedState(null);
         setSelectedDistrict(null);
-        setSearch("");
+
         setFilters({
             state: null,
             district: null,
             search: "",
         });
-    };
+        setIsFilterOpen(false);
+    }, []);
 
-const keyExtractor = useCallback((item: TemplePage) => {
-  return item.id.toString();
-}, []);
+    const keyExtractor = useCallback((item: TemplePage) => {
+        return item.id.toString();
+    }, []);
 
 
 
-const handleNavigate = useCallback(
-  (id: number) => {
-    navigation.navigate('Details', { itemId: id });
-  },
-  []
-);
+    const handleNavigate = useCallback(
+        (id: number) => {
+            navigation.navigate('Details', { itemId: id });
+        },
+        []
+    );
 
-const renderItem = useCallback(
-  ({ item }: { item: TemplePage }) => (
-    <TempleCard
-      image={
-        item.featured_image && item.featured_image.length > 0
-          ? item.featured_image[0].value
-          : null
-      }
-      name={item.title}
-      district={item.district?.title}
-      state={item.state?.title}
-      onPress={() => handleNavigate(item.id)}
-    />
-  ),
-  []
-);
+    const renderItem = useCallback(
+        ({ item }: { item: TemplePage }) => (
+            <TempleCard
+                image={
+                    item.featured_image && item.featured_image.length > 0
+                        ? item.featured_image[0].value
+                        : null
+                }
+                name={item.title}
+                district={item.district?.title}
+                state={item.state?.title}
+                onPress={() => handleNavigate(item.id)}
+            />
+        ),
+        []
+    );
 
-    if (loading) {
-        return (
-            <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
-                <ActivityIndicator size="large" />
-                <Text className="mt-4 text-text dark:text-text-dark">
-                    {t("loading")}...
-                </Text>
-            </View>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
+    //             <ActivityIndicator size="large" />
+    //             <Text className="mt-4 text-text dark:text-text-dark">
+    //                 {t("generic.loading")}...
+    //             </Text>
+    //         </View>
+    //     );
+    // }
 
     if (error) {
         return (
-            <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
-                <Text className="text-red-500">{error}</Text>
-                <Button title={t("try_again")} onPress={onRefresh} />
-            </View>
+            <ErrorState
+                icon='🛕'
+                title={t("error.title")}
+                message={t("error.message")}
+                buttonText={t("error.button_text")}
+                onRefresh={onRefresh} />
         );
     }
     return (
         <SafeAreaView edges={["top"]} className="flex-1 bg-background dark:bg-background-dark">
-            <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
+
 
             {/* Header */}
-
             <ScreenHeader
-                title={t('devakosha')}
+                title={t('generic.devakosha')}
                 onProfilePress={() => navigation.navigate('Profile')}
             // onFilterPress={() => setIsFilterOpen(true)}
             />
 
             {/* Search bar and rest of screen */}
+            {loading ? <Skeleton className="w-11/12 m-auto h-16 rounded-lg mb-4" /> : 
             <SearchSection
                 search={filters.search}
                 onSearchChange={(text) => {
                     setFilters((prev) => ({ ...prev, search: text }))
-                    setSearch(text)
                 }}
                 selectedState={filters.state}
                 selectedDistrict={filters.district}
                 setIsFilterOpen={setIsFilterOpen}
-            />
+            /> }
 
             {/* Content */}
             <View className="flex-1 px-6">
 
                 {/* Card */}
-                {!error && (
-                    <FlatList
-                        data={temples}
-                        renderItem={renderItem}
-                        keyExtractor={keyExtractor}
-                        refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                        }
-                        onEndReached={handleLoadMore}
-                        onEndReachedThreshold={0.5}
-                        showsVerticalScrollIndicator={false}
-                        ListFooterComponent={
-                            loadingMore ? (
-                                <View style={{ paddingVertical: 20 }}>
-                                    <ActivityIndicator size="small" />
-                                </View>
-                            ) : null
-                        }
-                        ListEmptyComponent={
-                            !loading && temples.length === 0 && (
-                                <EmptyState
-                                    message={t("no_temples_found")}
-                                    subMessage={filters.state ? t("try_clearing_filters_to_see_more_results") : t("we_couldnt_find_any_temples_at_the_moment")}
-                                    actionLabel={filters.state ? t("clear_filters") : t("try_again")}
-                                    onAction={filters.state ? handleClearFilters : onRefresh}
-                                    icon="🏙️"
-                                />
-                            )
-                        }
-                    />
-                )}
+                {loading ? (
+                    <>
+                        <CardSkeleton />
+                        <CardSkeleton />
+                        <CardSkeleton />
+                    </>
+                ) :
+                    !error && (
+                        <FlatList
+                            data={temples}
+                            renderItem={renderItem}
+                            keyExtractor={keyExtractor}
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                            }
+                            onEndReached={handleLoadMore}
+                            onEndReachedThreshold={0.5}
+                            showsVerticalScrollIndicator={false}
+                            ListFooterComponent={
+                                loadingMore ? (
+                                    <CardSkeleton />
+                                ) : null
+                            }
+                            ListEmptyComponent={
+                                !loading && temples.length === 0 && (
+                                    <EmptyState
+                                        message={t("search.no_temples_found")}
+                                        subMessage={t("search.try_clearing_filters_to_see_more_results")}
+                                        actionLabel={t("search.clear_filters")}
+                                        onAction={handleClearFilters}
+                                        icon="🏙️"
+                                    />
+                                )
+                            }
+                        />
+                    )}
 
-
-
-                {/* <Skeleton className="h-6 w-3/4 rounded-md" /> */}
-                {/* <Skeleton className="h-4 w-full rounded-md" /> */}
-                {/* <Skeleton className="h-4 w-5/6 rounded-md" /> */}
-                {/* <Skeleton className="h-40 w-full rounded-xl" /> */}
             </View>
             <FilterModal
                 visible={isFilterOpen}
@@ -202,12 +208,11 @@ const renderItem = useCallback(
                 search={filters.search}
                 onSearchChange={(text) => {
                     setFilters((prev) => ({ ...prev, search: text }))
-                    setSearch(text)
                 }}
                 selectedState={filters.state}
-                onStateChange={(state) => setSelectedState(state)}
+                onStateChange={handleStateChange}
                 selectedDistrict={filters.district}
-                onDistrictChange={(district) => setSelectedDistrict(district)}
+                onDistrictChange={handleDistrictChange}
                 stateOptions={states}
                 districtOptions={districts}
                 onApply={handleApplyFilters}

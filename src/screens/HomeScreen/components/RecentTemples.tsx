@@ -8,6 +8,7 @@ import TempleCard from '../../../components/Card';
 import { fetchTemples } from '../../../api/cms'
 import { useHomeTemples } from '../../../hooks/useHomeTemples'
 import CardSkeleton from '../../../components/skeleton/CardSkeleton'
+import ErrorState from '../../../components/ErrorState'
 
 const RecentTemples = ({filters, navigation}: {filters: any, navigation: any }) => {
     const { t } = useTranslation();
@@ -72,11 +73,11 @@ const RecentTemples = ({filters, navigation}: {filters: any, navigation: any }) 
     //  Error
     if (recentTemplesError) {
         return (
-            <EmptyState
-                message={t("something_went_wrong")}
-                subMessage={t("we_couldnt_fetch_recent_temples")}
-                actionLabel={t("try_again")}
-                onAction={() => fetchRecentTemples(true)}
+            <ErrorState
+                title={t("error.title")}
+                message={t("error.message")} //Message={t("we_couldnt_fetch_recent_temples")}
+                buttonText={t("error.button_text")}
+                onRefresh={() => fetchRecentTemples(true)}
                 icon="🏙️"
             />
         );
@@ -95,11 +96,11 @@ const RecentTemples = ({filters, navigation}: {filters: any, navigation: any }) 
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
-                
+                !recentTemplesLoading &&
                 <EmptyState
-                    message={t("no_recent_temples_found")}
-                    subMessage={t("we_couldnt_find_any_temples_at_the_moment")}
-                    actionLabel={t("try_again")}
+                    message={t("recent.no_recent_temples_found")}
+                    subMessage={t("recent.we_couldnt_find_any_temples_at_the_moment")}
+                    actionLabel={t("recent.try_again")}
                     onAction={() => fetchRecentTemples(true)}
                     icon="🏙️"
                 />

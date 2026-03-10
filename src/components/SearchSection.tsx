@@ -8,39 +8,39 @@ import { useTranslation } from "react-i18next";
 import FilterButtons from "./FilterButtons";
 
 interface SearchSectionProps {
-  search: string;
-  onSearchChange: (text: string) => void;
+    search: string;
+    onSearchChange: (text: string) => void;
 
-  selectedState: State;
+    selectedState: State;
 
-  selectedDistrict: District;
-  setIsFilterOpen: (open: boolean) => void;
+    selectedDistrict: District;
+    setIsFilterOpen: (open: boolean) => void;
 }
 
 const SearchSection: React.FC<SearchSectionProps> = ({
-  search,
-  onSearchChange,
-  selectedState,
-  selectedDistrict,
-  setIsFilterOpen,
+    search,
+    onSearchChange,
+    selectedState,
+    selectedDistrict,
+    setIsFilterOpen,
 }) => {
-  const {t} = useTranslation();
-  return (
-    <View className="px-4">
-      {/* Search Bar */}
-      <SearchBar value={search} onChange={onSearchChange} placeholder={t("search_temple")} />
+    const { t } = useTranslation();
+    return (
+        <View className="px-4">
+            {/* Search Bar */}
+            <SearchBar value={search} onChange={onSearchChange} placeholder={t("generic.search_deity_or_temple")} />
 
-      {/* Dropdowns Centered */}
-      <FilterButtons 
-      selectedDistrict={selectedDistrict}
-      selectedState={selectedState}
-      stateLabel={t('select_state')}
-      districtLabel={t('select_district')}
-      setIsFilterOpen={setIsFilterOpen}
-      />
+            {/* Dropdowns Centered */}
+            <FilterButtons
+                selectedDistrict={selectedDistrict}
+                selectedState={selectedState}
+                stateLabel={t('generic.choose_state')}
+                districtLabel={t('generic.choose_district')}
+                setIsFilterOpen={setIsFilterOpen}
+            />
 
-    </View>
-  );
+        </View>
+    );
 };
 
 export default SearchSection;

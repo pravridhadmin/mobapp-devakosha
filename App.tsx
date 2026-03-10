@@ -12,12 +12,12 @@ import { HomeProvider } from './src/context/HomeContext';
 
 export default function App() {
   return (
+     <FiltersProvider>
     <AuthProvider>
       <HomeProvider>
-     <FiltersProvider>
         <RootNavigator />
-    </FiltersProvider>
     </HomeProvider>
     </AuthProvider>
+    </FiltersProvider>
   );
 }

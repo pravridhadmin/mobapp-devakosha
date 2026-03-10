@@ -17,14 +17,16 @@ import { useHomeTemples } from '../../hooks/useHomeTemples';
 import { useFilters } from '../../context/FiltersContext';
 import RecentTemples from './components/RecentTemples';
 import FeaturedTemples from './components/FeaturedTemples';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainTabs'>;
 
 const HomeScreen = ({ navigation }: Props) => {
     const { colorScheme } = useColorScheme();
     const { t, i18n } = useTranslation();
-    // const [search, setSearch] = useState("");
+    const { filters, setFilters } = useFilters();
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+
 
     const {
         states,
@@ -33,10 +35,9 @@ const HomeScreen = ({ navigation }: Props) => {
         selectedDistrict,
         setSelectedState,
         setSelectedDistrict,
-    } = useLocationFilters(getStatesUrl, getDistrictsUrl);
+    } = useLocationFilters();
 
-    const { filters, setFilters } = useFilters();
-    const handleApplyFilters = () => {
+    const handleApplyFilters = useCallback(() => {
         const applied = {
             state: selectedState,
             district: selectedDistrict,
@@ -44,27 +45,25 @@ const HomeScreen = ({ navigation }: Props) => {
         };
 
         setFilters(applied);
-
-        navigation.navigate("Listing");
-
         setIsFilterOpen(false);
-    };
-    const handleClearFilters = () => {
-        // setSearch("");
-         setFilters({
+        navigation.navigate("Listing");
+    }, [selectedState, selectedDistrict, filters.search]);
+  const handleClearFilters = useCallback(() => {
+        setSelectedState(null);
+        setSelectedDistrict(null);
+
+        setFilters({
             state: null,
             district: null,
             search: "",
         });
-        setSelectedState(null);
-        setSelectedDistrict(null);
         setIsFilterOpen(false);
-    }
+    }, []);
     return (
         <SafeAreaView edges={["top", "left", 'right']} className="flex-1 bg-background dark:bg-background-dark">
             <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
             <ScreenHeader
-                title={t("devakosha")}
+                title={t("generic.devakosha")}
                 onProfilePress={() => navigation.navigate('Profile')}
             />
 
@@ -72,7 +71,6 @@ const HomeScreen = ({ navigation }: Props) => {
             <SearchSection
                 search={filters.search}
                 onSearchChange={(text) => {
-                    // setSearch(text)
                     setFilters((prev) => ({ ...prev, search: text }))
                     navigation.navigate("Listing")
                 }}
@@ -85,11 +83,11 @@ const HomeScreen = ({ navigation }: Props) => {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}
                 showsVerticalScrollIndicator={false}>
                 <View className="flex-1 px-6">
-                    <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("featured_temples")}</Text>
+                    <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("home.sacred_spotlight")}</Text>
                     {/* Card */}
                     <FeaturedTemples props={{ navigation, filters }} />
 
-                    <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("recently_added")}</Text>
+                    <Text className='text-black dark:text-gray-300 text-lg mb-3'>{t("home.latest_updates")}</Text>
                     <RecentTemples filters={filters} navigation={navigation} />
 
                 </View>

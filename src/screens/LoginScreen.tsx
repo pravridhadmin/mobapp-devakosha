@@ -10,7 +10,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import Button from "../components/Button";
 import CustomTextInput from "../components/CustomTextInput";
-import { useLoading } from "../hooks/useLoading";
 import { formattedPhoneNumber } from "../utils/helperFunctions";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthNavigatorParamList } from "../navigation/AuthNavigator";
@@ -27,8 +26,8 @@ const LoginScreen = ({ navigation }: Props) => {
     const handleSendOtp = async () => {
         if (mobile.length !== 10) {
             CustomAlert(
-                t("invalid_mobile_number"), 
-                t("please_enter_valid_mobile_number")
+                t("signin.invalid_mobile_number"),
+                t("signin.please_enter_valid_mobile_number")
             );
             return;
         }
@@ -36,10 +35,8 @@ const LoginScreen = ({ navigation }: Props) => {
             // otp-> login 
             const confirmation = await sendOtp(formattedPhoneNumber(mobile));
             navigation.navigate('OtpScreen', { mobile, confirmation });
-            CustomAlert(t("otp_sent"), `OTP sent to ${formattedPhoneNumber(mobile)}`);
         } catch (error: any) {
-            console.error("Error", error.message);
-        } finally {
+            CustomAlert("Error", error.message);
         }
     };
 
@@ -49,29 +46,28 @@ const LoginScreen = ({ navigation }: Props) => {
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 className="flex-1 justify-center px-6"
-                >
-                <View className="mb-10">
+            >
+                <View className="mb-8">
                     <Text className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
-                        {t("welcome_back")}
-                    </Text>
-
-                    <Text className="text-base text-gray-600 dark:text-gray-400">
-                        Enter your mobile number to continue
+                        {t("signin.title")}
                     </Text>
                 </View>
 
                 <View className="space-y-4">
-                        <CustomTextInput
-                            placeholder={t("mobile_number")}
-                            keyboardType="phone-pad"
-                            maxLength={10}
-                            value={mobile}
-                            onChangeText={setMobile}
-                        />
+                    <CustomTextInput
+                        placeholder={t("signin.enter_mobile_number")}
+                        keyboardType="phone-pad"
+                        maxLength={10}
+                        value={mobile}
+                        onChangeText={setMobile}
+                    />
+                    <Text className="text-base mt-2 text-gray-600 dark:text-gray-400">
+                        {t("signin.will_send_otp_by_sms_to_verify")}
+                    </Text>
 
                     <View className="mt-4">
                         <Button
-                            title={t("get_otp") }
+                            title={t("generic.continue")}
                             variant="primary"
                             onPress={handleSendOtp}
                             disabled={loading}

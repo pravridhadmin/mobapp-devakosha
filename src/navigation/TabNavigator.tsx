@@ -55,12 +55,12 @@ export default function TabNavigator() {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{ title: t("home") }}
+        options={{ title: t("generic.home") }}
       />
       <Tab.Screen
         name="Listing"
         component={ListingScreen}
-        options={{ title: t("explore") }}
+        options={{ title: t("generic.search") }}
       />
     </Tab.Navigator>
   );

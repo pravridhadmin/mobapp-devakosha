@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
-const getProxiedUrl = (url : string) : string => {
+const getProxiedUrl = (url: string): string => {
     if (Platform.OS === 'web') {
         const targetUrl = new URL(url);
         // Use relative path for web proxy
@@ -13,40 +13,40 @@ const getProxiedUrl = (url : string) : string => {
 };
 
 export const getStates = async (): Promise<State[]> => {
-  try {
-    const response = await fetch(`${BASE_URL}/states`);
+    try {
+        const response = await fetch(`${BASE_URL}/states`);
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch states");
+        if (!response.ok) {
+            throw new Error("Failed to fetch states");
+        }
+
+        const data: StateResponse = await response.json();
+        return data.items;
+    } catch (error) {
+        throw error;
     }
-
-    const data: StateResponse = await response.json();
-    return data.items; 
-  } catch (error) {
-    throw error;
-  }
 };
 
 
 export const getDistricts = async (stateId: string | number): Promise<District[]> => {
-  try {
-    const response = await fetch(`${BASE_URL}/districts/?state=${stateId}`);
+    try {
+        const response = await fetch(`${BASE_URL}/districts/?state=${stateId}`);
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch districts");
+        if (!response.ok) {
+            throw new Error("Failed to fetch districts");
+        }
+
+        const data: DistrictResponse = await response.json();
+        return data.items;
+    } catch (error) {
+        throw error;
     }
-
-    const data: DistrictResponse = await response.json();
-    return data.items; 
-  } catch (error) {
-    throw error;
-  }
 };
 
 
 
 
-export const getTemplesUrl = (params: TemplesUrlParams = {} ) : string => {
+export const getTemplesUrl = (params: TemplesUrlParams = {}): string => {
     let url = `${BASE_URL}/pages/?type=temple.TemplePage&fields=*,state(title),district(title)&order=-last_published_at`;
 
     if (params.state) {
@@ -84,9 +84,8 @@ export const getDistrictsUrl = (stateId, limit = 50) => {
     const url = `${BASE_URL}/districts/?state=${stateId}&limit=${limit}`;
     return getProxiedUrl(url);
 };
-export const fetchTemples = async (params: TemplesUrlParams = {}) : Promise<TemplePage[]>=> {
+export const fetchTemples = async (params: TemplesUrlParams = {}): Promise<TemplePage[]> => {
     const url = getTemplesUrl(params);
-    console.log('Fetching temples with URL:', url); // Debugging log
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -95,7 +94,6 @@ export const fetchTemples = async (params: TemplesUrlParams = {}) : Promise<Temp
         const data = await response.json();
         return data.items || [];
     } catch (error) {
-        console.error('Error fetching temples:', error);
         throw error;
     }
 };
@@ -108,8 +106,7 @@ export const fetchStates = async (limit = 40) => {
         const data = await response.json();
         return data.items || [];
     } catch (error) {
-        console.error('Error fetching states:', error);
-        return [];
+        throw error;
     }
 };
 
@@ -122,7 +119,18 @@ export const fetchDistricts = async (stateId, limit = 50) => {
         const data = await response.json();
         return data.items || [];
     } catch (error) {
-        console.error('Error fetching districts:', error);
-        return [];
+        throw error;
+    }
+};
+
+export const fetchTempleDetail = async (templeId) => {
+    const url = getTempleDetailUrl(templeId);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch temple details');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw error;
     }
 };

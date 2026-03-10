@@ -101,3 +101,9 @@ export interface TemplesUrlParams {
     limit?: number;
     offset?: number;
 }
+
+export interface User {
+    mobile: string;
+    token: string;
+}
+

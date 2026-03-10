@@ -1,36 +1,30 @@
 import React, {
-  createContext,
-  useState,
-  useEffect,
-  ReactNode,
+    createContext,
+    useState,
+    useEffect,
+    ReactNode,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from '@react-native-firebase/auth';
+import { User } from "../types/models";
+import { useLocationFilters } from "../hooks/useLocationFilters";
+import { useFilters } from "./FiltersContext";
 
 
-// =======================
-// 1️⃣ Types
-// =======================
-
-export interface User {
-  mobile: string;
-  token: string;
-}
 
 interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  login: (mobile: string) => Promise<void>;
-  logout: () => Promise<void>;
+    user: User | null;
+    isLoading: boolean;
+    login: (mobile: string) => Promise<void>;
+    signout: () => Promise<void>;
 }
-
 
 // =======================
 // 2️⃣ Create Context
 // =======================
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
+    undefined
 );
 
 
@@ -39,7 +33,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 // =======================
 
 interface AuthProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 
@@ -48,80 +42,86 @@ interface AuthProviderProps {
 // =======================
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // =======================
-  // Login
-  // =======================
+    // =======================
+    // Login
+    // =======================
 
-  const login = async (mobile: string): Promise<void> => {
-    setIsLoading(true);
+    const login = async (mobile: string): Promise<void> => {
+        setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(async () => {
-      const userData: User = {
-        mobile,
-        token: "dummy-token",
-      };
+        // Simulate API call
+        setTimeout(async () => {
+            const userData: User = {
+                mobile,
+                token: "dummy-token",
+            };
 
-      setUser(userData);
+            setUser(userData);
 
-      try {
-        await AsyncStorage.setItem("user", JSON.stringify(userData));
-      } catch (e) {
-        console.error("Failed to save user", e);
-      }
+            try {
+                await AsyncStorage.setItem("user", JSON.stringify(userData));
+            } catch (e) {
+                throw e;
+            }
 
-      setIsLoading(false);
-    }, 1000);
-  };
+            setIsLoading(false);
+        }, 1000);
+    };
 
-  // =======================
-  // Logout
-  // =======================
+    // =======================
+    // signout
+    // =======================
 
-  const logout = async (): Promise<void> => {
-    setIsLoading(true);
+    const { setFilters } = useFilters();
+    const signout = async (): Promise<void> => {
+        setIsLoading(true);
 
-    try {
-      await auth().signOut();
-      await AsyncStorage.removeItem("user");
-    } catch (e) {
-      console.error("Failed to remove user", e);
-    }
+        try {
+            await auth().signOut();
+            await AsyncStorage.removeItem("user");
+            setFilters({
+            search: "",
+            state: null,
+            district: null,
+        });
+        } catch (e) {
+            throw e;
+        }
 
-    setUser(null);
-    setIsLoading(false);
-  };
+        setUser(null);
+        setIsLoading(false);
+    };
 
-  // =======================
-  // Check Persisted Login
-  // =======================
+    // =======================
+    // Check Persisted Login
+    // =======================
 
-  const checkLoginStatus = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
+    const checkLoginStatus = async (): Promise<void> => {
+        try {
+            setIsLoading(true);
 
-      const storedUser = await AsyncStorage.getItem("user");
+            const storedUser = await AsyncStorage.getItem("user");
 
-      if (storedUser) {
-        setUser(JSON.parse(storedUser) as User);
-      }
-    } catch (e) {
-      console.error("Login check error", e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+            if (storedUser) {
+                setUser(JSON.parse(storedUser) as User);
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
+    useEffect(() => {
+        checkLoginStatus();
+    }, []);
 
-  return (
-    <AuthContext.Provider value={{ login, logout, isLoading, user }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={{ login, signout, isLoading, user }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };

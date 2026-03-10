@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, StatusBar } from "react-native";
 import AuthNavigator from "./AuthNavigator";
 import AppNavigator from "./AppNavigator";
+import { useColorScheme } from "nativewind";
 
 export default function RootNavigator() {
   const { user, isLoading } = useContext(AuthContext);
+  const colorScheme = useColorScheme();
 
   if (isLoading) {
     return (
@@ -18,6 +20,10 @@ export default function RootNavigator() {
 
   return (
     <NavigationContainer>
+      <StatusBar
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+        backgroundColor="transparent"
+      />
       {user ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );

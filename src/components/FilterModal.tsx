@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  View,
-  Text,
-  Modal,
-  TouchableWithoutFeedback,
-  Pressable,
-  KeyboardAvoidingView,
-  Platform,
+    View,
+    Text,
+    Modal,
+    TouchableWithoutFeedback,
+    Pressable,
+    KeyboardAvoidingView,
+    Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import SearchBar from "./SearchBar";
@@ -14,121 +14,115 @@ import FilterDropdown from "./FilterDropdown";
 import Button from "./Button";
 import { District, State } from "../types/models";
 import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native";
 
 interface FilterModalProps {
-  visible: boolean;
-  onClose: () => void;
+    visible: boolean;
+    onClose: () => void;
 
-  search: string;
-  onSearchChange: (text: string) => void;
+    search: string;
+    onSearchChange: (text: string) => void;
 
-  selectedState: State | null;
-  onStateChange: (state: State | null) => void;
+    selectedState: State | null;
+    onStateChange: (state: State | null) => void;
 
-  selectedDistrict: District | null;
-  onDistrictChange: (district: District | null) => void;
+    selectedDistrict: District | null;
+    onDistrictChange: (district: District | null) => void;
 
-  stateOptions: State[];
-  districtOptions: District[];
+    stateOptions: State[];
+    districtOptions: District[];
 
-  onApply: (filters: any) => void;
-  onClear: () => void;
+    onApply: (filters: any) => void;
+    onClear: () => void;
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({
-  visible,
-  onClose,
-  search,
-  onSearchChange,
-  selectedState,
-  onStateChange,
-  selectedDistrict,
-  onDistrictChange,
-  stateOptions,
-  districtOptions,
-  onApply,
-  onClear,
+    visible,
+    onClose,
+    search,
+    onSearchChange,
+    selectedState,
+    onStateChange,
+    selectedDistrict,
+    onDistrictChange,
+    stateOptions,
+    districtOptions,
+    onApply,
+    onClear,
 }) => {
-  const {t} = useTranslation();
-  return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      statusBarTranslucent
-    >
-      {/* Background Overlay */}
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View className="flex-1 bg-black/60 justify-end">
-          {/* Stop closing when pressing inside modal */}
-          <TouchableWithoutFeedback>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <View className="bg-black rounded-t-3xl px-5 pt-4 pb-6">
-              
-              {/* Drag Indicator */}
-              <View className="items-center mb-4">
-                <View className="w-12 h-1.5 bg-zinc-600 rounded-full" />
-              </View>
+    const { t } = useTranslation();
+    return (
+        <Modal
+            visible={visible}
+            transparent
+            animationType="slide"
+            statusBarTranslucent
+        >
+            {/* Background Overlay */}
+            <TouchableWithoutFeedback onPress={onClose}>
+                <View className="flex-1 bg-black/60 justify-end">
+                    {/* Stop closing when pressing inside modal */}
+                    <TouchableWithoutFeedback>
+                        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                            <View className="bg-background dark:bg-black rounded-t-3xl px-5 pt-4 pb-24">
 
-              {/* Header */}
-              <View className="flex-row items-center justify-between mb-6">
-                <Text className="text-white text-2xl font-semibold">
-                  {t("filter_temples")}
-                </Text>
+                                {/* Drag Indicator */}
+                                <View className="items-center mb-4">
+                                    <View className="w-12 h-1.5  bg-zinc-400 dark:bg-zinc-600 rounded-full" />
+                                </View>
 
-                <Pressable onPress={onClose}>
-                  <Ionicons name="close" size={24} color="#A1A1AA" />
-                </Pressable>
-              </View>
+                                {/* Header */}
+                                <View className="flex-row items-center justify-between mb-6">
+                                    <Text className="text-black dark:text-white text-2xl font-semibold">
+                                        {t("filter.search_temples_&_deities")}
+                                    </Text>
 
-              {/* SEARCH */}
-              <Text className="text-zinc-400 mb-2 tracking-widest">
-                {t("search")}
-              </Text>
+                                    <Pressable onPress={onClose}>
+                                        <Ionicons name="close" size={24} color="#A1A1AA" />
+                                    </Pressable>
+                                </View>
 
-              <SearchBar
-                value={search}
-                onChange={onSearchChange}
-              />
+                                {/* SEARCH */}
+                                <SearchBar
+                                    placeholder={t("generic.search_deity_or_temple")}
+                                    value={search}
+                                    onChange={onSearchChange}
+                                />
 
-              {/* STATE */}
-              <Text className="text-zinc-400 mt-6 mb-2 tracking-widest">
-                {t("state")}
-              </Text>
+                                {/* STATE */}
+                                <View className="mt-6 mb-2">
+                                    <FilterDropdown
+                                        selectedValue={selectedState}
+                                        onValueChange={onStateChange}
+                                        items={stateOptions}
+                                        placeholder={t("generic.choose_state")}
+                                    />
+                                </View>
 
-              <FilterDropdown
-                selectedValue={selectedState}
-                onValueChange={onStateChange}
-                items={stateOptions}
-                placeholder={t("select_state")}
-              />
+                                {/* DISTRICT */}
+                                <View className="mt-6 mb-2">
+                                    <FilterDropdown
+                                        selectedValue={selectedDistrict}
+                                        onValueChange={onDistrictChange}
+                                        items={districtOptions}
+                                        placeholder={t("generic.choose_district")}
+                                    />
+                                </View>
 
-              {/* DISTRICT */}
-              <Text className="text-zinc-400 mt-6 mb-2 tracking-widest">
-                {t("district")}
-              </Text>
+                                {/* Bottom Buttons */}
+                                <View className="flex-row items-center justify-around mt-10">
+                                    <Button title={t("generic.clear")} variant="ghost" onPress={onClear} />
 
-              <FilterDropdown
-                selectedValue={selectedDistrict}
-                onValueChange={onDistrictChange}
-                items={districtOptions}
-                placeholder={t("select_district")}
-              />
+                                    <Button title={t("generic.search")} onPress={onApply} variant="primary" />
 
-              {/* Bottom Buttons */}
-              <View className="flex-row items-center justify-around mt-10">
-                <Button title={t("clear_filters")} variant="ghost" onPress={onClear} />
-
-                <Button title={t("apply_filters")} onPress={onApply} variant="primary" />
-
-              </View>
-            </View>
-            </KeyboardAvoidingView>
-          </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
-    </Modal>
-  );
+                                </View>
+                            </View>
+                        </KeyboardAvoidingView>
+                    </TouchableWithoutFeedback>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+    );
 };
 
 export default FilterModal;
