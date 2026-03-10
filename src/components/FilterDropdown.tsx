@@ -30,8 +30,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                 containerStyle={{
                     borderRadius: 12,
                     marginTop: 4,
+                    height: 500,
+                    top: -200,
                 }}
-                dropdownPosition="top"
+                // dropdownPosition="top"
                 maxHeight={250}
 
                 activeColor="#9CA3AF"
