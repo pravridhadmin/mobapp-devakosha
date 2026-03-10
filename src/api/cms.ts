@@ -1,5 +1,7 @@
 import { TemplePage, TemplesUrlParams } from "../types/models";
 import { Platform } from 'react-native';
+import apiClient from "./apiClient";
+import { showSnackbar } from "../utils/snackbar";
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -53,51 +55,85 @@ export const getDistrictsUrl = (stateId, limit = 50) => {
 };
 export const fetchTemples = async (params: TemplesUrlParams = {}): Promise<TemplePage[]> => {
     const url = getTemplesUrl(params);
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        return data.items || [];
-    } catch (error) {
-        throw error;
-    }
+    const data = await apiRequest({
+        method: "GET",
+        url,
+    });
+
+    return data.items || [];
 };
 
 export const fetchStates = async (limit = 40) => {
     const url = getStatesUrl(limit);
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Failed to fetch states');
-        const data = await response.json();
-        return data.items || [];
-    } catch (error) {
-        throw error;
-    }
+    const data = await apiRequest({
+        method: "GET",
+        url,
+    });
+
+    return data.items || [];
 };
 
 export const fetchDistricts = async (stateId, limit = 50) => {
     if (!stateId) return [];
     const url = getDistrictsUrl(stateId, limit);
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Failed to fetch districts');
-        const data = await response.json();
-        return data.items || [];
-    } catch (error) {
-        throw error;
-    }
+    const data = await apiRequest({
+        method: "GET",
+        url,
+    });
+
+    return data.items || [];
 };
 
 export const fetchTempleDetail = async (templeId) => {
     const url = getTempleDetailUrl(templeId);
+    const data = await apiRequest({
+        method: "GET",
+        url,
+    });
+
+    return data;
+};
+
+
+export const apiRequest = async ({
+    method = "GET",
+    url,
+    data = null,
+    params = {},
+}) => {
     try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Failed to fetch temple details');
-        const data = await response.json();
-        return data;
+        const response = await apiClient({
+            method,
+            url,
+            data,
+            params,
+        });
+         
+        return response.data;
     } catch (error) {
-        throw error;
+    const status = error?.response?.status;
+    const message =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Something went wrong";
+
+    switch (status) {
+      case 401:
+        showSnackbar("Session expired. Please login again.");
+        break;
+
+      case 403:
+        showSnackbar("You are not authorized to perform this action.");
+        break;
+
+      case 500:
+        showSnackbar("Server error. Please try again later.");
+        break;
+
+      default:
+        showSnackbar(message);
+    }
+
+    throw message;
     }
 };

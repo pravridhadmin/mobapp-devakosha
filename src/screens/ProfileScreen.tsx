@@ -44,6 +44,7 @@ export default function ProfileScreen({
             throw error;
         }
     };
+    
     const handleBack = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
@@ -53,27 +54,21 @@ export default function ProfileScreen({
 
             {/* Header */}
             <View className="flex-row items-center justify-between px-4 py-3">
-                
                     <IconButton
                         iconName="arrow-back"
                         className="bg-white dark:bg-gray-800"
                         onPress={handleBack}
                     />
-                
-
                 <Text className="text-xl font-bold text-gray-900 dark:text-white">
                     {t("profile.profile")}
                 </Text>
-
                 <View className="w-6" />
             </View>
-
             <View className="px-6">
 
                 {/* Profile Card */}
                 <View className="items-center p-8 rounded-2xl mb-8 bg-gray-100 dark:bg-zinc-900 shadow-sm">
                     <Avatar />
-
                     <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                         {user?.mobile || "----------"}
                     </Text>
