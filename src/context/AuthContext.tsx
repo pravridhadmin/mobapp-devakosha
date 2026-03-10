@@ -7,7 +7,6 @@ import React, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from '@react-native-firebase/auth';
 import { User } from "../types/models";
-import { useLocationFilters } from "../hooks/useLocationFilters";
 import { useFilters } from "./FiltersContext";
 
 
@@ -15,7 +14,7 @@ import { useFilters } from "./FiltersContext";
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
-    login: (mobile: string) => Promise<void>;
+    signin: (mobile: string) => Promise<void>;
     signout: () => Promise<void>;
 }
 
@@ -46,10 +45,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     // =======================
-    // Login
+    // signin
     // =======================
 
-    const login = async (mobile: string): Promise<void> => {
+    const signin = async (mobile: string): Promise<void> => {
         setIsLoading(true);
 
         // Simulate API call
@@ -87,19 +86,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             state: null,
             district: null,
         });
+        setUser(null);
         } catch (e) {
             throw e;
         }
 
-        setUser(null);
         setIsLoading(false);
     };
 
     // =======================
-    // Check Persisted Login
+    // Check Persisted signin
     // =======================
 
-    const checkLoginStatus = async (): Promise<void> => {
+    const checkSigninStatus = async (): Promise<void> => {
         try {
             setIsLoading(true);
 
@@ -116,11 +115,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     useEffect(() => {
-        checkLoginStatus();
+        checkSigninStatus();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ login, signout, isLoading, user }}>
+        <AuthContext.Provider value={{ signin, signout, isLoading, user }}>
             {children}
         </AuthContext.Provider>
     );

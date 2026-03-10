@@ -16,8 +16,8 @@ import { AuthNavigatorParamList } from "../navigation/AuthNavigator";
 import { CustomAlert } from "../components/CustomAlert";
 import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 
-type Props = NativeStackScreenProps<AuthNavigatorParamList, 'Login'>;
-const LoginScreen = ({ navigation }: Props) => {
+type Props = NativeStackScreenProps<AuthNavigatorParamList, 'Signin'>;
+const SigninScreen = ({ navigation }: Props) => {
     const { sendOtp, loading } = useFirebaseAuth();
     const { t } = useTranslation();
     const [mobile, setMobile] = useState<string>("");
@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }: Props) => {
             return;
         }
         try {
-            // otp-> login 
+            // otp-> signin 
             const confirmation = await sendOtp(formattedPhoneNumber(mobile));
             navigation.navigate('OtpScreen', { mobile, confirmation });
         } catch (error: any) {
@@ -83,4 +83,4 @@ const LoginScreen = ({ navigation }: Props) => {
     );
 };
 
-export default LoginScreen;
+export default SigninScreen;

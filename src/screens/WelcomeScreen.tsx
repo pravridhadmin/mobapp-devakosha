@@ -59,7 +59,7 @@ const WelcomeScreen = ({ navigation }: { navigation: any }) => {
                     title={t("generic.continue")}
                     variant="primary"
                     fullWidth
-                    onPress={() => { navigation.navigate('Login') }}
+                    onPress={() => { navigation.navigate('Signin') }}
                 />
                 <Button
                     title={t("welcomeScreen.choose_app_lang")}

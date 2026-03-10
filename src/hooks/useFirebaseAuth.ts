@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 export const useFirebaseAuth = () => {
     const auth = getAuth(getApp());
     const [loading, setLoading] = useState(false);
-    const { login } = useContext(AuthContext);
+    const { signin } = useContext(AuthContext);
 
 
     /**
@@ -19,13 +19,13 @@ export const useFirebaseAuth = () => {
     useEffect(() => {
         const subscriber = onAuthStateChanged(auth, (user) => {
             if (user) {
-                login(user.phoneNumber || "");
+                signin(user.phoneNumber || "");
             }
         });
 
         // cleanup listener when component unmounts
         return subscriber;
-    }, [login]);
+    }, [signin]);
 
     /**
      * Send OTP to the given phone number.
