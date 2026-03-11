@@ -10,18 +10,23 @@ import { useHomeTemples } from '../../../hooks/useHomeTemples'
 import CardSkeleton from '../../../components/skeleton/CardSkeleton'
 import ErrorState from '../../../components/ErrorState'
 
-const RecentTemples = ({filters, navigation}: {filters: any, navigation: any }) => {
+interface Props {
+    filters: any,
+    navigation?: any
+    forceReload?: boolean
+}
+const RecentTemples = ({filters, navigation, forceReload}: Props) => {
     const { t } = useTranslation();
     const { fetchRecentTemples, recentTemplesLoading, recentTemplesError } = useHomeTemples(fetchTemples, filters, 0);
     const [temples, setTemples] = useState<TemplePage[] | null>(null);
 
     useEffect(() => {
         const loadRecentTemples = async () => {
-            const recentTemples = await fetchRecentTemples(false);
+            const recentTemples = await fetchRecentTemples(forceReload);
             setTemples(recentTemples);
         };
         loadRecentTemples();
-    }, []);
+    }, [forceReload]);
 
 
     const keyExtractor = useCallback((item: TemplePage) => {
@@ -75,10 +80,9 @@ const RecentTemples = ({filters, navigation}: {filters: any, navigation: any }) 
         return (
             <ErrorState
                 title={t("error.title")}
-                message={t("error.message")} //Message={t("we_couldnt_fetch_recent_temples")}
+                message={t("error.message")} 
                 buttonText={t("error.button_text")}
                 onRefresh={() => fetchRecentTemples(true)}
-                icon="🏙️"
             />
         );
     }
@@ -102,7 +106,6 @@ const RecentTemples = ({filters, navigation}: {filters: any, navigation: any }) 
                     subMessage={t("recent.we_couldnt_find_any_temples_at_the_moment")}
                     actionLabel={t("recent.try_again")}
                     onAction={() => fetchRecentTemples(true)}
-                    icon="🏙️"
                 />
             }
         />

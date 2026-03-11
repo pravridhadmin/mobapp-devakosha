@@ -73,6 +73,7 @@
   "otpScreen.request_new_otp": "Request new OTP",
   "otpScreen.too_many_requests": "Too Many Attempts",
   "otpScreen.try_again_after_some_time":"Please try again after some time",
-  "otpScreen.change_number": "Change Number"
+  "otpScreen.change_number": "Change Number",
+  "otpScreen.didn't_receive_code": " Didn't receive a code?"
 
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import IconButton from "./IconButton";
 
 type InfoRowProps = {
     label: string;
@@ -22,41 +23,46 @@ const InfoRow: React.FC<InfoRowProps> = ({
     if (!value && !component) return null;
 
     return (
-        <View className="flex-row justify-between items-center py-3 border-b border-gray-200">
-            {/* Left Side (Icon + Label) */}
-            <View className="flex-row items-center">
-                {icon && (
-                    <Ionicons
-                        name={icon}
-                        size={16}
-                        color="#6B7280" // gray-500
-                        style={{ marginRight: 6 }}
-                    />
-                )}
-                <Text className="text-[15px] font-medium text-gray-500">
-                    {label}
-                </Text>
-            </View>
-
-            {/* Right Side (Value / Component) */}
-            <Pressable
-                disabled={!isClickable}
-                onPress={onPress}
-                className="flex-1 ml-4"
-            >
-                {component ? (
-                    component
-                ) : (
-                    <Text
-                        className={`text-[15px] text-right ${isClickable
-                                ? "text-blue-600 underline"
-                                : "text-gray-900"
-                            }`}
-                    >
-                        {value}
+        <View className="flex-row items-center justify-between py-4 border-b border-surface dark:border-surface-dark">
+            <View className="flex-1">
+                {/* Header */}
+                <View className="flex-row items-center mb-2">
+                    <Text className="text-sm font-medium text-gray-500">
+                        {label}
                     </Text>
-                )}
-            </Pressable>
+                </View>
+                {/* Value */}
+                <Text className="text-sm text-text-primary dark:text-text-primary-dark">
+                    {value}
+                </Text>
+
+            </View>
+            {/* Action Button */}
+            {isClickable && (
+                <IconButton
+                    iconName={icon}
+                    onPress={onPress}
+                    color="#6B7280"
+                    className="bg-surface dark:bg-surface-dark"
+                />
+            )}
+                {/* <View className="items-end mt-2">
+                    <Pressable
+                        onPress={onPress}
+                        className="px-3 py-1 rounded-md bg-primary-500"
+                    >
+                         {icon && (
+                        <Ionicons
+                            name={icon}
+                            size={18}
+                            color="#6B7280"
+                            style={{ marginRight: 8 }}
+                        />
+                    )}
+                    </Pressable>
+                </View> */}
+            
+
         </View>
     );
 };

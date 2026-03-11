@@ -19,10 +19,9 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
 }) => {
 
     return (
-        <View className="w-full">
+        <View className="w-full border border-gray-300 dark:border-gray-600 rounded-lg ">
             <Dropdown
                 style={{
-                    borderRadius: 12,
                     width: "100%",
                     paddingHorizontal: 12,
                     height: 48,

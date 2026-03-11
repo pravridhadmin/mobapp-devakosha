@@ -14,11 +14,10 @@ type CustomTextInputProps ={
 const CustomTextInput: React.FC<CustomTextInputProps> = ({placeholder, keyboardType, maxLength, style, className, value, onChangeText}) => {
     return (
         <TextInput
-            className={`h-14 rounded-xl px-4 text-lg border
-                         bg-gray-100 text-gray-900 border-gray-300
-                         dark:bg-zinc-900 dark:text-white dark:border-zinc-700 ${className}`}
+            className={`h-14 rounded-lg px-4 text-base border
+                         bg-background text-text-primary border-gray-300
+                         dark:bg-background-dark dark:text-text-primary-dark dark:border-gray-600 placeholder:text-surface-dark dark:placeholder:text-surface  ${className}`}
             placeholder={placeholder}
-            placeholderTextColor="#9CA3AF"
             keyboardType={keyboardType}
             maxLength={maxLength}
             style={style}

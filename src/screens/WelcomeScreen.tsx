@@ -27,23 +27,23 @@ const WelcomeScreen = ({ navigation }: { navigation: any }) => {
 
             {/* Center Content */}
             <View className="px-2 mb-8">
-                <Text className="text-3xl font-bold text-primary dark:text-primary-dark mb-4">
+                <Text className="text-3xl font-bold text-text-primary dark:text-text-primary-dark mb-4">
                     {t("welcomeScreen.welcome_to_your_sacred_journey")}
                 </Text>
 
-                <Text className="text-base text-gray-800 dark:text-white leading-6 mb-4">
+                <Text className="text-base text-text-primary dark:text-text-primary-dark leading-6 mb-4">
                     {t("welcomeScreen.by_proceeding_you_confirm")}{" "}
                     <Text
-                        className="font-semibold underline"
+                        className="font-semibold underline text-primary-500"
                         onPress={() =>
                             Linking.openURL("https://pravridh.org/privacy-policy")
                         }
                     >
                         {t("welcomeScreen.privacy_policy")}
                     </Text>{" "}
-                    &{" "}
+                    and{" "}
                     <Text
-                        className="font-semibold underline"
+                        className="font-semibold underline text-primary-500"
                         onPress={() =>
                             Linking.openURL("https://pravridh.org/terms-of-use")
                         }

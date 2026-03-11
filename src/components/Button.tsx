@@ -34,22 +34,22 @@ const Button: React.FC<ButtonProps> = ({
     const isDisabled = disabled || loading;
 
     const baseStyle =
-        "px-6 py-4 rounded-2xl items-center justify-center";
+        "px-6 py-4 rounded-md items-center justify-center";
 
     const widthStyle = fullWidth ? "w-full" : "";
 
     const variantStyles: Record<ButtonVariant, string> = {
-        primary: "bg-orange-500",
-        outline: "border border-orange-500 bg-transparent",
+        primary: "bg-primary-500",
+        outline: "border border-primary-500 bg-transparent",
         ghost: "bg-transparent",
         danger: "bg-red-500",
     };
 
     const textStyles: Record<ButtonVariant, string> = {
-        primary: "text-white",
-        outline: "text-orange-500",
-        ghost: "text-orange-500",
-        danger: "text-white",
+        primary: "text-text-primary-dark",
+        outline: "text-primary-500",
+        ghost: "text-primary-500",
+        danger: "text-text-primary-dark",
     };
 
     const iconColor =

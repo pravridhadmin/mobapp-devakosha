@@ -23,7 +23,11 @@ export default function OTPInput({ length = 6, onComplete }: Props) {
 
     return (
         <Pressable
-            onPress={() => inputRef.current?.focus()}
+            onPress={() => {
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 50);
+    }}
             className="flex-row justify-between px-4"
         >
             {/* Hidden Input */}
@@ -45,15 +49,15 @@ export default function OTPInput({ length = 6, onComplete }: Props) {
                 return (
                     <View
                         key={index}
-                        className={`w-12 h-14 rounded-xl border items-center justify-center 
+                        className={`w-12 h-14 rounded-lg border items-center justify-center 
                             ${isFocused
-                                ? "border-blue-500 dark:border-blue-400"
+                                ? "border-primary-500 dark:border-primary-500"
                                 : digit
                                     ? "border-gray-500 dark:border-gray-400"
                                     : "border-gray-300 dark:border-gray-600"
-                            }bg-white dark:bg-gray-900`}
+                            } bg-background dark:bg-background-dark`}
                     >
-                        <Text className="text-xl font-semibold text-gray-900 dark:text-gray-100 ">
+                        <Text className="text-xl font-semibold text-text-primary dark:text-text-primary-dark ">
                             {digit ?? ""}
                         </Text>
                     </View>

@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import Badge from "./Badge";
 import { Ionicons } from "@expo/vector-icons";
+import AddressRow from "./AddressRow";
 
 interface TempleCardProps {
     image: string;
@@ -31,13 +32,13 @@ const TempleCard: React.FC<TempleCardProps> = ({
         >
             {/* Temple Image */}
             {!image ? (
-                <View className="w-full h-[150px] bg-[#F5F5F5] dark:bg-slate-800 justify-center items-center">
+                <View className="w-full h-[150px] bg-surface dark:bg-surface-dark justify-center items-center">
                     <Ionicons
                         name="image-outline"
                         size={40}
                         className="text-[#CCC] dark:text-slate-500"
                     />
-                    <Text className="text-[#999] dark:text-slate-400 mt-2 text-[12px] font-medium">
+                    <Text className="text-surface-dark dark:text-surface mt-2 text-sm font-medium">
                         Coming Soon
                     </Text>
                 </View>
@@ -52,24 +53,17 @@ const TempleCard: React.FC<TempleCardProps> = ({
             {/* Content */}
             <View className="p-4">
                 {/* Temple Name */}
-                <Text className="text-black text-xl font-semibold mb-2 line-clamp-1 dark:text-white">
+                <Text className="text-text-primary dark:text-text-primary-dark text-xl font-semibold mb-2 line-clamp-1">
                     {name}
                 </Text>
 
                 {/* District + State Row */}
-                <View className="flex-row items-center mb-2">
-                    <Badge text={district} />
-
-                    <Text className="text-zinc-400 mx-2">•</Text>
-
-                    <Text className="text-zinc-600 text-sm dark:text-zinc-300">
-                        {state}
-                    </Text>
-                </View>
+                <AddressRow city={district} state={state} />
+              
 
                 {/* Address */}
                 {address && (
-                    <Text className="text-zinc-600 text-sm leading-5 dark:text-zinc-300">
+                    <Text className="text-base leading-5 text-surface-dark dark:text-surface mt-2">
                         {address}
                     </Text>
                 )}

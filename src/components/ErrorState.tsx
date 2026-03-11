@@ -17,19 +17,14 @@ const ErrorState = ({
     buttonText = "Retry",
     onRefresh }: Props) => {
     return (
-        <View className="flex-1 justify-center items-center px-10 min-h-[300px] dark:bg-slate-900">
+        <View className="flex-1 justify-center items-center px-10 min-h-[300px] bg-background dark:bg-background-dark">
 
-            {/* Icon Circle */}
-            <View className="w-20 h-20 rounded-full bg-zinc-800 justify-center items-center mb-6">
-                <Text className="text-3xl">{icon}</Text>
-            </View>
-
-            <Text className="text-lg font-bold text-zinc-400 text-center mb-2">
+            <Text className="text-2xl font-bold text-text-primary-dark dark:text-text-primary text-center mb-2">
                 {title}
             </Text>
 
             {message && (
-                <Text className="text-sm text-zinc-400 text-center mb-6 leading-5">
+                <Text className="text-base text-surface-dark dark:text-surface mb-6 text-center">
                     {message}
                 </Text>
             )}
@@ -38,7 +33,7 @@ const ErrorState = ({
                 <Button
                     title={buttonText}
                     onPress={onRefresh}
-                    variant="primary"
+                    variant="outline"
                 />
             )}
 

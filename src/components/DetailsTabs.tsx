@@ -34,11 +34,11 @@ export default function DetailsTab({
                         <Pressable
                             key={tab.key}
                             onPress={() => setActiveTab(tab.key)}
-                            className={`flex-1 items-center py-3 ${isActive ? "border-b-2 border-blue-600" : ""
+                            className={`flex-1 items-center py-3 ${isActive ? "border-b-2 border-primary-500" : ""
                                 }`}
                         >
                             <Text
-                                className={`text-lg font-medium ${isActive ? "text-primary dark:text-primary-dark" : "text-gray-500 dark:text-gray-100"
+                                className={`text-lg font-medium ${isActive ? "text-primary-500 dark:text-primary-500" : "text-gray-500 dark:text-gray-100"
                                     }`}
                             >
                                 {tab.label}

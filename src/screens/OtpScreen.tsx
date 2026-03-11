@@ -69,7 +69,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
 
     const handleResendOtp = async () => {
         try {
-            const newConfirmation = await resendOtp(formattedPhoneNumber(mobile));
+            const newConfirmation = await resendOtp(mobile);
             setFirebaseConfirmation(newConfirmation);
         } catch (error) {
             CustomAlert("Error", "Failed to resend OTP");
@@ -77,14 +77,14 @@ const OtpScreen = ({ navigation, route }: Props) => {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-white dark:bg-black">
+        <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 className="flex-1 justify-center px-6"
             >
                 <View className="mb-10">
-                    <Text className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
-                        {t("otpScreen.enter_otp_sent_to", { mobile: `${formattedPhoneNumber(mobile)}` })}
+                    <Text className="text-3xl font-bold mb-2 text-text-primary dark:text-text-primary-dark">
+                        {t("otpScreen.enter_otp_sent_to", { mobile: `${mobile}` })}
                     </Text>
 
                 </View>
@@ -113,7 +113,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
                     <View className="items-center mt-6 space-y-2">
 
                         {!canResend ? (
-                            <Text className="text-sm text-gray-500 dark:text-gray-400">
+                            <Text className="text-sm dark:text-surface dark:text-surface">
                                 {t("otpScreen.resend_otp_in")}{" "}
                                 <Text className="font-semibold text-gray-700 dark:text-gray-200">
                                     {timer}s
@@ -121,15 +121,15 @@ const OtpScreen = ({ navigation, route }: Props) => {
                             </Text>
                         ) : (
                             <View className="flex-row items-center gap-2">
-                                <Text className="text-sm text-gray-500 dark:text-gray-400">
-                                    Didn't receive a code?
+                                <Text className="text-sm dark:text-surface dark:text-surface">
+                                   {t("otpScreen.didn't_receive_code")}
                                 </Text>
 
-                                <TouchableOpacity onPress={handleResendOtp}>
-                                    <Text className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                                        {t("otpScreen.resend_otp")}
-                                    </Text>
-                                </TouchableOpacity>
+                            <Button
+                                title={t("otpScreen.resend_otp")}
+                                variant="ghost"
+                                onPress={handleResendOtp}
+                                />
                             </View>
                         )}
 

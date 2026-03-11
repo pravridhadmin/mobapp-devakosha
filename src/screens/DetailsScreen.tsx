@@ -17,9 +17,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { handleCall, handleEmail, handleMap } from '../utils/helperFunctions';
 import { useTranslation } from 'react-i18next';
 import { useTempleDetails } from '../hooks/useTempleDetails';
-import Button from '../components/Button';
 import { RefreshControl } from 'react-native';
 import DetailsSkeleton from '../components/skeleton/DetailsSkeleton';
+import CustomHeader from '../components/CustomHeader';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Details'>;
 
@@ -77,16 +77,20 @@ export default function DetailsScreen({ route, navigation }: Props) {
                         icon={'location-outline'}
                         isClickable={!!temple?.latitude && !!temple?.longitude}
                         onPress={handleMapPress}
-                        component={<>
-                            <Text className={`text-primary flex-1 text-right ${temple?.latitude && temple?.longitude ? "underline" : ""}`}>
-                                {temple.address_line1}{'\n'}
-                                {temple.address_line2 && temple.address_line2}, {temple?.city || ''}{'\n'}
-                                {temple.postal_code && temple.postal_code + '\n'}
-                                {temple.district && temple.district?.title}, {temple?.state?.title || ''}</Text>
-                        </>} />
+                        value={[
+                            temple?.address_line1,
+                            temple?.address_line2,
+                            temple?.address_line3,
+                            temple?.city,
+                            temple?.district?.title,
+                            temple?.state?.title,
+                            temple?.postal_code
+                        ]
+                            .filter(Boolean)
+                            .join(", ")} />
                 ) : null}
                 <InfoRow label={t('details.email')} value={temple?.contact_email || ""} icon={'mail-outline'} isClickable={true} onPress={handleEmailPress} />
-                <InfoRow label={t('details.call')} value={temple?.contact_number || ""} icon={'call-outline'} isClickable={true} onPress={handleCallPress} />
+                <InfoRow label={t('details.call')} value={temple?.contact_number || ""} icon={'call-outline'} isClickable={true} onPress={handleCallPress}/>
             </>
             )
         }
@@ -108,13 +112,7 @@ export default function DetailsScreen({ route, navigation }: Props) {
                     imageUrl={temple?.featured_image?.[0]?.value || null}
                 >
                     {/* back button */}
-                    <View className="absolute top-10 left-6">
-                        <IconButton
-                            iconName="arrow-back"
-                            className="bg-white dark:bg-gray-800"
-                            onPress={handleBack}
-                        />
-                    </View>
+                    <CustomHeader onPress={handleBack} />
 
                     {/* year badge */}
                     {temple?.built_year && (
@@ -133,7 +131,7 @@ export default function DetailsScreen({ route, navigation }: Props) {
                 <View className="flex-1  bg-background dark:bg-background-dark rounded-t-3xl -mt-6 px-5 pt-6">
 
                     {/* Title */}
-                    <Text className="text-primary dark:text-primary-dark text-3xl font-semibold">
+                    <Text className="text-text-primary dark:text-text-primary-dark text-2xl font-semibold mb-2">
                         {temple?.title || "Temple Name"}
                     </Text>
 

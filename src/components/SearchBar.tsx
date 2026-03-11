@@ -18,7 +18,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   setText(value);
 }, [value]);
     return (
-        <View className="flex-row items-center bg-slate-100 dark:bg-zinc-900 rounded-2xl px-4 py-3 border border-zinc-700">
+        <View className="flex-row items-center rounded-lg border border-gray-300 bg-background dark:bg-background-dark  dark:border-gray-600 px-2 py-1">
             <Ionicons name="search-outline" size={20} color="#9CA3AF" />
             <TextInput
                 value={text}
@@ -30,8 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 placeholder={placeholder}
                 returnKeyType="search"
                 // onSubmitEditing={() => Keyboard.dismiss()}
-                placeholderTextColor="#9CA3AF"
-                className="flex-1 ml-3 text-white text-base"
+                className="flex-1 ml-2 text-text-primary dark:text-text-primary-dark text-base placeholder:text-surface-dark dark:placeholder:text-surface"
             />
         </View>
     );

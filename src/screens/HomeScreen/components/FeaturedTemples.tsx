@@ -9,19 +9,25 @@ import { useTranslation } from 'react-i18next';
 import ErrorState from '../../../components/ErrorState';
 const TempleCard = lazy(() => import('../../../components/Card'));
 
-const FeaturedTemples = ({ props }) => {
-    const { fetchFeaturedTemple, featuredLoading, featuredError } = useHomeTemples(fetchTemples, props.filters, 0);
+interface Props {
+    filters: any;
+    navigation?: any;
+    forceReload?: boolean
+}
+
+const FeaturedTemples = ({ filters, navigation, forceReload } :   Props) => {
+    const { fetchFeaturedTemple, featuredLoading, featuredError } = useHomeTemples(fetchTemples, filters, 0);
     const { t } = useTranslation();
     const [temple, setTemple] = useState(null);
 
 
     useEffect(() => {
         const loadFeatured = async () => {
-            const featuredTemple = await fetchFeaturedTemple(false);
+            const featuredTemple = await fetchFeaturedTemple(forceReload);
             setTemple(featuredTemple?.[0]);
         };
         loadFeatured();
-    }, []);
+    }, [forceReload]);
 
     if(!temple) {
         return (
@@ -44,7 +50,7 @@ const FeaturedTemples = ({ props }) => {
                     district={temple.district?.title}
                     state={temple.state?.title}
                     address={temple?.address_line1}
-                    onPress={() => props.navigation.navigate('Details', { itemId: temple.id })}
+                    onPress={() => navigation.navigate('Details', { itemId: temple.id })}
                 />
         </Suspense>
     )

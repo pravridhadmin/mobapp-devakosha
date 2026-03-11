@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n/i18n";
 
 type Props = {
     visible: boolean;
@@ -31,16 +32,16 @@ const LanguageModal = ({ visible, onClose, onSelectLanguage }: Props) => {
 
                     {/* Prevent closing when clicking inside */}
                     <TouchableWithoutFeedback>
-                        <View className=" bg-background dark:bg-black rounded-t-3xl px-5 pt-4 pb-24">
+                        <View className=" bg-background dark:bg-background-dark rounded-t-3xl px-5 pt-4 pb-24">
 
                             {/* Drag Indicator */}
                             <View className="items-center mb-4">
-                                <View className="w-12 h-1.5 bg-zinc-600 rounded-full" />
+                                <View className="w-12 h-1.5 bg-secondary-dark rounded-2xl" />
                             </View>
 
                             {/* Header */}
                             <View className="flex-row items-center justify-between mb-6">
-                                <Text className="text-black dark:text-white text-2xl font-semibold">
+                                <Text className="text-text-primary dark:text-text-primary-dark text-2xl font-semibold">
                                     {t("welcomeScreen.choose_app_lang")}
                                 </Text>
 
@@ -56,9 +57,12 @@ const LanguageModal = ({ visible, onClose, onSelectLanguage }: Props) => {
                                     onSelectLanguage("en");
                                     onClose();
                                 }}
-                                className="py-4 border-b border-zinc-700"
+                                className="flex-row items-center py-4 border-b border-surface dark:border-surface-dark"
                             >
-                                <Text className="text-black dark:text-white text-lg">English</Text>
+                                {i18n.language === "en" && (
+                                    <Ionicons name="checkmark" size={22} color="#22c55e" />
+                                )}
+                                <Text className="text-text-primary dark:text-text-primary-dark text-lg">English</Text>
                             </Pressable>
 
                             <Pressable
@@ -66,9 +70,12 @@ const LanguageModal = ({ visible, onClose, onSelectLanguage }: Props) => {
                                     onSelectLanguage("kn");
                                     onClose();
                                 }}
-                                className="py-4"
+                                className="flex-row items-center py-4 border-b border-surface dark:border-surface-dark"
                             >
-                                <Text className="text-black dark:text-white text-lg">ಕನ್ನಡ</Text>
+                                {i18n.language === "kn" && (
+                                    <Ionicons name="checkmark" size={22} color="#22c55e" />
+                                )}
+                                <Text className="text-text-primary dark:text-text-primary-dark text-lg">ಕನ್ನಡ</Text>
                             </Pressable>
 
                         </View>

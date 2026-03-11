@@ -116,21 +116,9 @@ export default function ListingScreen({ navigation }: Props) {
         []
     );
 
-    // if (loading) {
-    //     return (
-    //         <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
-    //             <ActivityIndicator size="large" />
-    //             <Text className="mt-4 text-text dark:text-text-dark">
-    //                 {t("generic.loading")}...
-    //             </Text>
-    //         </View>
-    //     );
-    // }
-
     if (error) {
         return (
             <ErrorState
-                icon='🛕'
                 title={t("error.title")}
                 message={t("error.message")}
                 buttonText={t("error.button_text")}
@@ -145,7 +133,7 @@ export default function ListingScreen({ navigation }: Props) {
             <ScreenHeader
                 title={t('generic.devakosha')}
                 onProfilePress={() => navigation.navigate('Profile')}
-            // onFilterPress={() => setIsFilterOpen(true)}
+                onReloadPress={() => onRefresh()}
             />
 
             {/* Search bar and rest of screen */}

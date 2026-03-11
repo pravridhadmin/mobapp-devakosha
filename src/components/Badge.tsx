@@ -2,8 +2,8 @@ import { View, Text } from "react-native"
 
 const Badge = ({ text, color }: { text: string, color?: string }) => {
     return (
-        <View className={`px-3 py-1 rounded-lg ${color || 'bg-accent'}`}>
-            <Text className="text-primary text-sm font-medium">
+        <View className={`${color || 'bg-warning'} px-3 py-1 rounded-md`}>
+            <Text className="text-text-primary-dark text-sm font-medium">
                 {text}
             </Text>
         </View>

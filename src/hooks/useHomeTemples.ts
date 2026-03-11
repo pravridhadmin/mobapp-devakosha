@@ -13,17 +13,14 @@ export const useHomeTemples = (
     filters: Filters,
     offset: number = 0
 ) => {
-    const { homeData, setHomeData } = useHomeContext();
-    const [featuredTemple, setFeaturedTemple] = useState<any | null>(null);
-    const [recentTemples, setRecentTemples] = useState<any[]>([]);
+    const { homeData, setHomeData } = useHomeContext(); 
     const [recentTemplesLoading, setRecentTemplesloading,] = useState(false);
     const [featuredLoading, setFeaturedLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [featuredError, setFeaturedError] = useState<string | null>(null);
     const [recentTemplesError, setRecentTemplesError] = useState<string | null>(null);
 
     const fetchFeaturedTemple = async (forceReload = false) => {
-        if (!forceReload && homeData.featuredTemple) {
+        if (!forceReload && homeData.featuredTemple !== null) {
             return homeData.featuredTemple;
         }
         setFeaturedLoading(true);
@@ -49,7 +46,7 @@ export const useHomeTemples = (
     };
 
     const fetchRecentTemples = async (forceReload = false) => {
-        if (!forceReload && homeData.recentTemples.length) {
+        if (!forceReload && homeData.recentTemples.length > 0) {
             return homeData.recentTemples;
         }
         setRecentTemplesloading(true);
@@ -75,37 +72,6 @@ export const useHomeTemples = (
             setRecentTemplesloading(false);
         }
     }
-
-    // const loadHomeData = async (forceReload = false) => {
-    //     // Prevent API call if data already exists
-    //     if (!forceReload && homeData.featuredTemple && homeData.recentTemples.length) {
-    //         return;
-    //     }
-    //     setLoading(true);
-    //     setError(null);
-
-    //     try {
-    //         // 1️⃣ Featured (only 1) without any filters
-    //         let featuredTemple = await fetchFeaturedTemple();
-
-    //         // 2️⃣ Recent (5) without any filters - to show recent additions irrespective of location/search
-    //         let recentTemples = await fetchRecentTemples();
-
-    //         setHomeData({
-    //             featuredTemple: featuredTemple?.[0] || null,
-    //             recentTemples: recentTemples || [],
-    //             lastFetched: Date.now(),
-    //         });
-    //     } catch (err) {
-    //         setError("Failed to load home data");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     loadHomeData();
-    // }, [filters]);
 
     return {
         fetchFeaturedTemple,

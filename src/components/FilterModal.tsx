@@ -64,7 +64,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                     {/* Stop closing when pressing inside modal */}
                     <TouchableWithoutFeedback>
                         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                            <View className="bg-background dark:bg-black rounded-t-3xl px-5 pt-4 pb-24">
+                            <View className="bg-background dark:bg-background-dark rounded-t-3xl px-5 pt-4 pb-24">
 
                                 {/* Drag Indicator */}
                                 <View className="items-center mb-4">
@@ -73,7 +73,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
                                 {/* Header */}
                                 <View className="flex-row items-center justify-between mb-6">
-                                    <Text className="text-black dark:text-white text-2xl font-semibold">
+                                    <Text className="text-text-primary dark:text-text-primary-dark text-2xl font-semibold">
                                         {t("filter.search_temples_&_deities")}
                                     </Text>
 
