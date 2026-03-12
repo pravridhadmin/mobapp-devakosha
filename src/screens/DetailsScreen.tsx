@@ -20,6 +20,7 @@ import { useTempleDetails } from '../hooks/useTempleDetails';
 import { RefreshControl } from 'react-native';
 import DetailsSkeleton from '../components/skeleton/DetailsSkeleton';
 import CustomHeader from '../components/CustomHeader';
+import DetailConnect from '../components/DetailConnect';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Details'>;
 
@@ -39,23 +40,6 @@ export default function DetailsScreen({ route, navigation }: Props) {
         navigation.goBack();
     }, [navigation]);
 
-    const handleEmailPress = useCallback(() => {
-        if (temple?.contact_email) {
-            handleEmail(temple.contact_email);
-        }
-    }, [temple]);
-
-    const handleCallPress = useCallback(() => {
-        if (temple?.contact_number) {
-            handleCall(temple.contact_number);
-        }
-    }, [temple]);
-    const handleMapPress = useCallback(() => {
-        if (temple?.latitude && temple?.longitude) {
-            handleMap(temple?.latitude, temple?.longitude)
-        }
-    }, [temple]);
-
 
     const tabs: TabItem[] = useMemo(() => [
         {
@@ -71,28 +55,7 @@ export default function DetailsScreen({ route, navigation }: Props) {
         {
             key: "connect",
             label: t('details.connect'),
-            content: (<>
-                {temple?.address_line1 ? (
-                    <InfoRow label={t('details.address')}
-                        icon={'location-outline'}
-                        isClickable={!!temple?.latitude && !!temple?.longitude}
-                        onPress={handleMapPress}
-                        value={[
-                            temple?.address_line1,
-                            temple?.address_line2,
-                            temple?.address_line3,
-                            temple?.city,
-                            temple?.district?.title,
-                            temple?.state?.title,
-                            temple?.postal_code
-                        ]
-                            .filter(Boolean)
-                            .join(", ")} />
-                ) : null}
-                <InfoRow label={t('details.email')} value={temple?.contact_email || ""} icon={'mail-outline'} isClickable={true} onPress={handleEmailPress} />
-                <InfoRow label={t('details.call')} value={temple?.contact_number || ""} icon={'call-outline'} isClickable={true} onPress={handleCallPress}/>
-            </>
-            )
+            content: (<DetailConnect temple={temple} t={t} /> )
         }
     ], [temple, galleryImages, t]);
 
@@ -139,7 +102,6 @@ export default function DetailsScreen({ route, navigation }: Props) {
                     <AddressRow
                         city={temple?.city || temple?.district?.title}
                         state={temple?.state?.title}
-                        onPress={handleMapPress}
                     />
 
                     {/* Tabs */}

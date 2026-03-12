@@ -12,6 +12,7 @@ import { formattedPhoneNumber } from '../utils/helperFunctions';
 import OTPInput from '../components/OTPInput';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {RESEND_OTP_TIME } from '../utils/constants';
+import { getFirebaseOtpError } from '../utils/firebaseErrorHandler';
 
 type Props = NativeStackScreenProps<AuthNavigatorParamList, 'OtpScreen'>;
 const OtpScreen = ({ navigation, route }: Props) => {
@@ -35,35 +36,16 @@ const OtpScreen = ({ navigation, route }: Props) => {
             setCanResend(true);
         }
         return () => clearInterval(interval);
-    }, [timer]);
+    }, [timer, confirmation]);
 
 
     //  Verify OTP
     const handleVerifyOtp = async () => {
-
-
         try {
             const userCredential = await verifyOtp(otp, firebaseConfirmation);
         } catch (error) {
-
-            if (error.code === "auth/invalid-verification-code") {
-                CustomAlert(
-                    t("otpScreen.invalid_otp")
-                );
-            }
-            else if (error.code === "auth/code-expired") {
-                CustomAlert(
-                    t("otpScreen.otp_expired"),
-                    t("otpScreen.request_new_otp")
-                );
-            } else if (error.code === "auth/too-many-requests") {
-                CustomAlert(
-                    t("otpScreen.too_many_requests"),
-                    t("otpScreen.try_again_after_some_time")
-                );
-            } else {
-                CustomAlert("Error", error.message);
-            }
+            const err = getFirebaseOtpError(error.code, t);
+            CustomAlert(err.title, err.message);
         }
     };
 
@@ -121,7 +103,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
                             </Text>
                         ) : (
                             <View className="flex-row items-center gap-2">
-                                <Text className="text-sm dark:text-surface dark:text-surface">
+                                <Text className="text-sm flex-1 dark:text-surface dark:text-surface">
                                    {t("otpScreen.didn't_receive_code")}
                                 </Text>
 

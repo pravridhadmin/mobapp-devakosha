@@ -8,6 +8,7 @@
   "welcomeScreen.by_proceeding_you_confirm": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು ಇವುಗಳನ್ನು ಒಪ್ಪುತ್ತೀರಿ ಎಂದು ಖಚಿತಪಡಿಸುತ್ತೀರಿ:",
   "welcomeScreen.privacy_policy": "ಗೌಪ್ಯತಾ ನೀತಿ",
   "welcomeScreen.terms_of_use": "ಬಳಕೆಯ ನಿಯಮಗಳು",
+  "welcomeScreen.and":"ಮತ್ತೆ",
 
   "profile.profile": "ಪ್ರೊಫೈಲ್",
   "profile.registered_mobile": "ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
@@ -54,6 +55,10 @@
   "details.gallery": "ಗ್ಯಾಲರಿ",
   "details.closed": "ಮುಚ್ಚಿದೆ",
   "details.open_now": "ಈಗ ತೆರೆದಿದೆ",
+  "details.timings":"ಸಮಯಗಳು",
+  "details.morning":"ಮುಂಜಾನೆ",
+  "details.evening":"ಸಾಯಂಕಾಲ ",
+  "details.not_available":"ಲಭ್ಯವಿಲ್ಲ",
 
   "signin.title": "ಮುಂದುವರಿಯಲು ಲಾಗಿನ್ ಮಾಡಿ ಅಥವಾ ಸೈನ್ ಅಪ್ ಮಾಡಿ",
   "signin.will_send_otp_by_sms_to_verify": "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ದೃಢೀಕರಿಸಲು ನಾವು SMS ಮೂಲಕ OTP ಕಳುಹಿಸುತ್ತೇವೆ",
@@ -72,5 +77,6 @@
   "otpScreen.request_new_otp": "ಹೊಸ OTP ಗಾಗಿ ವಿನಂತಿಸಿ",
   "otpScreen.too_many_requests": "ಹಲವು ಪ್ರಯತ್ನಗಳನ್ನು ಮಾಡಲಾಗಿದೆ",
   "otpScreen.try_again_after_some_time": "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
-  "otpScreen.change_number": "ಸಂಖ್ಯೆಯನ್ನು ಬದಲಿಸಿ"
+  "otpScreen.change_number": "ಸಂಖ್ಯೆಯನ್ನು ಬದಲಿಸಿ",
+  "otpScreen.didnt_receive_code": "ಕೋಡೆಯನ್ನು ಪ್ರಾಪ್ತವಾಗಿದೆ?"
 }

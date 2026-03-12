@@ -9,6 +9,7 @@
   "welcomeScreen.by_proceeding_you_confirm":"By proceeding you confirm that you agree to the",
   "welcomeScreen.privacy_policy":"Privacy Policy",
   "welcomeScreen.terms_of_use":"Terms of Use",
+  "welcomeScreen.and":"and",
   
   "profile.profile": "Profile",
   "profile.registered_mobile": "Registered Mobile Number",
@@ -25,9 +26,9 @@
   
   "search.no_temples_found": "The journey continues… don't give up!",
   "search.try_clearing_filters_to_see_more_results": "We couldn't locate that deity or temple. Consider searching by another name or checking nearby districts",
-  "search.clear_filters":"Clear Filters",
+  "search.clear_filters":"Reset Search",
 
-  "filter.search_temples_&_deities": "Search Temples & Deities",
+  "filter.search_temples_&_deities": "Search Temples or Deities",
   
   "featured.no_featured_temples": "No featured temples",
   "featured.error_fetching_featured_temples":"Error fetching featured temples",
@@ -38,9 +39,10 @@
   "generic.home": "Home",
   "generic.choose_state": "Choose State",
   "generic.choose_district": "Choose District",
-  "generic.search_deity_or_temple": "Search for a deity or temple...",
+  "generic.search_deity_or_temple": "Search for temples or deities...",
   "generic.clear": "Clear",
   "generic.loading": "Loading",
+  "generic.network_error": "Network Error, Please try again",
 
   "error.title":"Something's not quite right",
   "error.message":"We couldn't complete your request right now.",
@@ -54,11 +56,14 @@
   "details.gallery": "Gallery",
   "details.closed":"Closed",
   "details.open_now":"Open Now",
+  "details.timings":"Timings",
+  "details.morning":"Morning",
+  "details.evening":"Evening",
+  "details.not_available":"Not available",
 
   "signin.title": "Sign in or sign up to continue",
   "signin.will_send_otp_by_sms_to_verify": "We'll send you an OTP by SMS to confirm your mobile number",
   "signin.enter_mobile_number": "Enter Mobile Number",
-  "continue": "Continue",
   "signin.invalid_mobile_number": "Invalid mobile number",
   "signin.please_enter_valid_mobile_number": "Please enter a valid mobile number",
   "signin.otp_sent": "OTP sent to {{mobile}}",
@@ -74,6 +79,8 @@
   "otpScreen.too_many_requests": "Too Many Attempts",
   "otpScreen.try_again_after_some_time":"Please try again after some time",
   "otpScreen.change_number": "Change Number",
-  "otpScreen.didn't_receive_code": " Didn't receive a code?"
+  "otpScreen.didn't_receive_code": "Didn't receive a code?",
+  "otpScreen.something_went_wrong": "Something went wrong. Please try again.",
+  "otpScreen.error": "Error"
 
 }

@@ -33,36 +33,19 @@ const InfoRow: React.FC<InfoRowProps> = ({
                 </View>
                 {/* Value */}
                 <Text className="text-sm text-text-primary dark:text-text-primary-dark">
-                    {value}
+                    {value} {component}
                 </Text>
 
             </View>
             {/* Action Button */}
-            {isClickable && (
+            {icon && (
                 <IconButton
                     iconName={icon}
-                    onPress={onPress}
+                    onPress={isClickable ? onPress : undefined}
                     color="#6B7280"
                     className="bg-surface dark:bg-surface-dark"
                 />
             )}
-                {/* <View className="items-end mt-2">
-                    <Pressable
-                        onPress={onPress}
-                        className="px-3 py-1 rounded-md bg-primary-500"
-                    >
-                         {icon && (
-                        <Ionicons
-                            name={icon}
-                            size={18}
-                            color="#6B7280"
-                            style={{ marginRight: 8 }}
-                        />
-                    )}
-                    </Pressable>
-                </View> */}
-            
-
         </View>
     );
 };

@@ -4,7 +4,8 @@ import {
     Text,
     KeyboardAvoidingView,
     Platform,
-    ActivityIndicator
+    ActivityIndicator,
+    StatusBar
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
@@ -17,6 +18,7 @@ import { CustomAlert } from "../components/CustomAlert";
 import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import PhoneInput from "react-native-phone-number-input";
 import { useColorScheme } from "nativewind";
+import { getFirebaseSendOtpError } from "../utils/firebaseErrorHandler";
 
 type Props = NativeStackScreenProps<AuthNavigatorParamList, 'Signin'>;
 const SigninScreen = ({ navigation }: Props) => {
@@ -38,17 +40,18 @@ const SigninScreen = ({ navigation }: Props) => {
             return;
         }
         try {
-            // otp-> signin 
+            // otp-> signin
             const confirmation = await sendOtp(formattedNumber);
             navigation.navigate('OtpScreen', { mobile: formattedNumber, confirmation });
         } catch (error: any) {
-            CustomAlert("Error", error.message);
+            const err = getFirebaseSendOtpError(error.code, t);
+            CustomAlert(err.title, err.message);
         }
     };
 
 
     return (
-        <SafeAreaView className="flex-1 bg-white dark:bg-black">
+        <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 className="flex-1 justify-center px-6"
@@ -60,13 +63,6 @@ const SigninScreen = ({ navigation }: Props) => {
                 </View>
 
                 <View className="space-y-4">
-                    {/* <CustomTextInput
-                        placeholder={t("signin.enter_mobile_number")}
-                        keyboardType="phone-pad"
-                        maxLength={10}
-                        value={mobile}
-                        onChangeText={setMobile}
-                    /> */}
                     <PhoneInput
                         ref={phoneInput}
                         defaultValue={mobile}
@@ -77,7 +73,7 @@ const SigninScreen = ({ navigation }: Props) => {
                             setMobile(text);
                         }}
                         onChangeFormattedText={(text) => {
-                            setFormattedNumber(text);
+                            setFormattedNumber(prev => (prev !== text ? text : prev));
                         }}
                         containerStyle={{
                             height: 56,
@@ -104,19 +100,22 @@ const SigninScreen = ({ navigation }: Props) => {
                             fontSize: 16,
                             color: isDark ? "#F9FAFB" : "#111827",
                         }}
-
+                        withDarkTheme={isDark}
                         countryPickerButtonStyle={{
                             borderTopLeftRadius: 8,
                             borderBottomLeftRadius: 8,
                         }}
                         countryPickerProps={{
+                            withModal: true,
                             withFilter: true,
                             withCallingCode: true,
-                            theme: {
-                                backgroundColor: isDark ? "#020617" : "#ffffff",
-                                onBackgroundTextColor: isDark ? "#ffffff" : "#000000",
-                                fontSize: 16,
+                            styles: {
+                                modal: {
+                                    flex: 1,
+                                    paddingVertical: 40,
+                                },
                             }
+
                         }}
                     />
                     <Text className="text-base mt-2 text-surface-dark  dark:text-surface">

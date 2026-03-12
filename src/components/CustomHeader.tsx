@@ -12,7 +12,7 @@ const CustomHeader = ({ screenTitle, onPress }: Props) => {
         <View className="flex-row items-center justify-between px-4 py-3">
             <IconButton
                 iconName="arrow-back"
-                className="bg-white dark:bg-gray-800"
+                className="bg-background dark:bg-background-dark"
                 onPress={onPress}
             />
             {screenTitle &&

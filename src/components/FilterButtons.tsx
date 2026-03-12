@@ -19,7 +19,7 @@ const FilterButtons = ({
     stateLabel,
     districtLabel }: FilterButtonsProps) => {
     return (
-        <View className="flex-row justify-center space-x-4">
+        <View className="flex-row flex-wrap justify-center space-x-4">
 
             <Button
                 title={selectedState ? selectedState.title : stateLabel}

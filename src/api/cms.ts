@@ -108,7 +108,6 @@ export const apiRequest = async ({
             data,
             params,
         });
-        console.log("url", url)
         return response.data;
     } catch (error) {
     const status = error?.response?.status;

@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text,useColorScheme } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { Ionicons } from "@expo/vector-icons";
 import { District, State } from "../types/models";
+// import { useColorScheme } from "nativewind";
 
 interface FilterDropdownProps {
     selectedValue: State | District | null;
@@ -17,7 +18,8 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     items,
     placeholder = "Select",
 }) => {
-
+    const isDark = useColorScheme();
+    const isEmpty = !items || items.length === 0;
     return (
         <View className="w-full border border-gray-300 dark:border-gray-600 rounded-lg ">
             <Dropdown
@@ -34,13 +36,13 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                 }}
                 // dropdownPosition="top"
                 maxHeight={250}
-
                 activeColor="#9CA3AF"
                 data={items}
+                disable={isEmpty}
                 labelField="title"
                 valueField="id"
                 placeholder={placeholder}
-                placeholderStyle={{ color: "#9CA3AF" }}
+                placeholderStyle={{ color: isDark=='dark' ? "#F7F9FB" : "#161D26" } }
                 selectedTextStyle={{ color: "#9CA3AF" }}
                 value={selectedValue}
                 onChange={(item) => onValueChange(item)}

@@ -127,8 +127,6 @@ export default function ListingScreen({ navigation }: Props) {
     }
     return (
         <SafeAreaView edges={["top"]} className="flex-1 bg-background dark:bg-background-dark">
-
-
             {/* Header */}
             <ScreenHeader
                 title={t('generic.devakosha')}
@@ -197,9 +195,9 @@ export default function ListingScreen({ navigation }: Props) {
                 onSearchChange={(text) => {
                     setFilters((prev) => ({ ...prev, search: text }))
                 }}
-                selectedState={filters.state}
+                selectedState={selectedState}
                 onStateChange={handleStateChange}
-                selectedDistrict={filters.district}
+                selectedDistrict={selectedDistrict}
                 onDistrictChange={handleDistrictChange}
                 stateOptions={states}
                 districtOptions={districts}

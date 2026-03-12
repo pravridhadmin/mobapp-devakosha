@@ -70,6 +70,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                 images={formattedImages}
                 imageIndex={currentIndex}
                 visible={visible}
+                presentationStyle="overFullScreen"
                 onRequestClose={() => setVisible(false)}
             />
         </View>

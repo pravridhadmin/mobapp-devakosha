@@ -17,3 +17,18 @@ export const isTempleOpen = (temple: any) => {
     (currentMinutes >= eveningStart && currentMinutes <= eveningEnd)
   );
 };
+
+export const formatTime = (time: string) => {
+  if (!time) return "";
+
+  const [hours, minutes] = time.split(":");
+
+  const date = new Date();
+  date.setHours(Number(hours));
+  date.setMinutes(Number(minutes));
+
+  return date.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+};

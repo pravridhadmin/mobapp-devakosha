@@ -39,7 +39,6 @@ const EmptyState: React.FC<EmptyStateProps> = ({
                     title={actionLabel}
                     onPress={onAction}
                     variant="primary"
-                    fullWidth={false}
                 />
             )}
             </View>

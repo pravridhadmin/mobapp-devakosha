@@ -17,6 +17,7 @@ interface ButtonProps {
     loading?: boolean;
     disabled?: boolean;
     fullWidth?: boolean;
+    className?: string;
     leftIcon?: keyof typeof Ionicons.glyphMap;
     rightIcon?: keyof typeof Ionicons.glyphMap;
 }
@@ -28,6 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     loading = false,
     disabled = false,
     fullWidth = false,
+    className,
     leftIcon,
     rightIcon,
 }) => {
@@ -61,7 +63,7 @@ const Button: React.FC<ButtonProps> = ({
         <Pressable
             onPress={onPress}
             disabled={isDisabled}
-            className={`${baseStyle} ${variantStyles[variant]} ${widthStyle} ${isDisabled ? "opacity-50" : "active:opacity-80"
+            className={`${baseStyle} ${variantStyles[variant]} ${className}  ${widthStyle} ${isDisabled ? "opacity-50" : "active:opacity-80"
                 }`}
         >
             {loading ? (
