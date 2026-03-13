@@ -3,21 +3,21 @@ import { View, TextInput, Text, Pressable, Keyboard } from "react-native";
 
 type Props = {
     length?: number;
-    onComplete?: (otp: string) => void;
+    otp: string;
+    setOtp?: (otp: string) => void;
 };
 
-export default function OTPInput({ length = 6, onComplete }: Props) {
-    const [otp, setOtp] = useState("");
+export default function OTPInput({ length = 6, setOtp, otp }: Props) {
+    // const [otp, setOtp] = useState("");
     const inputRef = useRef<TextInput>(null);
 
     const handleChange = (text: string) => {
         const cleaned = text.replace(/[^0-9]/g, "");
 
         setOtp(cleaned);
-
         if (cleaned.length === length) {
             Keyboard.dismiss();
-            onComplete?.(cleaned);
+            setOtp(cleaned);
         }
     };
 
@@ -28,7 +28,7 @@ export default function OTPInput({ length = 6, onComplete }: Props) {
             inputRef.current?.focus();
         }, 50);
     }}
-            className="flex-row justify-between px-4"
+            className="flex-row px-4 gap-2"
         >
             {/* Hidden Input */}
             <TextInput
@@ -44,12 +44,12 @@ export default function OTPInput({ length = 6, onComplete }: Props) {
 
             {Array.from({ length }).map((_, index) => {
                 const digit = otp[index];
-                const isFocused = index === otp.length;
+                const isFocused = index === otp?.length;
 
                 return (
                     <View
                         key={index}
-                        className={`w-12 h-14 rounded-lg border items-center justify-center 
+                        className={`flex-1 min-h-14 rounded-lg border items-center justify-center 
                             ${isFocused
                                 ? "border-primary-500 dark:border-primary-500"
                                 : digit

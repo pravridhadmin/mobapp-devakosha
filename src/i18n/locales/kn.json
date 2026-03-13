@@ -63,20 +63,26 @@
   "signin.title": "ಮುಂದುವರಿಯಲು ಲಾಗಿನ್ ಮಾಡಿ ಅಥವಾ ಸೈನ್ ಅಪ್ ಮಾಡಿ",
   "signin.will_send_otp_by_sms_to_verify": "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ದೃಢೀಕರಿಸಲು ನಾವು SMS ಮೂಲಕ OTP ಕಳುಹಿಸುತ್ತೇವೆ",
   "signin.enter_mobile_number": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
-  "signin.invalid_mobile_number": "ಅಮಾನ್ಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
-  "signin.please_enter_valid_mobile_number": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
   "signin.otp_sent": "{{mobile}} ಸಂಖ್ಯೆಗೆ OTP ಕಳುಹಿಸಲಾಗಿದೆ",
 
   "otpScreen.enter_otp_sent_to": "{{mobile}} ಸಂಖ್ಯೆಗೆ ಕಳುಹಿಸಲಾದ 6-ಅಂಕಿಯ OTP ಅನ್ನು ನಮೂದಿಸಿ",
   "otpScreen.verify": "ದೃಢೀಕರಿಸಿ",
   "otpScreen.please_enter_correct_otp": "ದಯವಿಟ್ಟು ಸರಿಯಾದ OTP ಅನ್ನು ನಮೂದಿಸಿ",
-  "otpScreen.invalid_otp": "ಅಮಾನ್ಯ OTP ನಮೂದಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ನಮೂದಿಸಿ",
   "otpScreen.resend_otp": "OTP ಅನ್ನು ಮತ್ತೆ ಕಳುಹಿಸಿ",
   "otpScreen.resend_otp_in": "OTP ಅನ್ನು ಮತ್ತೆ ಕಳುಹಿಸಲು ಸಮಯ",
-  "otpScreen.otp_expired": "OTP ಅವಧಿ ಮುಗಿದಿದೆ",
-  "otpScreen.request_new_otp": "ಹೊಸ OTP ಗಾಗಿ ವಿನಂತಿಸಿ",
   "otpScreen.too_many_requests": "ಹಲವು ಪ್ರಯತ್ನಗಳನ್ನು ಮಾಡಲಾಗಿದೆ",
-  "otpScreen.try_again_after_some_time": "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
   "otpScreen.change_number": "ಸಂಖ್ಯೆಯನ್ನು ಬದಲಿಸಿ",
-  "otpScreen.didnt_receive_code": "ಕೋಡೆಯನ್ನು ಪ್ರಾಪ್ತವಾಗಿದೆ?"
+  "otpScreen.didnt_receive_code": "ಕೋಡೆಯನ್ನು ಪ್ರಾಪ್ತವಾಗಿದೆ?",
+
+  "firebaseError.try_again_after_some_time":"ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+  "firebaseError.something_went_wrong": "ಏನೋ ತಪ್ಪು ನಡೆದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+  "firebaseError.error": "ದೋಷ",
+  "firebaseError.too_many_requests": "ಹಲವು ಪ್ರಯತ್ನಗಳನ್ನು ಮಾಡಲಾಗಿದೆ",
+  "firebaseError.please_enter_valid_mobile_number": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
+  "firebaseError.invalid_mobile_number": "ಅಮಾನ್ಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+  "firebaseError.request_new_otp": "ಹೊಸ OTP ಗಾಗಿ ವಿನಂತಿಸಿ",
+  "firebaseError.otp_expired": "OTP ಅವಧಿ ಮುಗಿದಿದೆ",
+  "firebaseError.invalid_otp":"ಅಮಾನ್ಯ OTP ನಮೂದಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ನಮೂದಿಸಿ",
+  "firebaseError.quota_exceeded":"ಕ್ವೋಟೆ ಅವಧಿ ಮುಗಿದಿದೆ",
+  "firebaseError.captcha_check_failed": "ಕ್ಯಾಪ್ಚಾ (Captcha) ದೃಢೀಕರಣ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
 }

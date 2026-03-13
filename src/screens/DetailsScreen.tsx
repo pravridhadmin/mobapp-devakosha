@@ -78,18 +78,21 @@ export default function DetailsScreen({ route, navigation }: Props) {
                     <CustomHeader onPress={handleBack} />
 
                     {/* year badge */}
+                    <View className="absolute bottom-10 left-6 right-6 flex-row justify-between items-end">
+
                     {temple?.built_year && (
-                        <View className="absolute bottom-10 left-6">
+                        <View className="max-w-[50%]">
                             <Badge text={temple.built_year} />
                         </View>
                     )}
 
                     {/* status badge */}
                     {temple?.morning_start && temple?.morning_end && temple?.evening_start && temple?.evening_end && (
-                        <View className="absolute bottom-10 right-6">
+                        <View className="">
                             <Badge text={isTempleOpen(temple) ? t('details.open_now') : t("details.closed")} color={isTempleOpen(temple) ? "bg-green-500" : "bg-red-500"} />
                         </View>
                     )}
+                    </View>
                 </HeroImage>
                 <View className="flex-1  bg-background dark:bg-background-dark rounded-t-3xl -mt-6 px-5 pt-6">
 

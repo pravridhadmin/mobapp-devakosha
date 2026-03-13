@@ -19,6 +19,7 @@ import { useLocationFilters } from "../../hooks/useLocationFilters";
 import { useFilters } from "../../context/FiltersContext";
 import RecentTemples from "./components/RecentTemples";
 import FeaturedTemples from "./components/FeaturedTemples";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<RootStackParamList, "MainTabs">;
 
@@ -29,6 +30,13 @@ const HomeScreen = ({ navigation }: Props) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [forceLoad, setForceLoad] = useState(false);
 
+      useFocusEffect(
+          useCallback(() => {
+              setSelectedDistrict(filters.district);
+              setSelectedState(filters.state);
+          }, [filters])
+      );
+
   const {
     states,
     districts,
@@ -36,7 +44,16 @@ const HomeScreen = ({ navigation }: Props) => {
     selectedDistrict,
     setSelectedState,
     setSelectedDistrict,
-  } = useLocationFilters();
+  } = useLocationFilters(filters);
+
+     const handleStateChange = useCallback((state) => {
+        setSelectedState(state);
+        setSelectedDistrict(null);
+    }, []);
+
+    const handleDistrictChange = useCallback((district) => {
+        setSelectedDistrict(district);
+    }, []);
 
   const handleApplyFilters = useCallback(() => {
     const applied = {
@@ -49,6 +66,8 @@ const HomeScreen = ({ navigation }: Props) => {
     setIsFilterOpen(false);
     navigation.navigate("Listing");
   }, [selectedState, selectedDistrict, filters.search]);
+
+
   const handleClearFilters = useCallback(() => {
     setSelectedState(null);
     setSelectedDistrict(null);
@@ -130,10 +149,10 @@ const HomeScreen = ({ navigation }: Props) => {
         onSearchChange={(text) => {
           setFilters((prev) => ({ ...prev, search: text }));
         }}
-        selectedState={selectedState}
-        onStateChange={(state) => setSelectedState(state)}
-        selectedDistrict={selectedDistrict}
-        onDistrictChange={(district) => setSelectedDistrict(district)}
+        selectedState={filters.state}
+        onStateChange={handleStateChange}
+        selectedDistrict={filters.district}
+        onDistrictChange={handleDistrictChange}
         stateOptions={states}
         districtOptions={districts}
         onApply={handleApplyFilters}

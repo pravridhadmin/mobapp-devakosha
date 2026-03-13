@@ -27,7 +27,6 @@ export const useHomeTemples = (
         setFeaturedError(null);
         try {
             const featured = await fetchTemples({
-                ...filters,
                 featured: true,
                 limit: FEATURED_PAGE_LIMIT,
                 offset: offset,

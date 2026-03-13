@@ -32,6 +32,8 @@ export default function ListingScreen({ navigation }: Props) {
             if (filters.search === "" && filters.state === null && filters.district === null) {
                 setIsFilterOpen(true);
             }
+            setSelectedDistrict(filters.district);
+            setSelectedState(filters.state);
         }, [filters])
     );
     const {
@@ -41,8 +43,7 @@ export default function ListingScreen({ navigation }: Props) {
         selectedDistrict,
         setSelectedState,
         setSelectedDistrict,
-    } = useLocationFilters();
-
+    } = useLocationFilters(filters);
 
 
     const {
@@ -57,6 +58,7 @@ export default function ListingScreen({ navigation }: Props) {
 
     const handleStateChange = useCallback((state) => {
         setSelectedState(state);
+        setSelectedDistrict(null);
     }, []);
 
     const handleDistrictChange = useCallback((district) => {
@@ -195,9 +197,9 @@ export default function ListingScreen({ navigation }: Props) {
                 onSearchChange={(text) => {
                     setFilters((prev) => ({ ...prev, search: text }))
                 }}
-                selectedState={selectedState}
+                selectedState={filters.state}
                 onStateChange={handleStateChange}
-                selectedDistrict={selectedDistrict}
+                selectedDistrict={filters.district}
                 onDistrictChange={handleDistrictChange}
                 stateOptions={states}
                 districtOptions={districts}

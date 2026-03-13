@@ -64,23 +64,26 @@
   "signin.title": "Sign in or sign up to continue",
   "signin.will_send_otp_by_sms_to_verify": "We'll send you an OTP by SMS to confirm your mobile number",
   "signin.enter_mobile_number": "Enter Mobile Number",
-  "signin.invalid_mobile_number": "Invalid mobile number",
-  "signin.please_enter_valid_mobile_number": "Please enter a valid mobile number",
   "signin.otp_sent": "OTP sent to {{mobile}}",
-
+  
   "otpScreen.enter_otp_sent_to": "Enter the 6-digit OTP sent to {{mobile}}",
   "otpScreen.verify": "Verify",
   "otpScreen.please_enter_correct_otp": "Please enter the correct OTP",
-  "otpScreen.invalid_otp": "Invalid OTP entered. Please enter again",
   "otpScreen.resend_otp": "Resend OTP",
   "otpScreen.resend_otp_in": "Resend OTP in",
-  "otpScreen.otp_expired": "OTP expired",
-  "otpScreen.request_new_otp": "Request new OTP",
-  "otpScreen.too_many_requests": "Too Many Attempts",
-  "otpScreen.try_again_after_some_time":"Please try again after some time",
   "otpScreen.change_number": "Change Number",
-  "otpScreen.didn't_receive_code": "Didn't receive a code?",
-  "otpScreen.something_went_wrong": "Something went wrong. Please try again.",
-  "otpScreen.error": "Error"
+  "otpScreen.didn't_receive_code": "Didn't receive an OTP?",
+  
+  "firebaseError.try_again_after_some_time":"Please try again after some time",
+  "firebaseError.something_went_wrong": "Something went wrong. Please try again.",
+  "firebaseError.error": "Error",
+  "firebaseError.too_many_requests": "Too Many Attempts",
+  "firebaseError.please_enter_valid_mobile_number": "Please enter a valid mobile number",
+  "firebaseError.invalid_mobile_number": "Invalid mobile number",
+  "firebaseError.request_new_otp": "Request new OTP",
+  "firebaseError.otp_expired": "OTP expired",
+  "firebaseError.invalid_otp":"Invalid OTP entered. Please enter again",
+  "firebaseError.quota_exceeded":"Quote limit Exceeded",
+  "firebaseError.captcha_check_failed": "Captcha check failed. Please try again."
 
 }

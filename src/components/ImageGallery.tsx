@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
+import { SafeAreaViewBase } from "react-native";
 import { View, ScrollView, Image, Pressable } from "react-native";
 import ImageViewing from "react-native-image-viewing";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type GalleryImage = {
     id?: string | number;
@@ -30,7 +32,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     if (!galleryImages.length) return null;
 
     return (
-        <View className="mt-4">
+        <SafeAreaView className="flex-1 mt-4">
             {/* Horizontal Thumbnails */}
             <ScrollView
                 horizontal
@@ -71,9 +73,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                 imageIndex={currentIndex}
                 visible={visible}
                 presentationStyle="overFullScreen"
+                key={formattedImages.length}
                 onRequestClose={() => setVisible(false)}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 

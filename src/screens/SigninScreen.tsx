@@ -5,20 +5,17 @@ import {
     KeyboardAvoidingView,
     Platform,
     ActivityIndicator,
-    StatusBar
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import Button from "../components/Button";
-import CustomTextInput from "../components/CustomTextInput";
-import { formattedPhoneNumber } from "../utils/helperFunctions";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthNavigatorParamList } from "../navigation/AuthNavigator";
 import { CustomAlert } from "../components/CustomAlert";
 import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import PhoneInput from "react-native-phone-number-input";
 import { useColorScheme } from "nativewind";
-import { getFirebaseSendOtpError } from "../utils/firebaseErrorHandler";
+import { getFirebaseError } from "../utils/firebaseErrorHandler";
 
 type Props = NativeStackScreenProps<AuthNavigatorParamList, 'Signin'>;
 const SigninScreen = ({ navigation }: Props) => {
@@ -44,7 +41,7 @@ const SigninScreen = ({ navigation }: Props) => {
             const confirmation = await sendOtp(formattedNumber);
             navigation.navigate('OtpScreen', { mobile: formattedNumber, confirmation });
         } catch (error: any) {
-            const err = getFirebaseSendOtpError(error.code, t);
+            const err = getFirebaseError(error.code, t);
             CustomAlert(err.title, err.message);
         }
     };
@@ -76,7 +73,7 @@ const SigninScreen = ({ navigation }: Props) => {
                             setFormattedNumber(prev => (prev !== text ? text : prev));
                         }}
                         containerStyle={{
-                            height: 56,
+                            minHeight: 56,
                             borderRadius: 8,
                             borderWidth: 1,
                             borderColor: isDark ? "#4B5563" : "#D1D5DB",
@@ -89,10 +86,12 @@ const SigninScreen = ({ navigation }: Props) => {
                             borderTopRightRadius: 8,
                             borderBottomRightRadius: 8,
                             paddingVertical: 0,
+                            flex: 1
                         }}
 
                         textInputStyle={{
                             fontSize: 16,
+                            flexShrink: 1,
                             color: isDark ? "#F9FAFB" : "#111827",
                         }}
 
@@ -133,7 +132,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     </View>
 
                 </View>
-                <ActivityIndicator size="large" color="#0000ff" animating={loading} />
+                <ActivityIndicator size="large" color="#ee7610" animating={loading} />
             </KeyboardAvoidingView>
 
         </SafeAreaView>

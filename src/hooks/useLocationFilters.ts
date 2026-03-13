@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { getDistrictsUrl, getStatesUrl } from "../api/cms";
 
-export const useLocationFilters = () => {
+
+export const useLocationFilters = (fitlers: any ) => {
     const [states, setStates] = useState([]);
     const [districts, setDistricts] = useState([]);
-    const [selectedState, setSelectedState] = useState<any>(null);
-    const [selectedDistrict, setSelectedDistrict] = useState<any>(null);
+    const [selectedState, setSelectedState] = useState<any>(fitlers?.state);
+    const [selectedDistrict, setSelectedDistrict] = useState<any>(fitlers?.district);
     const [loadingStates, setLoadingStates] = useState(false);
     const [loadingDistricts, setLoadingDistricts] = useState(false);
 

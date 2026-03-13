@@ -104,6 +104,6 @@ export interface TemplesUrlParams {
 
 export interface User {
     mobile: string;
-    token: string;
+    token?: string;
 }
 

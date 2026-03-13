@@ -5,7 +5,7 @@ import React, {
     ReactNode,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import auth from '@react-native-firebase/auth';
+import auth, { getAuth, signOut } from '@react-native-firebase/auth';
 import { User } from "../types/models";
 import { useFilters } from "./FiltersContext";
 
@@ -55,7 +55,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setTimeout(async () => {
             const userData: User = {
                 mobile,
-                token: "dummy-token",
             };
 
             setUser(userData);
@@ -79,7 +78,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsLoading(true);
 
         try {
-            await auth().signOut();
+             const auth = getAuth();
+                await signOut(auth);
             await AsyncStorage.removeItem("user");
             setFilters({
             search: "",

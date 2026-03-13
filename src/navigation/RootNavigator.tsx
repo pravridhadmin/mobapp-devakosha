@@ -8,12 +8,12 @@ import { useColorScheme } from "nativewind";
 
 export default function RootNavigator() {
   const { user, isLoading } = useContext(AuthContext);
-  const colorScheme = useColorScheme();
-
+  const theme = useColorScheme();
+  const colorScheme = theme.colorScheme;
   if (isLoading) {
     return (
       <View className="flex-1 justify-center items-center bg-white dark:bg-black">
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color="#ee7610" />
       </View>
     );
   }
