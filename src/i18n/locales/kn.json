@@ -1,88 +1,122 @@
 {
-  "recent.we_couldnt_find_any_temples_at_the_moment": "ಪ್ರಸ್ತುತ ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪೂರೈಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
-  "recent.try_again": "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
-  "recent.no_recent_temples_found": "ಇತ್ತೀಚೆಗೆ ಸೇರಿಸಲಾದ ಯಾವುದೇ ದೇವಾಲಯಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+  "recent": {
+    "we_couldnt_find_any_temples_at_the_moment": "ಪ್ರಸ್ತುತ ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪೂರೈಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "try_again": "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+    "no_recent_temples_found": "ಇತ್ತೀಚೆಗೆ ಸೇರಿಸಲಾದ ಯಾವುದೇ ದೇವಾಲಯಗಳು ಕಂಡುಬಂದಿಲ್ಲ"
+  },
 
-  "welcomeScreen.choose_app_lang": "ಅಪ್ಲಿಕೇಶನ್ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-  "welcomeScreen.welcome_to_your_sacred_journey": "ನಿಮ್ಮ ಪವಿತ್ರ ಪ್ರಯಾಣಕ್ಕೆ ಸುಸ್ವಾಗತ",
-  "welcomeScreen.by_proceeding_you_confirm": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು ಇವುಗಳನ್ನು ಒಪ್ಪುತ್ತೀರಿ ಎಂದು ಖಚಿತಪಡಿಸುತ್ತೀರಿ:",
-  "welcomeScreen.privacy_policy": "ಗೌಪ್ಯತಾ ನೀತಿ",
-  "welcomeScreen.terms_of_use": "ಬಳಕೆಯ ನಿಯಮಗಳು",
-  "welcomeScreen.and":"ಮತ್ತೆ",
+  "welcomeScreen": {
+    "choose_app_lang": "ಅಪ್ಲಿಕೇಶನ್ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "welcome_to_your_sacred_journey": "ನಿಮ್ಮ ಪವಿತ್ರ ಪ್ರಯಾಣಕ್ಕೆ ಸುಸ್ವಾಗತ",
+    "by_proceeding_you_confirm": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು ಇವುಗಳನ್ನು ಒಪ್ಪುತ್ತೀರಿ ಎಂದು ಖಚಿತಪಡಿಸುತ್ತೀರಿ:",
+    "privacy_policy": "ಗೌಪ್ಯತಾ ನೀತಿ",
+    "terms_of_use": "ಬಳಕೆಯ ನಿಯಮಗಳು",
+    "and": "ಮತ್ತೆ"
+  },
 
-  "profile.profile": "ಪ್ರೊಫೈಲ್",
-  "profile.registered_mobile": "ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
-  "profile.language": "ಭಾಷೆ",
-  "profile.signout_confirm_title": "ನಿರ್ಗಮನವನ್ನು ಖಚಿತಪಡಿಸಿ",
-  "profile.signout_confirm_message": "ಪ್ರತಿ ಪ್ರಯಾಣಕ್ಕೂ ಒಂದು ವಿರಾಮದ ಅಗತ್ಯವಿದೆ. ನೀವು ಹಿಂತಿರುಗಿದಾಗ ನಾವು ಇಲ್ಲೇ ಇರುತ್ತೇವೆ",
-  "profile.stayback": "ಹಿಂತಿರುಗಿ",
-  "profile.signout": "ಸೈನ್ ಔಟ್",
-  "profile.app_version": "ಆವೃತ್ತಿ {{version}}",
+  "profile": {
+    "profile": "ಪ್ರೊಫೈಲ್",
+    "registered_mobile": "ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    "language": "ಭಾಷೆ",
+    "signout_confirm_title": "ನಿರ್ಗಮನವನ್ನು ಖಚಿತಪಡಿಸಿ",
+    "signout_confirm_message": "ಪ್ರತಿ ಪ್ರಯಾಣಕ್ಕೂ ಒಂದು ವಿರಾಮದ ಅಗತ್ಯವಿದೆ. ನೀವು ಹಿಂತಿರುಗಿದಾಗ ನಾವು ಇಲ್ಲೇ ಇರುತ್ತೇವೆ",
+    "stayback": "ಹಿಂತಿರುಗಿ",
+    "signout": "ಸೈನ್ ಔಟ್",
+    "app_version": "ಆವೃತ್ತಿ {{version}}"
+  },
 
-  "home.sacred_spotlight": "ಪವಿತ್ರ ಬೆಳಕು",
-  "home.latest_updates": "ಇತ್ತೀಚಿನ ನವೀಕರಣಗಳು",
+  "home": {
+    "sacred_spotlight": "ಪವಿತ್ರ ಬೆಳಕು",
+    "latest_updates": "ಇತ್ತೀಚಿನ ನವೀಕರಣಗಳು"
+  },
 
-  "search.no_temples_found": "ಪ್ರಯಾಣ ಮುಂದುವರಿಯುತ್ತಿದೆ... ಧೃತಿಗೆಡಬೇಡಿ!",
-  "search.try_clearing_filters_to_see_more_results": "ಆ ದೇವತೆ ಅಥವಾ ದೇವಾಲಯವನ್ನು ಪತ್ತೆಹಚ್ಚಲು ನಮಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಬೇರೆ ಹೆಸರಿನಿಂದ ಹುಡುಕಲು ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಹತ್ತಿರದ ಜಿಲ್ಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ",
-  "search.clear_filters": "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕಿ",
+  "search": {
+    "no_temples_found": "ಪ್ರಯಾಣ ಮುಂದುವರಿಯುತ್ತಿದೆ... ಧೃತಿಗೆಡಬೇಡಿ!",
+    "try_clearing_filters_to_see_more_results": "ಆ ದೇವತೆ ಅಥವಾ ದೇವಾಲಯವನ್ನು ಪತ್ತೆಹಚ್ಚಲು ನಮಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಬೇರೆ ಹೆಸರಿನಿಂದ ಹುಡುಕಲು ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಹತ್ತಿರದ ಜಿಲ್ಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ",
+    "clear_filters": "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕಿ"
+  },
 
-  "filter.search_temples_&_deities": "ದೇವಾಲಯಗಳು ಮತ್ತು ದೇವತೆಗಳನ್ನು ಹುಡುಕಿ",
-  "filter.state": "ರಾಜ್ಯ",
-  "filter.district": "ಜಿಲ್ಲೆ",
+  "filter": {
+    "search_temples_&_deities": "ದೇವಾಲಯಗಳು ಮತ್ತು ದೇವತೆಗಳನ್ನು ಹುಡುಕಿ"
+  },
 
-  "featured.no_featured_temples": "ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯಗೊಳಿಸಿದ ದೇವಾಲಯಗಳಿಲ್ಲ",
-  "featured.error_fetching_featured_temples": "ವೈಶಿಷ್ಟ್ಯಗೊಳಿಸಿದ ದೇವಾಲಯಗಳನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ",
+  "featured": {
+    "no_featured_temples": "ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯಗೊಳಿಸಿದ ದೇವಾಲಯಗಳಿಲ್ಲ",
+    "error_fetching_featured_temples": "ವೈಶಿಷ್ಟ್ಯಗೊಳಿಸಿದ ದೇವಾಲಯಗಳನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ"
+  },
      
-  "generic.continue": "ಮುಂದುವರಿಸಿ",
-  "generic.search": "ಹುಡುಕಿ",
-  "generic.devakosha": "ದೇವಕೋಶ",
-  "generic.home": "ಮುಖಪುಟ",
-  "generic.choose_state": "ರಾಜ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-  "generic.choose_district": "ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-  "generic.search_deity_or_temple": "ದೇವತೆ ಅಥವಾ ದೇವಾಲಯಕ್ಕಾಗಿ ಹುಡುಕಿ...",
-  "generic.clear": "ಅಳಿಸಿ",
-  "generic.loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+  "generic": {
+    "continue": "ಮುಂದುವರಿಸಿ",
+    "search": "ಹುಡುಕಿ",
+    "devakosha": "ದೇವಕೋಶ",
+    "home": "ಮುಖಪುಟ",
+    "choose_state": "ರಾಜ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "choose_district": "ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "search_deity_or_temple": "ದೇವತೆ ಅಥವಾ ದೇವಾಲಯಕ್ಕಾಗಿ ಹುಡುಕಿ...",
+    "clear": "ಅಳಿಸಿ",
+    "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+    "network_error": "ನೋಟ್ವರ್ಕ್ ಸರಿಯಿಲ್ಲದಂತಿದೆ, ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"
+  },
 
-  "error.title": "ಏನೋ ಸರಿಯಿಲ್ಲದಂತಿದೆ",
-  "error.message": "ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪೂರೈಸಲು ನಮಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
-  "error.button_text": "ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+  "error": {
+    "title": "ಏನೋ ಸರಿಯಿಲ್ಲದಂತಿದೆ",
+    "message": "ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪೂರೈಸಲು ನಮಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
+    "button_text": "ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"
+  },
 
-  "details.connect": "ಸಂಪರ್ಕಿಸಿ",
-  "details.about": "ಬಗ್ಗೆ",
-  "details.address": "ವಿಳಾಸ",
-  "details.email": "ಇಮೇಲ್",
-  "details.call": "ಕರೆ ಮಾಡಿ",
-  "details.gallery": "ಗ್ಯಾಲರಿ",
-  "details.closed": "ಮುಚ್ಚಿದೆ",
-  "details.open_now": "ಈಗ ತೆರೆದಿದೆ",
-  "details.timings":"ಸಮಯಗಳು",
-  "details.morning":"ಮುಂಜಾನೆ",
-  "details.evening":"ಸಾಯಂಕಾಲ ",
-  "details.not_available":"ಲಭ್ಯವಿಲ್ಲ",
+  "details": {
+    "connect": "ಸಂಪರ್ಕಿಸಿ",
+    "about": "ಬಗ್ಗೆ",
+    "address": "ವಿಳಾಸ",
+    "email": "ಇಮೇಲ್",
+    "call": "ಕರೆ ಮಾಡಿ",
+    "gallery": "ಗ್ಯಾಲರಿ",
+    "closed": "ಮುಚ್ಚಿದೆ",
+    "open_now": "ಈಗ ತೆರೆದಿದೆ",
+    "timings": "ಸಮಯಗಳು",
+    "morning": "ಮುಂಜಾನೆ",
+    "evening": "ಸಾಯಂಕಾಲ ",
+    "not_available": "ಲಭ್ಯವಿಲ್ಲ"
+  },
 
-  "signin.title": "ಮುಂದುವರಿಯಲು ಲಾಗಿನ್ ಮಾಡಿ ಅಥವಾ ಸೈನ್ ಅಪ್ ಮಾಡಿ",
-  "signin.will_send_otp_by_sms_to_verify": "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ದೃಢೀಕರಿಸಲು ನಾವು SMS ಮೂಲಕ OTP ಕಳುಹಿಸುತ್ತೇವೆ",
-  "signin.enter_mobile_number": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
-  "signin.otp_sent": "{{mobile}} ಸಂಖ್ಯೆಗೆ OTP ಕಳುಹಿಸಲಾಗಿದೆ",
+ "signin": {
+    "title": "ಮುಂದುವರಿಯಲು ಲಾಗಿನ್ ಮಾಡಿ ಅಥವಾ ಸೈನ್ ಅಪ್ ಮಾಡಿ",
+    "will_send_otp_by_sms_to_verify": "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ದೃಢೀಕರಿಸಲು ನಾವು SMS ಮೂಲಕ OTP ಕಳುಹಿಸುತ್ತೇವೆ",
+    "enter_mobile_number": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
+    "otp_sent": "{{mobile}} ಸಂಖ್ಯೆಗೆ OTP ಕಳುಹಿಸಲಾಗಿದೆ"
+  },
 
-  "otpScreen.enter_otp_sent_to": "{{mobile}} ಸಂಖ್ಯೆಗೆ ಕಳುಹಿಸಲಾದ 6-ಅಂಕಿಯ OTP ಅನ್ನು ನಮೂದಿಸಿ",
-  "otpScreen.verify": "ದೃಢೀಕರಿಸಿ",
-  "otpScreen.please_enter_correct_otp": "ದಯವಿಟ್ಟು ಸರಿಯಾದ OTP ಅನ್ನು ನಮೂದಿಸಿ",
-  "otpScreen.resend_otp": "OTP ಅನ್ನು ಮತ್ತೆ ಕಳುಹಿಸಿ",
-  "otpScreen.resend_otp_in": "OTP ಅನ್ನು ಮತ್ತೆ ಕಳುಹಿಸಲು ಸಮಯ",
-  "otpScreen.too_many_requests": "ಹಲವು ಪ್ರಯತ್ನಗಳನ್ನು ಮಾಡಲಾಗಿದೆ",
-  "otpScreen.change_number": "ಸಂಖ್ಯೆಯನ್ನು ಬದಲಿಸಿ",
-  "otpScreen.didnt_receive_code": "ಕೋಡೆಯನ್ನು ಪ್ರಾಪ್ತವಾಗಿದೆ?",
+  "otpScreen": {
+    "enter_otp_sent_to": "{{mobile}} ಸಂಖ್ಯೆಗೆ ಕಳುಹಿಸಲಾದ 6-ಅಂಕಿಯ OTP ಅನ್ನು ನಮೂದಿಸಿ",
+    "verify": "ದೃಢೀಕರಿಸಿ",
+    "please_enter_correct_otp": "ದಯವಿಟ್ಟು ಸರಿಯಾದ OTP ಅನ್ನು ನಮೂದಿಸಿ",
+    "resend_otp": "OTP ಅನ್ನು ಮತ್ತೆ ಕಳುಹಿಸಿ",
+    "resend_otp_in": "OTP ಅನ್ನು ಮತ್ತೆ ಕಳುಹಿಸಲು ಸಮಯ",
+    "change_number": "ಸಂಖ್ಯೆಯನ್ನು ಬದಲಿಸಿ",
+    "didnt_receive_code": "ಕೋಡೆಯನ್ನು ಪ್ರಾಪ್ತವಾಗಿದೆ?"
+  },
 
-  "firebaseError.try_again_after_some_time":"ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
-  "firebaseError.something_went_wrong": "ಏನೋ ತಪ್ಪು ನಡೆದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
-  "firebaseError.error": "ದೋಷ",
-  "firebaseError.too_many_requests": "ಹಲವು ಪ್ರಯತ್ನಗಳನ್ನು ಮಾಡಲಾಗಿದೆ",
-  "firebaseError.please_enter_valid_mobile_number": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
-  "firebaseError.invalid_mobile_number": "ಅಮಾನ್ಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
-  "firebaseError.request_new_otp": "ಹೊಸ OTP ಗಾಗಿ ವಿನಂತಿಸಿ",
-  "firebaseError.otp_expired": "OTP ಅವಧಿ ಮುಗಿದಿದೆ",
-  "firebaseError.invalid_otp":"ಅಮಾನ್ಯ OTP ನಮೂದಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ನಮೂದಿಸಿ",
-  "firebaseError.quota_exceeded":"ಕ್ವೋಟೆ ಅವಧಿ ಮುಗಿದಿದೆ",
-  "firebaseError.captcha_check_failed": "ಕ್ಯಾಪ್ಚಾ (Captcha) ದೃಢೀಕರಣ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
+  "firebaseError": {
+    "try_again_after_some_time": "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+    "something_went_wrong": "ಏನೋ ತಪ್ಪು ನಡೆದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+    "error": "ದೋಷ",
+    "too_many_requests": "ಹಲವು ಪ್ರಯತ್ನಗಳನ್ನು ಮಾಡಲಾಗಿದೆ",
+    "please_enter_valid_mobile_number": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
+    "invalid_mobile_number": "ಅಮಾನ್ಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    "request_new_otp": "ಹೊಸ OTP ಗಾಗಿ ವಿನಂತಿಸಿ",
+    "otp_expired": "OTP ಅವಧಿ ಮುಗಿದಿದೆ",
+    "invalid_otp": "ಅಮಾನ್ಯ OTP ನಮೂದಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ನಮೂದಿಸಿ",
+    "quota_exceeded": "ಕ್ವೋಟೆ ಅವಧಿ ಮುಗಿದಿದೆ",
+    "captcha_check_failed": "ಕ್ಯಾಪ್ಚಾ (Captcha) ದೃಢೀಕರಣ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
+  },
+  
+  "errors": {
+    "something_went_wrong": "ಏನೋ ತಪ್ಪಾಗಿದೆ",
+    "bad_request": "ಅಮಾನ್ಯ ವಿನಂತಿ",
+    "session_expired": "ಸೆಷನ್ ಮುಗಿದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಲಾಗಿನ್ ಮಾಡಿ.",
+    "not_authorized": "ಈ ಕ್ರಿಯೆಯನ್ನು ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿ ಇಲ್ಲ.",
+    "not_found": "ಕೋರಿದ ಸಂಪನ್ಮೂಲ ಸಿಗಲಿಲ್ಲ",
+    "server_error": "ಸರ್ವರ್ ದೋಷ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+  }
+
 }

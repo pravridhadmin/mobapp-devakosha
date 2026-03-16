@@ -14,9 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-       "userInterfaceStyle": "automatic",
+      "userInterfaceStyle": "automatic",
     },
     "android": {
+      "permissions": [],
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/app_icon.png",
@@ -31,7 +36,7 @@
     },
     "plugins": [
       "expo-localization",
-      "@react-native-firebase/app", 
+      "@react-native-firebase/app",
       "@react-native-firebase/auth"
     ]
   }

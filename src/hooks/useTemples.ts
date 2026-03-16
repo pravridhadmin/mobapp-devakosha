@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchTemples } from "../api/cms";
 import { TemplePage } from "../types/models";
+import { PAGE_LIMIT } from "../utils/constants";
 
 
 
@@ -13,7 +14,6 @@ export const useTemples = (filters, isFeatured = false) => {
     const [hasMore, setHasMore] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const PAGE_SIZE = 10;
 
     const loadTemples = useCallback(
         async (reset = false) => {
@@ -29,19 +29,19 @@ export const useTemples = (filters, isFeatured = false) => {
 
                 const newItems = await fetchTemples({
                     ...filters,
-                    limit: PAGE_SIZE,
+                    limit: PAGE_LIMIT,
                     offset: currentOffset,
                     featured: isFeatured,
                 });
 
-                setHasMore(newItems.length === PAGE_SIZE);
+                setHasMore(newItems.length === PAGE_LIMIT);
 
                 if (reset) {
                     setTemples(newItems);
-                    setOffset(PAGE_SIZE);
+                    setOffset(PAGE_LIMIT);
                 } else {
                     setTemples(prev => [...prev, ...newItems]);
-                    setOffset(prev => prev + PAGE_SIZE);
+                    setOffset(prev => prev + PAGE_LIMIT);
                 }
             } catch (err) {
                 setError("Failed to load temples");

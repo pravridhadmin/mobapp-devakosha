@@ -13,6 +13,7 @@ import OTPInput from '../components/OTPInput';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {RESEND_OTP_TIME } from '../utils/constants';
 import { getFirebaseError } from '../utils/firebaseErrorHandler';
+import { useOtpTimer } from '../hooks/useOtpTimer';
 
 type Props = NativeStackScreenProps<AuthNavigatorParamList, 'OtpScreen'>;
 const OtpScreen = ({ navigation, route }: Props) => {
@@ -22,21 +23,9 @@ const OtpScreen = ({ navigation, route }: Props) => {
     const [otp, setOtp] = useState("");
     const [firebaseConfirmation, setFirebaseConfirmation] = useState<FirebaseAuthTypes.ConfirmationResult | null>(confirmation);
 
-    const [timer, setTimer] = useState(RESEND_OTP_TIME);
-    const [canResend, setCanResend] = useState(false);
 
     // resend timer
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-        if (timer > 0) {
-            interval = setInterval(() => {
-                setTimer((prev) => prev - 1);
-            }, 1000);
-        } else {
-            setCanResend(true);
-        }
-        return () => clearInterval(interval);
-    }, [timer]);
+    const { timer, canResend, startTimer } = useOtpTimer();
 
 
     //  Verify OTP
@@ -51,8 +40,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
 
     const handleResendOtp = async () => {
         try {
-            setTimer(RESEND_OTP_TIME);
-            setCanResend(false);
+            startTimer();
             const newConfirmation = await resendOtp(mobile);
             setFirebaseConfirmation(newConfirmation);
         } catch (error) {
@@ -99,7 +87,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
                     <View className="items-center space-y-2">
 
                         {!canResend ? (
-                            <Text className="text-sm dark:text-surface dark:text-surface">
+                            <Text className="text-sm  dark:text-surface">
                                 {t("otpScreen.resend_otp_in")}{" "}
                                 <Text className="font-semibold text-gray-700 dark:text-gray-200">
                                     {timer}s
@@ -107,7 +95,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
                             </Text>
                         ) : (
                             <View className="flex-row items-center">
-                                <Text className="text-sm flex-1 dark:text-surface dark:text-surface">
+                                <Text className="text-sm flex-1 dark:text-surface">
                                    {t("otpScreen.didn't_receive_code")}
                                 </Text>
 

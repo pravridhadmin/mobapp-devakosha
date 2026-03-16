@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { getDistrictsUrl, getStatesUrl } from "../api/cms";
+import { fetchStates as fetchStatesApi, fetchDistricts as fetchDistrictsApi } from "../api/cms";
+import { District, State } from "../types/models";
 
 
 export const useLocationFilters = (fitlers: any ) => {
-    const [states, setStates] = useState([]);
-    const [districts, setDistricts] = useState([]);
-    const [selectedState, setSelectedState] = useState<any>(fitlers?.state);
-    const [selectedDistrict, setSelectedDistrict] = useState<any>(fitlers?.district);
+    const [states, setStates] = useState<State[]>([]);
+    const [districts, setDistricts] = useState<District[]>([]);
+    const [selectedState, setSelectedState] = useState<State>(fitlers?.state);
+    const [selectedDistrict, setSelectedDistrict] = useState<District>(fitlers?.district);
     const [loadingStates, setLoadingStates] = useState(false);
     const [loadingDistricts, setLoadingDistricts] = useState(false);
 
@@ -26,9 +27,10 @@ export const useLocationFilters = (fitlers: any ) => {
     const fetchStates = async () => {
         try {
             setLoadingStates(true);
-            const response = await fetch(getStatesUrl());
-            const data = await response.json();
-            setStates(data.items || []);
+        const states = await fetchStatesApi();
+
+        setStates(states);
+
         } catch (e) {
             new Error(e);
         } finally {
@@ -39,9 +41,9 @@ export const useLocationFilters = (fitlers: any ) => {
     const fetchDistricts = async (stateId: number) => {
         try {
             setLoadingDistricts(true);
-            const response = await fetch(getDistrictsUrl(stateId));
-            const data = await response.json();
-            setDistricts(data.items || []);
+            const districts = await fetchDistrictsApi(stateId);
+
+            setDistricts(districts);
         } catch (e) {
             new Error(e);
         } finally {

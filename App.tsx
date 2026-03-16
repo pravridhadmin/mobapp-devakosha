@@ -31,15 +31,15 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <FiltersProvider>
+      <AuthProvider>
         <SnackbarProvider>
-          <AuthProvider>
+          <FiltersProvider>
             <HomeProvider>
               <RootNavigator />
             </HomeProvider>
-          </AuthProvider>
+          </FiltersProvider>
         </SnackbarProvider>
-      </FiltersProvider>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }

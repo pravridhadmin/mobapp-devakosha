@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }: Props) => {
           />
         }
       >
-        <View className="flex-1 px-6">
+        <View className="px-6">
           <Text className="text-text-primary dark:text-text-primary-dark text-lg font-semibold mb-3">
             {t("home.sacred_spotlight")}
           </Text>

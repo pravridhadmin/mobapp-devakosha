@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { FEATURED_PAGE_LIMIT, RECENT_PAGE_LIMIT } from "../utils/constants";
 import { useHomeContext } from "../context/HomeContext";
+import { District, State } from "../types/models";
 
 type Filters = {
-    state?: any;
-    district?: any;
+    state?: State;
+    district?: District;
     search?: string;
 };
 

@@ -1,5 +1,8 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { District, State } from "../types/models";
+import { AuthContext } from "./AuthContext";
+
+
 
 type FiltersType = {
     state: State | null;
@@ -19,14 +22,23 @@ const defaultFilters: FiltersType = {
     search: "",
 };
 
+
 const FiltersContext = createContext<FiltersContextType | undefined>(
     undefined
 );
 
 export const FiltersProvider = ({ children }: { children: React.ReactNode }) => {
+    const { user } = useContext(AuthContext);
     const [filters, setFilters] = useState<FiltersType>(defaultFilters);
 
+    
     const resetFilters = () => setFilters(defaultFilters);
+    
+    useEffect(() => {
+        if (!user) {
+            setFilters(defaultFilters);
+        }
+    }, [user]);
 
     return (
         <FiltersContext.Provider value={{ filters, setFilters, resetFilters }}>
