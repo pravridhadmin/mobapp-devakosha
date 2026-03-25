@@ -28,8 +28,13 @@ const FeaturedTemples = ({ filters, navigation, forceReload } :   Props) => {
         };
         loadFeatured();
     }, [forceReload]);
+if(featuredLoading) {
+    return (
+        <CardSkeleton />
+    );
+}
 
-    if(!temple) {
+    if(!temple && !featuredLoading) {
         return (
             <EmptyState message={t("featured.no_featured_temples")} />
         );
