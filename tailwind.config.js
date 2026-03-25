@@ -1,4 +1,11 @@
 /** @type {import('tailwindcss').Config} */
+import { themeColors } from "./src/themes/defaultTheme.ts";
+const colors = require("./src/themes/colors.json")
+const spacing = require("./src/themes/spacing.json")
+const radius = require("./src/themes/radius.json")
+const typography = require("./src/themes/typography.json")
+const shadows = require("./src/themes/shadows.json")
+
 module.exports = {
   // NOTE: Update this to include the paths to all of your component files.
   content: [
@@ -11,46 +18,68 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        /*
-        |--------------------------------------------------------------------------
-        | LIGHT THEME
-        |--------------------------------------------------------------------------
-        */
+        primary: colors.light.primary,
 
-        primary: "#2563EB",      // Blue 600
-        accent: "#F59E0B",       // Amber 500
+        accent: {
+          DEFAULT: colors.light.accent,
+          dark: colors.dark.accent
+        },
 
-        background: "#FFFFFF",
-        surface: "#F9FAFB",
+        secondary: {
+          DEFAULT: colors.light.secondary,
+          dark: colors.dark.secondary
+        },
 
-        text: "#111827",
+        success: {
+          DEFAULT: colors.light.success,
+          dark: colors.dark.success
+        },
 
-        "gray-1": "#F3F4F6",
-        "gray-2": "#E5E7EB",
-        "gray-3": "#9CA3AF",
-        "gray-4": "#4B5563",
+        warning: {
+          DEFAULT: colors.light.warning,
+          dark: colors.dark.warning
+        },
 
-        /*
-        |--------------------------------------------------------------------------
-        | DARK THEME (used with dark:)
-        |--------------------------------------------------------------------------
-        */
+        background: {
+          DEFAULT: colors.light.background,
+          dark: colors.dark.background
+        },
 
-        "primary-dark": "#3B82F6",
-        "accent-dark": "#FBBF24",
+        surface: {
+          DEFAULT: colors.light.surface,
+          dark: colors.dark.surface
+        },
 
-        "background-dark": "#111827",
-        "surface-dark": "#1F2937",
-
-        "text-dark": "#F9FAFB",
-
-        "gray-1-dark": "#1F2937",
-        "gray-2-dark": "#374151",
-        "gray-3-dark": "#6B7280",
-        "gray-4-dark": "#D1D5DB",
+        text: {
+          primary: {
+            DEFAULT: colors.light.text.primary,
+            dark: colors.dark.text.primary
+          }
+        },
+        placeholder: {
+          DEFAULT: colors.light.placeholder,
+          dark: colors.dark.placeholder
+        }
       },
+
+      spacing: spacing,
+
+      borderRadius: radius,
+
+      fontSize: typography.fontSize,
+
+      fontWeight: typography.fontWeight,
+
+      lineHeight: typography.lineHeight,
+
+      boxShadow: {
+        sm: `${shadows.light.sm.shadowOffset.height}px ${shadows.light.sm.shadowRadius}px rgba(0,0,0,${shadows.light.sm.shadowOpacity})`,
+        md: `${shadows.light.md.shadowOffset.height}px ${shadows.light.md.shadowRadius}px rgba(0,0,0,${shadows.light.md.shadowOpacity})`,
+        lg: `${shadows.light.lg.shadowOffset.height}px ${shadows.light.lg.shadowRadius}px rgba(0,0,0,${shadows.light.lg.shadowOpacity})`
+      }
+
     },
   },
   plugins: [],
-  darkMode: 'media', 
+  darkMode: 'media',
 };

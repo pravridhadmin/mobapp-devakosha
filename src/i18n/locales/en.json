@@ -1,5 +1,122 @@
 {
-  "welcome": "Welcome to Devakosha!",
-  "goDetails": "Go to Details",
-  "detailsScreen": "Details for item {{itemId}}"
+  "recent": {
+    "we_couldnt_find_any_temples_at_the_moment": "We couldn't complete your request right now. Please try again.",
+    "try_again": "Try Again",
+    "no_recent_temples_found": "No recently added temples found"
+  },
+
+  "welcomeScreen": {
+    "choose_app_lang": "Choose App Language",
+    "welcome_to_your_sacred_journey": "Welcome to your sacred journey",
+    "by_proceeding_you_confirm": "By proceeding you confirm that you agree to the",
+    "privacy_policy": "Privacy Policy",
+    "terms_of_use": "Terms of Use",
+    "and": "and"
+  },
+
+  "profile": {
+    "profile": "Profile",
+    "registered_mobile": "Registered Mobile Number",
+    "language": "Language",
+    "signout_confirm_title": "Confirm Signout",
+    "signout_confirm_message": "Every journey needs a pause. We'll be here when you return",
+    "stayback": "Stayback",
+    "signout": "Signout",
+    "app_version": "Version {{version}}"
+  },
+
+  "home": {
+    "sacred_spotlight": "Sacred Spotlight",
+    "latest_updates": "Latest Updates"
+  },
+
+  "search": {
+    "no_temples_found": "The journey continues… don't give up!",
+    "try_clearing_filters_to_see_more_results": "We couldn't locate that deity or temple. Consider searching by another name or checking nearby districts",
+    "clear_filters": "Reset Search"
+  },
+
+  "filter": {
+    "search_temples_&_deities": "Search Temples or Deities"
+  },
+
+  "featured": {
+    "no_featured_temples": "No featured temples",
+    "error_fetching_featured_temples": "Error fetching featured temples"
+  },
+   
+  "generic": {
+    "continue": "Continue",
+    "search": "Search",
+    "devakosha": "Devakosha",
+    "home": "Home",
+    "choose_state": "Choose State",
+    "choose_district": "Choose District",
+    "search_deity_or_temple": "Search for temples or deities...",
+    "clear": "Clear",
+    "loading": "Loading",
+    "network_error": "Network Error, Please try again"
+  },
+
+  "error": {
+    "title": "Something's not quite right",
+    "message": "We couldn't complete your request right now.",
+    "button_text": "Please try again"
+  },
+
+  "details": {
+    "connect": "Connect",
+    "about": "About",
+    "address": "Address",
+    "email": "Email",
+    "call": "Call",
+    "gallery": "Gallery",
+    "closed": "Closed",
+    "open_now": "Open Now",
+    "timings": "Timings",
+    "morning": "Morning",
+    "evening": "Evening",
+    "not_available": "Not available"
+  },
+
+  "signin": {
+    "title": "Sign in or sign up to continue",
+    "will_send_otp_by_sms_to_verify": "We'll send you an OTP by SMS to confirm your mobile number",
+    "enter_mobile_number": "Enter Mobile Number",
+    "otp_sent": "OTP sent to {{mobile}}"
+  },
+  
+  "otpScreen": {
+    "enter_otp_sent_to": "Enter the 6-digit OTP sent to {{mobile}}",
+    "verify": "Verify",
+    "please_enter_correct_otp": "Please enter the correct OTP",
+    "resend_otp": "Resend OTP",
+    "resend_otp_in": "Resend OTP in",
+    "change_number": "Change Number",
+    "didn't_receive_code": "Didn't receive an OTP?"
+  },
+  
+  "firebaseError": {
+    "try_again_after_some_time": "Please try again after some time",
+    "something_went_wrong": "Something went wrong. Please try again.",
+    "error": "Error",
+    "too_many_requests": "Too Many Attempts",
+    "please_enter_valid_mobile_number": "Please enter a valid mobile number",
+    "invalid_mobile_number": "Invalid mobile number",
+    "request_new_otp": "Request new OTP",
+    "otp_expired": "OTP expired",
+    "invalid_otp": "Invalid OTP entered. Please enter again",
+    "quota_exceeded": "Quote limit Exceeded",
+    "captcha_check_failed": "Captcha check failed. Please try again."
+  },
+
+  "errors": {
+    "something_went_wrong": "Something went wrong",
+    "bad_request": "Invalid request",
+    "session_expired": "Session expired. Please login again.",
+    "not_authorized": "You are not authorized to perform this action.",
+    "not_found": "Requested resource not found",
+    "server_error": "Server error. Please try again later."
+}
+
 }

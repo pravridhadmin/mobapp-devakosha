@@ -1,0 +1,117 @@
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Button from '../components/Button';
+import { AuthNavigatorParamList } from '../navigation/AuthNavigator';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CustomAlert } from '../components/CustomAlert';
+import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
+import { formattedPhoneNumber } from '../utils/helperFunctions';
+import OTPInput from '../components/OTPInput';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {RESEND_OTP_TIME } from '../utils/constants';
+import { getFirebaseError } from '../utils/firebaseErrorHandler';
+import { useOtpTimer } from '../hooks/useOtpTimer';
+
+type Props = NativeStackScreenProps<AuthNavigatorParamList, 'OtpScreen'>;
+const OtpScreen = ({ navigation, route }: Props) => {
+    const { mobile, confirmation } = route.params;
+    const { t } = useTranslation();
+    const { verifyOtp, loading, resendOtp } = useFirebaseAuth();
+    const [otp, setOtp] = useState("");
+    const [firebaseConfirmation, setFirebaseConfirmation] = useState<FirebaseAuthTypes.ConfirmationResult | null>(confirmation);
+
+
+    // resend timer
+    const { timer, canResend, startTimer } = useOtpTimer();
+
+
+    //  Verify OTP
+    const handleVerifyOtp = async () => {
+        try {
+            const userCredential = await verifyOtp(otp, firebaseConfirmation);
+        } catch (error) {
+            const err = getFirebaseError(error.code, t);
+            CustomAlert(err.title, err.message);
+        }
+    };
+
+    const handleResendOtp = async () => {
+        try {
+            startTimer();
+            const newConfirmation = await resendOtp(mobile);
+            setFirebaseConfirmation(newConfirmation);
+        } catch (error) {
+            const err = getFirebaseError(error.code, t);
+            CustomAlert(err.title, err.message);
+        }
+    };
+    return (
+        <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                className="flex-1 justify-center px-6"
+            >
+                
+                <View className="mb-10">
+                    <Text className="text-3xl font-bold mb-2 text-text-primary dark:text-text-primary-dark">
+                        {t("otpScreen.enter_otp_sent_to", { mobile: `${mobile}` })}
+                    </Text>
+
+                </View>
+                <ActivityIndicator size="large" color="#ee7610" animating={loading} />
+
+                <View className="space-y-4">
+                    <OTPInput setOtp={setOtp} otp={otp} />
+
+                    <View className="mt-4">
+                        <Button
+                            title={t("otpScreen.verify")}
+                            variant="primary"
+                            onPress={handleVerifyOtp}
+                            disabled={loading || otp.length !== 6}
+                            fullWidth
+                        />
+                    </View>
+
+                    <Button
+                        title={t("otpScreen.change_number")}
+                        variant="ghost"
+                        onPress={() => {
+                            setOtp("");
+                            navigation.goBack();
+                        }}
+                    />
+                    <View className="items-center space-y-2">
+
+                        {!canResend ? (
+                            <Text className="text-sm  dark:text-surface">
+                                {t("otpScreen.resend_otp_in")}{" "}
+                                <Text className="font-semibold text-gray-700 dark:text-gray-200">
+                                    {timer}s
+                                </Text>
+                            </Text>
+                        ) : (
+                            <View className="flex-row items-center">
+                                <Text className="text-sm flex-1 dark:text-surface">
+                                   {t("otpScreen.didn't_receive_code")}
+                                </Text>
+
+                            <Button
+                                title={t("otpScreen.resend_otp")}
+                                variant="ghost"
+                                onPress={handleResendOtp}
+                                />
+                            </View>
+                        )}
+
+                    </View>
+                </View>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
+    )
+}
+
+export default OtpScreen
