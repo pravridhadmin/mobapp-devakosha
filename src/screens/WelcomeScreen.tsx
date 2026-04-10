@@ -29,9 +29,9 @@ const WelcomeScreen = ({ navigation }: { navigation: any }) => {
         >
             <LinearGradient
                 colors={
-                    isDark
-                        ? ["transparent", "rgba(0,0,0,0.7)", "#000"]
-                        : ["transparent", "rgba(247, 249, 251, 0.4)", "rgba(247, 249, 251,0.9)"]
+                    // isDark
+                        ["transparent", "rgba(0,0,0,0.7)", "#000"]
+                        // : ["transparent", "rgba(247, 249, 251, 0.4)", "rgba(247, 249, 251,0.9)"]
                 }
                 className="absolute bottom-0 left-0 right-0 h-3/4"
             />
@@ -40,11 +40,11 @@ const WelcomeScreen = ({ navigation }: { navigation: any }) => {
                 {/* Top Empty Space */}
                 {/* Center Content */}
                 <View className="px-2 mb-8">
-                    <Text className="text-3xl font-bold text-text-primary dark:text-text-primary-dark mb-4">
+                    <Text className="text-3xl font-bold text-text-primary-dark mb-4">
                         {t("welcomeScreen.welcome_to_your_sacred_journey")}
                     </Text>
 
-                    <Text className="text-base text-text-primary dark:text-text-primary-dark leading-6 mb-4">
+                    <Text className="text-base text-text-primary-dark leading-6 mb-4">
                         {t("welcomeScreen.by_proceeding_you_confirm")}{" "}
                         <Text
                             className="font-semibold underline text-primary-500"
